@@ -13,7 +13,7 @@ import {COLORS, IMAGES, ROUTES} from '../../..';
 import {Icons} from '../../../apps/configs/icons';
 import DropShadow from 'react-native-drop-shadow';
 import {showError} from '../../../apps/others/helperFunctions';
-import {userRegister} from '../../../apps/reducers/authRegister';
+import {userRegister} from '../../../apps/reducers/auth/authRegister';
 import {useSelector, useDispatch} from 'react-redux';
 
 export default function ({navigation}) {

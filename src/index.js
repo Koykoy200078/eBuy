@@ -8,3 +8,6 @@ export {default as IMAGES} from './apps/configs/images';
 export {default as ROUTES} from './apps/configs/routes';
 
 export {default as Home} from './screens/Home';
+export {default as Category} from './screens/Category';
+export {default as Cart} from './screens/Cart';
+export {default as Account} from './screens/Account';

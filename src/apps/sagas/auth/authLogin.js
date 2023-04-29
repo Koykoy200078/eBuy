@@ -1,14 +1,14 @@
 import {put, call, takeEvery} from 'redux-saga/effects';
-import {showError, showSuccess} from '../others/helperFunctions';
+import {showError, showSuccess} from '../../others/helperFunctions';
 
 import {
   USER_LOGIN,
   USER_LOGIN_COMPLETED,
   USER_LOGIN_ERROR,
   USER_LOGIN_REQUEST,
-} from '../api/actions';
+} from '../../api/actions';
 
-import {userLogin} from '../api/auth';
+import {userLogin} from '../../api/auth';
 
 export function* loginUserAsync(action) {
   yield put({type: USER_LOGIN_REQUEST});

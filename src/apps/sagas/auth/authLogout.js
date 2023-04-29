@@ -1,12 +1,12 @@
 import {put, call, takeEvery} from 'redux-saga/effects';
-import {showError, showSuccess} from '../others/helperFunctions';
+import {showError, showSuccess} from '../../others/helperFunctions';
 import {
   USER_LOGOUT,
   USER_LOGOUT_COMPLETED,
   USER_LOGOUT_ERROR,
   USER_LOGOUT_REQUEST,
-} from '../api/actions';
-import {userLogout} from '../api/auth';
+} from '../../api/actions';
+import {userLogout} from '../../api/auth';
 
 export function* logoutUserAsync(action) {
   yield put({type: USER_LOGOUT_REQUEST});

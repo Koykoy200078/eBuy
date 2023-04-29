@@ -15,7 +15,7 @@ import {Icons} from '../../../apps/configs/icons';
 import DropShadow from 'react-native-drop-shadow';
 import {showError} from '../../../apps/others/helperFunctions';
 import {useSelector, useDispatch} from 'react-redux';
-import {userLogin} from '../../../apps/reducers/authLogin';
+import {userLogin} from '../../../apps/reducers/auth/authLogin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ({navigation}) {
@@ -29,7 +29,6 @@ export default function ({navigation}) {
 
   const dispatch = useDispatch();
 
-  console.log('success ==> ', success);
   useEffect(() => {
     const getData = async () => {
       try {

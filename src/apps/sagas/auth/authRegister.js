@@ -1,12 +1,12 @@
 import {put, call, takeEvery} from 'redux-saga/effects';
-import {showError, showSuccess} from '../others/helperFunctions';
-import {createAccount} from '../api/auth';
+import {showError, showSuccess} from '../../others/helperFunctions';
+import {createAccount} from '../../api/auth';
 import {
   USER_REGISTER,
   USER_REGISTER_COMPLETED,
   USER_REGISTER_ERROR,
   USER_REGISTER_REQUEST,
-} from '../api/actions';
+} from '../../api/actions';
 
 export function* createUserAccountAsync(action) {
   yield put({type: USER_REGISTER_REQUEST});

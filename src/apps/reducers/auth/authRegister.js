@@ -3,7 +3,7 @@ import {
   USER_REGISTER_COMPLETED,
   USER_REGISTER_ERROR,
   USER_REGISTER_REQUEST,
-} from '../api/actions';
+} from '../../api/actions';
 
 const INITIAL_STATE = {
   isLoading: false,

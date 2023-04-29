@@ -3,7 +3,7 @@ import {
   USER_LOGOUT_COMPLETED,
   USER_LOGOUT_ERROR,
   USER_LOGOUT_REQUEST,
-} from '../api/actions';
+} from '../../api/actions';
 
 const INITIAL_STATE = {
   isLoading: false,

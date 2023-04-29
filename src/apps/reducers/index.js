@@ -19,14 +19,19 @@ const authPersistConfig = {
   blacklist: [],
 };
 
-import authLogin from './authLogin';
-import authRegister from './authRegister';
-import authLogout from './authLogout';
+import authLogin from './auth/authLogin';
+import authRegister from './auth/authRegister';
+import authLogout from './auth/authLogout';
+
+import productIndex from './productIndex';
 
 const rootReducer = combineReducers({
   authLogin: persistReducer(authPersistConfig, authLogin),
   authRegister,
   authLogout,
+
+  // product
+  productIndex,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);

@@ -4,4 +4,7 @@ export default {
   REGISTER: 'Register',
 
   HOME: 'Home',
+  CATEGORY: 'Category',
+  CART: 'Cart',
+  ACCOUNT: 'Account',
 };

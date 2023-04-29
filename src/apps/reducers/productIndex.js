@@ -1,53 +1,50 @@
 import {
-  USER_LOGIN,
-  USER_LOGIN_COMPLETED,
-  USER_LOGIN_ERROR,
-  USER_LOGIN_REQUEST,
+  PRODUCT_DATA,
+  PRODUCT_DATA_COMPLETED,
+  PRODUCT_DATA_ERROR,
+  PRODUCT_DATA_REQUEST,
 } from '../api/actions';
 
 const INITIAL_STATE = {
   isLoading: false,
-  userData: null,
+  productData: null,
   error: false,
 };
 
 export default function reducer(state = INITIAL_STATE, action = {}) {
   console.log(action.type);
   switch (action.type) {
-    case USER_LOGIN_REQUEST:
+    case PRODUCT_DATA_REQUEST:
       return {
         ...state,
         isLoading: true,
         error: false,
       };
-    case USER_LOGIN_COMPLETED:
+    case PRODUCT_DATA_COMPLETED:
       return {
         ...state,
         isLoading: false,
-        userData: action.response,
+        productData: action.response,
         error: false,
       };
-    case USER_LOGIN_ERROR:
+    case PRODUCT_DATA_ERROR:
       return {
         ...state,
         isLoading: false,
-        userData: null,
+        productData: null,
         error: true,
       };
-
-    case 'RESET_LOGIN':
+    case 'RESET_PRODUCT_DATA':
       return INITIAL_STATE;
-
     default:
       return state;
   }
 }
 
-export const userLogin = payload => ({
-  type: USER_LOGIN,
-  payload,
+export const productData = () => ({
+  type: PRODUCT_DATA,
 });
 
-export const resetLogin = () => ({
-  type: 'RESET_LOGIN',
+export const resetProductData = () => ({
+  type: 'RESET_PRODUCT_DATA',
 });

@@ -1,13 +1,24 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
   CardStyleInterpolators,
   createStackNavigator,
 } from '@react-navigation/stack';
 
-import {Dimensions, Easing, View} from 'react-native';
+import {Dimensions, Easing, View, Text, TouchableOpacity} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {Home, Login, ROUTES, Register, Welcome} from '..';
+import {
+  Account,
+  Cart,
+  Category,
+  Home,
+  Login,
+  ROUTES,
+  Register,
+  Welcome,
+} from '..';
+import {Icons} from '../apps/configs/icons';
 
 const width = Dimensions.get('window').width;
 
@@ -36,8 +47,43 @@ const MainStack = createStackNavigator();
 const Main = () => {
   return (
     <MainStack.Navigator screenOptions={(options, {headerShown: false})}>
-      <MainStack.Screen name={ROUTES.HOME} component={Home} />
+      <MainStack.Screen name="Tab" component={TabBar} />
     </MainStack.Navigator>
+  );
+};
+
+const Tab = createBottomTabNavigator();
+const TabBar = () => {
+  return (
+    <Tab.Navigator
+      initialRouteName={ROUTES.HOME}
+      screenOptions={({route}) => ({
+        headerShown: false,
+        tabBarIcon: ({focused, color, size}) => {
+          let iconName;
+          if (route.name === ROUTES.HOME) {
+            iconName = focused ? 'home-outline' : 'home-sharp';
+          } else if (route.name === ROUTES.CART) {
+            iconName = focused ? 'basket-outline' : 'basket-sharp';
+          } else if (route.name === ROUTES.ACCOUNT) {
+            iconName = focused
+              ? 'person-circle-sharp'
+              : 'person-circle-outline';
+          }
+          return <Icons.Ionicons name={iconName} size={size} color={color} />;
+        },
+        activeTintColor: '#000',
+        inactiveTintColor: 'gray',
+        showLabel: false,
+        style: {
+          backgroundColor: '#fff',
+          height: 60,
+        },
+      })}>
+      <Tab.Screen name={ROUTES.HOME} component={Home} />
+      <Tab.Screen name={ROUTES.CART} component={Cart} />
+      <Tab.Screen name={ROUTES.ACCOUNT} component={Account} />
+    </Tab.Navigator>
   );
 };
 
