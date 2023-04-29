@@ -1,8 +1,34 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {SafeAreaView, View, Text, Image, TouchableOpacity} from 'react-native';
 import {COLORS, IMAGES, ROUTES} from '../..';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export default function ({navigation}) {
+  const storeData = async value => {
+    try {
+      await AsyncStorage.setItem('@key_welcome', value);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const value = await AsyncStorage.getItem('@key_welcome');
+        console.log('value ==> ', value);
+        if (value !== null) {
+          navigation.navigate(ROUTES.LOGIN);
+        }
+      } catch (e) {
+        // error reading value
+        console.log(e);
+      }
+    };
+
+    getData();
+  }, []);
   return (
     <SafeAreaView className="flex-1" style={{backgroundColor: COLORS.BGColor}}>
       <View className="flex-1 flex justify-around my-4">
@@ -32,7 +58,10 @@ export default function ({navigation}) {
             <Text className="font-semibold" style={{color: COLORS.textColor}}>
               Already have an account?
             </Text>
-            <TouchableOpacity onPress={() => navigation.navigate(ROUTES.LOGIN)}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate(ROUTES.LOGIN), storeData('success');
+              }}>
               <Text className="font-semibold" style={{color: COLORS.textColor}}>
                 {'   '}
                 Login

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -12,13 +12,43 @@ import {
 import {COLORS, IMAGES, ROUTES} from '../../..';
 import {Icons} from '../../../apps/configs/icons';
 import DropShadow from 'react-native-drop-shadow';
+import {showError} from '../../../apps/others/helperFunctions';
+import {userRegister} from '../../../apps/reducers/authRegister';
+import {useSelector, useDispatch} from 'react-redux';
 
 export default function ({navigation}) {
   const {width, height} = Dimensions.get('window');
+  const authRegister = useSelector(state => state.authRegister.success);
   const [showPassword, setShowPassword] = useState(false);
+  const [name, setName] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [confirmPassword, setConfirmPassword] = useState(null);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {}, [name, email, password, confirmPassword]);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const onRegister = () => {
+    if (!name || !email || !password || !confirmPassword) {
+      showError({
+        message: 'Something went wrong',
+        description: 'Please validate all fields',
+      });
+    } else {
+      if (password === confirmPassword) {
+        dispatch(userRegister({name, email, password}));
+      } else {
+        showError({
+          message: 'Something went wrong',
+          description: 'Password and confirm password does not match',
+        });
+      }
+    }
   };
 
   return (
@@ -79,6 +109,7 @@ export default function ({navigation}) {
                   backgroundColor: COLORS.borderColor,
                   color: COLORS.textColor,
                 }}
+                onChangeText={val => setName(val)}
                 placeholder="Enter your name"
               />
               <Text
@@ -92,6 +123,7 @@ export default function ({navigation}) {
                   backgroundColor: COLORS.borderColor,
                   color: COLORS.textColor,
                 }}
+                onChangeText={val => setEmail(val)}
                 placeholder="Enter your email address"
               />
 
@@ -107,6 +139,7 @@ export default function ({navigation}) {
                     backgroundColor: COLORS.borderColor,
                     color: COLORS.textColor,
                   }}
+                  onChangeText={val => setPassword(val)}
                   secureTextEntry={!showPassword}
                   placeholder="Enter your password"
                 />
@@ -134,6 +167,7 @@ export default function ({navigation}) {
                     backgroundColor: COLORS.borderColor,
                     color: COLORS.textColor,
                   }}
+                  onChangeText={val => setConfirmPassword(val)}
                   secureTextEntry={!showPassword}
                   placeholder="Confirm your password"
                 />
@@ -150,6 +184,7 @@ export default function ({navigation}) {
               </View>
 
               <TouchableOpacity
+                onPress={() => onRegister()}
                 className="py-3 rounded-xl"
                 style={{backgroundColor: COLORS.primary}}>
                 <Text

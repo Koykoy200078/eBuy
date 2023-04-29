@@ -6,8 +6,8 @@ import {
 } from '@react-navigation/stack';
 
 import {Dimensions, Easing, View} from 'react-native';
-
-import {Login, ROUTES, Register, Welcome} from '..';
+import {useSelector, useDispatch} from 'react-redux';
+import {Home, Login, ROUTES, Register, Welcome} from '..';
 
 const width = Dimensions.get('window').width;
 
@@ -32,10 +32,28 @@ const Auth = () => {
   );
 };
 
+const MainStack = createStackNavigator();
+const Main = () => {
+  return (
+    <MainStack.Navigator screenOptions={(options, {headerShown: false})}>
+      <MainStack.Screen name={ROUTES.HOME} component={Home} />
+    </MainStack.Navigator>
+  );
+};
+
 export default () => {
+  const authLogin = useSelector(state => state.authLogin);
+  const {userData, error} = authLogin;
+
+  console.log('nav authLogin ==> ', authLogin);
+
   return (
     <NavigationContainer>
-      <Auth />
+      {userData !== null && userData !== undefined && error === false ? (
+        <Main />
+      ) : (
+        <Auth />
+      )}
     </NavigationContainer>
   );
 };

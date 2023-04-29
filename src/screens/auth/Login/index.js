@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -8,33 +8,77 @@ import {
   TextInput,
   Dimensions,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {COLORS, IMAGES, ROUTES} from '../../..';
 import {Icons} from '../../../apps/configs/icons';
 import DropShadow from 'react-native-drop-shadow';
+import {showError} from '../../../apps/others/helperFunctions';
+import {useSelector, useDispatch} from 'react-redux';
+import {userLogin} from '../../../apps/reducers/authLogin';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ({navigation}) {
+  const loading = useSelector(state => state.authLogin.isLoading);
   const {width, height} = Dimensions.get('window');
   const [showPassword, setShowPassword] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+
+  const dispatch = useDispatch();
+
+  console.log('success ==> ', success);
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const value = await AsyncStorage.getItem('@key_welcome');
+        if (value !== null) {
+          setSuccess(true);
+        } else {
+          setSuccess(false);
+        }
+      } catch (e) {
+        // error reading value
+        console.log(e);
+      }
+    };
+
+    getData();
+  }, [success, email, password]);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  const onLogin = () => {
+    if (!email || !password) {
+      showError({
+        message: 'Something went wrong',
+        description: 'Please enter email and password',
+      });
+    } else {
+      dispatch(userLogin({email, password}));
+    }
+  };
   return (
     <View className="flex-1" style={{backgroundColor: COLORS.BGColor}}>
       <SafeAreaView className="flex">
-        <View className="flex-row justify-start">
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            className="p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
-            style={{backgroundColor: COLORS.primary}}>
-            <Icons.Ionicons
-              name="arrow-undo"
-              size={24}
-              color={COLORS.textWhite}
-            />
-          </TouchableOpacity>
-        </View>
+        {!success ? (
+          <View View className="flex-row justify-start">
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              className="p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
+              style={{backgroundColor: COLORS.primary}}>
+              <Icons.Ionicons
+                name="arrow-undo"
+                size={24}
+                color={COLORS.textWhite}
+              />
+            </TouchableOpacity>
+          </View>
+        ) : null}
 
         <View className="flex-row justify-center">
           <Image source={IMAGES.login} style={{width: 200, height: 200}} />
@@ -70,6 +114,7 @@ export default function ({navigation}) {
               </Text>
               <TextInput
                 className="p-4 rounded-2xl mb-3"
+                onChangeText={val => setEmail(val)}
                 style={{
                   backgroundColor: COLORS.borderColor,
                   color: COLORS.textColor,
@@ -89,6 +134,7 @@ export default function ({navigation}) {
                     backgroundColor: COLORS.borderColor,
                     color: COLORS.textColor,
                   }}
+                  onChangeText={val => setPassword(val)}
                   secureTextEntry={!showPassword}
                   placeholder="Enter your password"
                 />
@@ -111,12 +157,13 @@ export default function ({navigation}) {
               </TouchableOpacity>
 
               <TouchableOpacity
+                onPress={() => onLogin()}
                 className="py-3 rounded-xl"
                 style={{backgroundColor: COLORS.primary}}>
                 <Text
                   className="text-xl font-bold text-center"
                   style={{color: COLORS.textWhite}}>
-                  Login
+                  {loading ? 'Loading . . .' : 'Login'}
                 </Text>
               </TouchableOpacity>
             </View>

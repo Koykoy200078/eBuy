@@ -6,3 +6,5 @@ export {default as Register} from './screens/auth/Register';
 export {default as COLORS} from './apps/configs/colors';
 export {default as IMAGES} from './apps/configs/images';
 export {default as ROUTES} from './apps/configs/routes';
+
+export {default as Home} from './screens/Home';
