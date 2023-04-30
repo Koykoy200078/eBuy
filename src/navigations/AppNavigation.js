@@ -56,13 +56,21 @@ const Tab = createBottomTabNavigator();
 const TabBar = () => {
   return (
     <Tab.Navigator
-      initialRouteName={ROUTES.HOME}
+      initialRouteName={ROUTES.CATEGORY}
       screenOptions={({route}) => ({
         headerShown: false,
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
           if (route.name === ROUTES.HOME) {
             iconName = focused ? 'home-outline' : 'home-sharp';
+          } else if (route.name === ROUTES.CATEGORY) {
+            return (
+              <Icons.MaterialIcons
+                name={'category'}
+                size={size}
+                color={color}
+              />
+            );
           } else if (route.name === ROUTES.CART) {
             iconName = focused ? 'basket-outline' : 'basket-sharp';
           } else if (route.name === ROUTES.ACCOUNT) {
@@ -81,6 +89,7 @@ const TabBar = () => {
         },
       })}>
       <Tab.Screen name={ROUTES.HOME} component={Home} />
+      <Tab.Screen name={ROUTES.CATEGORY} component={Category} />
       <Tab.Screen name={ROUTES.CART} component={Cart} />
       <Tab.Screen name={ROUTES.ACCOUNT} component={Account} />
     </Tab.Navigator>
@@ -91,11 +100,12 @@ export default () => {
   const authLogin = useSelector(state => state.authLogin);
   const {userData, error} = authLogin;
 
-  console.log('nav authLogin ==> ', authLogin);
-
   return (
     <NavigationContainer>
-      {userData !== null && userData !== undefined && error === false ? (
+      {userData !== null &&
+      userData !== undefined &&
+      userData.access_token !== null &&
+      error === false ? (
         <Main />
       ) : (
         <Auth />

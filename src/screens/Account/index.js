@@ -4,7 +4,9 @@ import {userLogout} from '../../apps/reducers/auth/authLogout';
 import {useSelector, useDispatch} from 'react-redux';
 import {resetLogin} from '../../apps/reducers/auth/authLogin';
 import {resetRegister} from '../../apps/reducers/auth/authRegister';
-import {resetProductData} from '../../apps/reducers/productIndex';
+import {resetProductData} from '../../apps/reducers/product/productIndex';
+import {resetCategoryData} from '../../apps/reducers/category/categories';
+import {resetProductDetailsData} from '../../apps/reducers/product/productDetails';
 
 export default function () {
   const dispatch = useDispatch();
@@ -14,6 +16,8 @@ export default function () {
     dispatch(resetLogin());
     dispatch(resetRegister());
     dispatch(resetProductData());
+    dispatch(resetCategoryData());
+    dispatch(resetProductDetailsData());
   };
   return (
     <View>

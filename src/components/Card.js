@@ -1,49 +1,69 @@
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
-import CardView from 'react-native-cardview';
-import {COLORS} from '..';
 
-export default function ({image, original_price, selling_price, itemName}) {
+import {COLORS, IMAGES} from '..';
+import {Shadow} from 'react-native-shadow-2';
+import {Icons} from '../apps/configs/icons';
+
+export default function ({item, index}) {
+  const priceDifference = item.original_price - item.selling_price;
+  const percentageOff = (priceDifference / item.original_price) * 100;
+  const roundedPercentageOff = Math.round(percentageOff);
+
   return (
-    <CardView
-      cardElevation={7}
-      cardMaxElevation={7}
-      cornerRadius={5}
-      cornerOverlap={false}
-      className="w-[150] h-[180]"
-      style={{
-        backgroundColor: COLORS.secondaryBGColor,
-        shadowColor: COLORS.borderColor,
-      }}>
-      <View className="w-[100%] h-[100%] bg-transparent">
-        <Image
-          className="w-[100%] h-[100%] rounded-md"
-          source={{
-            uri: image,
-          }}
-        />
+    <View className="w-52 h-[290] my-6 mr-6">
+      <Shadow
+        distance={5}
+        startColor={COLORS.borderColor}
+        style={{borderRadius: 6}}>
+        <View className="flex-row justify-center">
+          <Image
+            source={{uri: item.image_url}}
+            className="w-52 h-52 rounded-t-md"
+          />
+        </View>
 
-        {/* top-right corner */}
         <View className="absolute top-0 right-0 items-center justify-center w-fit">
           <View
-            className="p-1 w-fit rounded-bl-md"
+            className="p-1 w-fit rounded-bl-md rounded-tr-md"
             style={{backgroundColor: COLORS.accent}}>
             <Text
-              className="text-xs line-through font-bold"
+              className="text-base font-bold"
               style={{color: COLORS.textColor}}>
-              ₱ {original_price}
+              {roundedPercentageOff}% OFF
             </Text>
           </View>
-
-          {/* <View className="p-1 w-fit bg-blue-600 rounded-bl-md">
-              <Text
-                className="text-xs font-bold"
-                style={{color: COLORS.textColor}}>
-                ₱ {selling_price}
-              </Text>
-            </View> */}
         </View>
-      </View>
-    </CardView>
+
+        <View className="flex-1 px-3 py-2 space-y-1">
+          <Text
+            className="text-xl font-medium tracking-wider text-center"
+            style={{color: COLORS.textColor}}>
+            {item.name}
+          </Text>
+
+          <View className="flex-row justify-between items-center px-1">
+            <Text
+              className="text-base font-semibold"
+              style={{color: COLORS.textColor}}>
+              ₱ {item.selling_price}
+            </Text>
+            <View className="flex-row space-x-3">
+              <TouchableOpacity>
+                <View className="w-6 h-10 items-center justify-center rounded-full">
+                  <Image source={IMAGES.wishlist_dark} className="w-6 h-6" />
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity>
+                <View className="w-8 h-10 items-center justify-center rounded-full">
+                  <Icons.Ionicons name="basket-sharp" size={30} />
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Shadow>
+    </View>
   );
 }

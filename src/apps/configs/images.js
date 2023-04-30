@@ -5,4 +5,9 @@ export default {
 
   google: require('../../../assets/images/google.png'),
   facebook: require('../../../assets/images/facebook.png'),
+
+  wishlist: require('../../../assets/images/wishlist.png'),
+  wishlist_dark: require('../../../assets/images/wishlist_dark.png'),
+
+  add_to_cart_dark: require('../../../assets/images/add-to-cart-dark.png'),
 };

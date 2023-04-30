@@ -1,13 +1,13 @@
 import {put, call, takeEvery} from 'redux-saga/effects';
-import {showError} from '../others/helperFunctions';
+import {showError} from '../../others/helperFunctions';
 import {
   PRODUCT_DATA,
   PRODUCT_DATA_COMPLETED,
   PRODUCT_DATA_ERROR,
   PRODUCT_DATA_REQUEST,
-} from '../api/actions';
+} from '../../api/actions';
 
-import {getProduct} from '../api/product';
+import {getProduct} from '../../api/product';
 
 export function* productAsync(action) {
   yield put({type: PRODUCT_DATA_REQUEST});

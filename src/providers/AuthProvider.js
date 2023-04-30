@@ -5,13 +5,13 @@ import {Alert} from 'react-native';
 import {userLogout} from '../apps/reducers/auth/authLogout';
 import {resetLogin} from '../apps/reducers/auth/authLogin';
 import {resetRegister} from '../apps/reducers/auth/authRegister';
-import {resetProductData} from '../apps/reducers/productIndex';
+import {resetProductData} from '../apps/reducers/product/productIndex';
 
 const AuthContext = createContext();
 const AuthProvider = props => {
   const authLogin = useSelector(state => state.authLogin.userData);
-  const getProducts = useSelector(state => state.productIndex.productData);
 
+  const getIndex = useSelector(state => state.productIndex.productData);
   const [user, setUser] = useState(null);
 
   const dispatch = useDispatch();
@@ -24,10 +24,14 @@ const AuthProvider = props => {
 
   useEffect(() => {
     checkLogin();
+  }, [getIndex]);
+
+  function checkLogin() {
+    setUser(authLogin);
 
     if (
-      getProducts?.message === 'Unauthenticated' ||
-      getProducts?.message === 'Unauthenticated.'
+      getIndex?.message === 'Unauthenticated' ||
+      getIndex?.message === 'Unauthenticated.'
     ) {
       Alert.alert('Session Expired', 'Please login again', [
         {
@@ -38,10 +42,6 @@ const AuthProvider = props => {
         },
       ]);
     }
-  }, []);
-
-  function checkLogin() {
-    setUser(authLogin);
   }
 
   return (

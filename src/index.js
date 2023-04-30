@@ -11,3 +11,4 @@ export {default as Home} from './screens/Home';
 export {default as Category} from './screens/Category';
 export {default as Cart} from './screens/Cart';
 export {default as Account} from './screens/Account';
+export {default as ProductInfo} from './screens/ProductInfo';

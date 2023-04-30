@@ -23,7 +23,11 @@ import authLogin from './auth/authLogin';
 import authRegister from './auth/authRegister';
 import authLogout from './auth/authLogout';
 
-import productIndex from './productIndex';
+import productIndex from './product/productIndex';
+import productDetails from './product/productDetails';
+
+import category from './category/categories';
+import category_data from './categoriesData';
 
 const rootReducer = combineReducers({
   authLogin: persistReducer(authPersistConfig, authLogin),
@@ -32,6 +36,10 @@ const rootReducer = combineReducers({
 
   // product
   productIndex,
+  productDetails,
+
+  category,
+  category_data,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);

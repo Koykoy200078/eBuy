@@ -1,7 +1,7 @@
 import {select} from 'redux-saga/effects';
 import {BASE_URI} from '../configs/url';
 
-export function* getProduct() {
+export function* getCategories() {
   const auth = yield select(state => state.authLogin.userData.access_token);
   const options = {
     method: 'GET',
@@ -12,7 +12,7 @@ export function* getProduct() {
     },
   };
 
-  const response = yield fetch(BASE_URI + '/products/index', options);
+  const response = yield fetch(BASE_URI + '/categories', options);
   const data = yield response.json();
 
   if (response.ok) {
@@ -22,11 +22,9 @@ export function* getProduct() {
   }
 }
 
-export function* getProductDetails(payload) {
-  const {category_slug, product_slug} = payload;
-  const url = BASE_URI + '/' + category_slug + '/' + product_slug;
-
+export function* getData(payload) {
   const auth = yield select(state => state.authLogin.userData.access_token);
+
   const options = {
     method: 'GET',
     headers: {
@@ -35,10 +33,11 @@ export function* getProductDetails(payload) {
       Authorization: `Bearer ${auth}`,
     },
   };
-
-  const response = yield fetch(url, options);
+  const response = yield fetch(
+    BASE_URI + '/categories/products/' + payload,
+    options,
+  );
   const data = yield response.json();
-
   if (response.ok) {
     return data;
   } else {

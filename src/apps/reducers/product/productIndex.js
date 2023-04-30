@@ -3,7 +3,7 @@ import {
   PRODUCT_DATA_COMPLETED,
   PRODUCT_DATA_ERROR,
   PRODUCT_DATA_REQUEST,
-} from '../api/actions';
+} from '../../api/actions';
 
 const INITIAL_STATE = {
   isLoading: false,

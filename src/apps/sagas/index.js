@@ -6,7 +6,11 @@ import {createUserAccount} from './auth/authRegister';
 import {logoutUser} from './auth/authLogout';
 
 // Product
-import {product} from './productIndex';
+import {product} from './product/productIndex';
+import {productDetails} from './product/productDetails';
+
+import {category} from './category/categories';
+import {categoryData} from './categoriesData';
 
 export default function* rootSaga() {
   yield all([
@@ -17,5 +21,10 @@ export default function* rootSaga() {
 
     // product
     product(),
+    productDetails(),
+
+    // category
+    category(),
+    categoryData(),
   ]);
 }
