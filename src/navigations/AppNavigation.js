@@ -14,6 +14,7 @@ import {
   Category,
   Home,
   Login,
+  ProductInfo,
   ROUTES,
   Register,
   Welcome,
@@ -48,15 +49,17 @@ const Main = () => {
   return (
     <MainStack.Navigator screenOptions={(options, {headerShown: false})}>
       <MainStack.Screen name="Tab" component={TabBar} />
+      <MainStack.Screen name={ROUTES.PRODUCT_DETAILS} component={ProductInfo} />
     </MainStack.Navigator>
   );
 };
 
 const Tab = createBottomTabNavigator();
 const TabBar = () => {
+  const getCount = useSelector(state => state.cartCount.cart_count);
   return (
     <Tab.Navigator
-      initialRouteName={ROUTES.CATEGORY}
+      initialRouteName={ROUTES.HOME}
       screenOptions={({route}) => ({
         headerShown: false,
         tabBarIcon: ({focused, color, size}) => {
@@ -90,7 +93,13 @@ const TabBar = () => {
       })}>
       <Tab.Screen name={ROUTES.HOME} component={Home} />
       <Tab.Screen name={ROUTES.CATEGORY} component={Category} />
-      <Tab.Screen name={ROUTES.CART} component={Cart} />
+      <Tab.Screen
+        name={ROUTES.CART}
+        component={Cart}
+        options={{
+          tabBarBadge: getCount && getCount.cart_count,
+        }}
+      />
       <Tab.Screen name={ROUTES.ACCOUNT} component={Account} />
     </Tab.Navigator>
   );

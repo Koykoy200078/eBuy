@@ -33,7 +33,7 @@ export default function ({navigation}) {
         </PersistGate>
       </StoreProvider>
 
-      <Toast />
+      <Toast topOffset={10} />
     </>
   );
 }

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity, Dimensions, Image} from 'react-native';
-import {COLORS} from '../..';
+import {COLORS, ROUTES} from '../..';
 import ScreenWrapper from '../../components/ScreenWraper';
 import Carousel from 'react-native-reanimated-carousel';
 import {productData} from '../../apps/reducers/product/productIndex';
@@ -11,11 +11,13 @@ import {Shadow} from 'react-native-shadow-2';
 
 import {categoryData} from '../../apps/reducers/category/categories';
 import {productDetailsData} from '../../apps/reducers/product/productDetails';
+import {getCartCount} from '../../apps/reducers/cartCount';
 
-export default function () {
+export default function ({navigation}) {
   const {width} = Dimensions.get('window');
   const getIndex = useSelector(state => state.productIndex.productData);
   const getCategory = useSelector(state => state.category.categoriesData);
+  const getCount = useSelector(state => state.cartCount.cart_count);
 
   const [product_slug, setProductSlug] = useState(null);
   const [category_slug, setCategorySlug] = useState(null);
@@ -33,17 +35,23 @@ export default function () {
   const productCategoryName = getProductCategoryName();
 
   const getInfo = () => {
-    dispatch(
-      productDetailsData({
-        category_slug: productCategoryName,
-        product_slug: product_slug,
-      }),
-    );
-    console.log('getInfo productCategoryName ==> ', productCategoryName);
-    console.log('getInfo product_slug ==> ', product_slug);
-    setProductSlug(null);
-    setCategorySlug(null);
-    //  navigation.navigate(ROUTES.PRODUCT_DETAILS);
+    if (productCategoryName && product_slug) {
+      dispatch(
+        productDetailsData({
+          category_slug: productCategoryName,
+          product_slug: product_slug,
+        }),
+      );
+      setProductSlug(null);
+      setCategorySlug(null);
+      navigation.navigate(ROUTES.PRODUCT_DETAILS);
+    }
+  };
+
+  const loadAll = () => {
+    dispatch(productData());
+    dispatch(categoryData());
+    dispatch(getCartCount());
   };
 
   useEffect(() => {
@@ -53,11 +61,6 @@ export default function () {
       getInfo();
     }
   }, [product_slug, category_slug]);
-
-  const loadAll = () => {
-    dispatch(productData());
-    dispatch(categoryData());
-  };
 
   return (
     <View className="flex-1 relative" style={{backgroundColor: COLORS.BGColor}}>

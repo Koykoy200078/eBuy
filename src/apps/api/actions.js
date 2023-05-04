@@ -42,3 +42,15 @@ export const CATEGORY_DETAILS_DATA_COMPLETED =
   'Category/CATEGORY_DETAILS_DATA_COMPLETED';
 export const CATEGORY_DETAILS_DATA_ERROR =
   'Category/CATEGORY_DETAILS_DATA_ERROR';
+
+// cart count
+export const CART_COUNT = 'Cart/CART_COUNT';
+export const CART_COUNT_REQUEST = 'Cart/CART_COUNT_REQUEST';
+export const CART_COUNT_COMPLETED = 'Cart/CART_COUNT_COMPLETED';
+export const CART_COUNT_ERROR = 'Cart/CART_COUNT_ERROR';
+
+// add to cart
+export const ADD_TO_CART = 'Cart/ADD_TO_CART';
+export const ADD_TO_CART_REQUEST = 'Cart/ADD_TO_CART_REQUEST';
+export const ADD_TO_CART_COMPLETED = 'Cart/ADD_TO_CART_COMPLETED';
+export const ADD_TO_CART_ERROR = 'Cart/ADD_TO_CART_ERROR';

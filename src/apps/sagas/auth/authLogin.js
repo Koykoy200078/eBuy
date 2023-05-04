@@ -15,7 +15,7 @@ export function* loginUserAsync(action) {
 
   const response = yield call(userLogin, action.payload);
 
-  if (response !== undefined && response.errors) {
+  if (response && response.errors) {
     yield put({type: USER_LOGIN_ERROR, response});
     showError({
       message: 'Something went wrong!',

@@ -29,6 +29,10 @@ import productDetails from './product/productDetails';
 import category from './category/categories';
 import category_data from './categoriesData';
 
+import cartCount from './cartCount';
+
+import cartAddItem from './cartAddItem';
+
 const rootReducer = combineReducers({
   authLogin: persistReducer(authPersistConfig, authLogin),
   authRegister,
@@ -40,6 +44,9 @@ const rootReducer = combineReducers({
 
   category,
   category_data,
+
+  cartCount,
+  cartAddItem,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);

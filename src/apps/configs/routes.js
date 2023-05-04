@@ -7,4 +7,6 @@ export default {
   CATEGORY: 'Category',
   CART: 'Cart',
   ACCOUNT: 'Account',
+
+  PRODUCT_DETAILS: 'Product Details',
 };

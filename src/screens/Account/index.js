@@ -7,6 +7,7 @@ import {resetRegister} from '../../apps/reducers/auth/authRegister';
 import {resetProductData} from '../../apps/reducers/product/productIndex';
 import {resetCategoryData} from '../../apps/reducers/category/categories';
 import {resetProductDetailsData} from '../../apps/reducers/product/productDetails';
+import {resetCartCount} from '../../apps/reducers/cartCount';
 
 export default function () {
   const dispatch = useDispatch();
@@ -18,7 +19,9 @@ export default function () {
     dispatch(resetProductData());
     dispatch(resetCategoryData());
     dispatch(resetProductDetailsData());
+    dispatch(resetCartCount());
   };
+
   return (
     <View>
       <Button title="Logout" onPress={() => onLogout()} />

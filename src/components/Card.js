@@ -38,7 +38,9 @@ export default function ({item, index}) {
         <View className="flex-1 px-3 py-2 space-y-1">
           <Text
             className="text-xl font-medium tracking-wider text-center"
-            style={{color: COLORS.textColor}}>
+            style={{color: COLORS.textColor}}
+            numberOfLines={1}
+            ellipsizeMode="tail">
             {item.name}
           </Text>
 
