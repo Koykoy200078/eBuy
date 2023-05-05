@@ -1,5 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity, Dimensions, Image} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+  Image,
+  RefreshControl,
+} from 'react-native';
 import {COLORS, ROUTES} from '../..';
 import ScreenWrapper from '../../components/ScreenWraper';
 import Carousel from 'react-native-reanimated-carousel';
@@ -21,6 +28,7 @@ export default function ({navigation}) {
 
   const [product_slug, setProductSlug] = useState(null);
   const [category_slug, setCategorySlug] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -53,6 +61,14 @@ export default function ({navigation}) {
     dispatch(categoryData());
     dispatch(getCartCount());
   };
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    loadAll();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   useEffect(() => {
     loadAll();
@@ -118,6 +134,9 @@ export default function ({navigation}) {
             showsVerticalScrollIndicator={false}
             estimatedItemSize={200}
             keyExtractor={item => item.id}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
             renderItem={({item}) => {
               const priceDifference = item.original_price - item.selling_price;
               const percentageOff =

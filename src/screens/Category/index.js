@@ -8,8 +8,9 @@ import {
   Image,
   Alert,
   Button,
+  RefreshControl,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {COLORS, IMAGES, ROUTES, Search} from '../..';
 import {Icons} from '../../apps/configs/icons';
 import * as Animatable from 'react-native-animatable';
@@ -20,6 +21,9 @@ import {productSearch, resetProductSearch} from '../../apps/reducers/search';
 import {Shadow} from 'react-native-shadow-2';
 import {showSuccess} from '../../apps/others/helperFunctions';
 import {productDetailsData} from '../../apps/reducers/product/productDetails';
+import {productData} from '../../apps/reducers/product/productIndex';
+import {categoryData} from '../../apps/reducers/category/categories';
+import {getCartCount} from '../../apps/reducers/cartCount';
 
 export default function ({navigation}) {
   const getCategory = useSelector(state => state.category.categoriesData);
@@ -35,6 +39,21 @@ export default function ({navigation}) {
 
   const [product_slug, setProductSlug] = useState(null);
   const [category_slug, setCategorySlug] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const loadAll = () => {
+    dispatch(productData());
+    dispatch(categoryData());
+    dispatch(getCartCount());
+  };
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    loadAll();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   const getProductCategoryName = () => {
     if (!getCategory || !Array.isArray(getCategory.categories)) {
@@ -132,7 +151,12 @@ export default function ({navigation}) {
               </TouchableOpacity>
             </View>
 
-            <ScrollView className="py-2" showsVerticalScrollIndicator={false}>
+            <ScrollView
+              className="py-2"
+              showsVerticalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }>
               {getSearchData.data.searchResults.data.map((item, index) => {
                 return (
                   <TouchableOpacity
@@ -297,7 +321,10 @@ export default function ({navigation}) {
                 paddingHorizontal: 20,
               }}
               horizontal
-              showsHorizontalScrollIndicator={false}>
+              showsHorizontalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }>
               {getData && getData.data.length > 0
                 ? getData.data.map((item, index) => (
                     <Card

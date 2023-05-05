@@ -59,7 +59,7 @@ const TabBar = () => {
   const getCount = useSelector(state => state.cartCount.cart_count);
   return (
     <Tab.Navigator
-      initialRouteName={ROUTES.HOME}
+      initialRouteName={ROUTES.CART}
       screenOptions={({route}) => ({
         headerShown: false,
         tabBarIcon: ({focused, color, size}) => {

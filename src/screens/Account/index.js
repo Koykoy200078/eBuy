@@ -8,6 +8,7 @@ import {resetProductData} from '../../apps/reducers/product/productIndex';
 import {resetCategoryData} from '../../apps/reducers/category/categories';
 import {resetProductDetailsData} from '../../apps/reducers/product/productDetails';
 import {resetCartCount} from '../../apps/reducers/cartCount';
+import {resetSelectedCategoryData} from '../../apps/reducers/categoriesData';
 
 export default function () {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ export default function () {
     dispatch(resetProductData());
     dispatch(resetCategoryData());
     dispatch(resetProductDetailsData());
+    dispatch(resetSelectedCategoryData());
     dispatch(resetCartCount());
   };
 
