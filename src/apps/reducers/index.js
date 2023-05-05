@@ -33,6 +33,8 @@ import cartCount from './cartCount';
 
 import cartAddItem from './cartAddItem';
 
+import search from './search';
+
 const rootReducer = combineReducers({
   authLogin: persistReducer(authPersistConfig, authLogin),
   authRegister,
@@ -47,6 +49,9 @@ const rootReducer = combineReducers({
 
   cartCount,
   cartAddItem,
+
+  // search
+  search,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);

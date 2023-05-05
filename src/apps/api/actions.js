@@ -54,3 +54,9 @@ export const ADD_TO_CART = 'Cart/ADD_TO_CART';
 export const ADD_TO_CART_REQUEST = 'Cart/ADD_TO_CART_REQUEST';
 export const ADD_TO_CART_COMPLETED = 'Cart/ADD_TO_CART_COMPLETED';
 export const ADD_TO_CART_ERROR = 'Cart/ADD_TO_CART_ERROR';
+
+// product search
+export const PRODUCT_SEARCH = 'Product/PRODUCT_SEARCH';
+export const PRODUCT_SEARCH_REQUEST = 'Product/PRODUCT_SEARCH_REQUEST';
+export const PRODUCT_SEARCH_COMPLETED = 'Product/PRODUCT_SEARCH_COMPLETED';
+export const PRODUCT_SEARCH_ERROR = 'Product/PRODUCT_SEARCH_ERROR';

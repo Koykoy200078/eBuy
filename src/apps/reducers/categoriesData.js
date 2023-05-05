@@ -12,7 +12,6 @@ const INITIAL_STATE = {
 };
 
 export default function reducer(state = INITIAL_STATE, action = {}) {
-  console.log(action.type);
   switch (action.type) {
     case CATEGORY_DETAILS_DATA_REQUEST:
       return {

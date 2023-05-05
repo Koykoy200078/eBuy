@@ -12,7 +12,6 @@ const INITIAL_STATE = {
 };
 
 export default function reducer(state = INITIAL_STATE, action = {}) {
-  console.log(action.type);
   switch (action.type) {
     case ADD_TO_CART_REQUEST:
       return {

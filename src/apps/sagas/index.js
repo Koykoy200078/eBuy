@@ -15,6 +15,7 @@ import {categoryData} from './categoriesData';
 import {cartCountData} from './cartCount';
 import {cartAdd} from './cartAddItem';
 
+import {searchData} from './search';
 export default function* rootSaga() {
   yield all([
     // auth/login
@@ -33,5 +34,8 @@ export default function* rootSaga() {
     // cart
     cartCountData(),
     cartAdd(),
+
+    // search
+    searchData(),
   ]);
 }

@@ -12,3 +12,4 @@ export {default as Category} from './screens/Category';
 export {default as Cart} from './screens/Cart';
 export {default as Account} from './screens/Account';
 export {default as ProductInfo} from './screens/ProductInfo';
+export {default as Search} from './screens/Search';

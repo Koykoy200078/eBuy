@@ -74,7 +74,7 @@ export default function ({navigation}) {
         dispatch(resetAddToCart());
       }
     }
-  }, [isSuccess, APImessage, selectedColorId, selectedColorName]);
+  }, [getCartData, isSuccess, APImessage, selectedColorId, selectedColorName]);
 
   const defaultBorderStyle = {borderWidth: 1, borderColor: '#000'};
   const greenBorderStyle = {borderWidth: 2, borderColor: '#0f0'};
@@ -131,16 +131,6 @@ export default function ({navigation}) {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="flex-col justify-between items-start px-2 mt-2 space-y-3">
-          <View className="flex">
-            <Text
-              className="text-2xl font-bold text-center"
-              style={{color: COLORS.textColor}}>
-              {getDetails && getDetails.product
-                ? getDetails.product.id
-                : 'Loading . . .'}
-            </Text>
-          </View>
-
           <View className="flex">
             <Text
               className="text-2xl font-bold text-center"

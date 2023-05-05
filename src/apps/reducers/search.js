@@ -1,47 +1,48 @@
 import {
-  CART_COUNT,
-  CART_COUNT_COMPLETED,
-  CART_COUNT_ERROR,
-  CART_COUNT_REQUEST,
+  PRODUCT_SEARCH,
+  PRODUCT_SEARCH_COMPLETED,
+  PRODUCT_SEARCH_ERROR,
+  PRODUCT_SEARCH_REQUEST,
 } from '../api/actions';
 
 const INITIAL_STATE = {
   isLoading: false,
-  cart_count: null,
+  data: null,
   error: false,
 };
 
 export default function reducer(state = INITIAL_STATE, action = {}) {
   switch (action.type) {
-    case CART_COUNT_REQUEST:
+    case PRODUCT_SEARCH_REQUEST:
       return {
         ...state,
         isLoading: true,
         error: false,
       };
-    case CART_COUNT_COMPLETED:
+    case PRODUCT_SEARCH_COMPLETED:
       return {
         ...state,
         isLoading: false,
-        cart_count: action.response,
+        data: action.response,
       };
-    case CART_COUNT_ERROR:
+    case PRODUCT_SEARCH_ERROR:
       return {
         ...state,
         isLoading: false,
         error: true,
       };
-    case 'ResetCartCount':
+    case 'ResetProductSearch':
       return INITIAL_STATE;
     default:
       return state;
   }
 }
 
-export const getCartCount = () => ({
-  type: CART_COUNT,
+export const productSearch = payload => ({
+  type: PRODUCT_SEARCH,
+  payload,
 });
 
-export const resetCartCount = () => ({
-  type: 'ResetCartCount',
+export const resetProductSearch = () => ({
+  type: 'ResetProductSearch',
 });
