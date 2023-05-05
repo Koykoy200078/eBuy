@@ -5,7 +5,7 @@ import {COLORS, IMAGES} from '..';
 import {Shadow} from 'react-native-shadow-2';
 import {Icons} from '../apps/configs/icons';
 
-export default function ({item, index}) {
+export default function ({item, index, onPressWishlist, onPressCart}) {
   const priceDifference = item.original_price - item.selling_price;
   const percentageOff = (priceDifference / item.original_price) * 100;
   const roundedPercentageOff = Math.round(percentageOff);
@@ -51,13 +51,13 @@ export default function ({item, index}) {
               ₱ {item.selling_price}
             </Text>
             <View className="flex-row space-x-3">
-              <TouchableOpacity>
+              <TouchableOpacity onPress={onPressWishlist}>
                 <View className="w-6 h-10 items-center justify-center rounded-full">
                   <Image source={IMAGES.wishlist_dark} className="w-6 h-6" />
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity>
+              <TouchableOpacity onPress={onPressCart}>
                 <View className="w-8 h-10 items-center justify-center rounded-full">
                   <Icons.Ionicons name="basket-sharp" size={30} />
                 </View>

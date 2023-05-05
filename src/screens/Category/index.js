@@ -10,7 +10,7 @@ import {
   Button,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
-import {COLORS, IMAGES, Search} from '../..';
+import {COLORS, IMAGES, ROUTES, Search} from '../..';
 import {Icons} from '../../apps/configs/icons';
 import * as Animatable from 'react-native-animatable';
 import {useSelector, useDispatch} from 'react-redux';
@@ -19,8 +19,9 @@ import Card from '../../components/Card';
 import {productSearch, resetProductSearch} from '../../apps/reducers/search';
 import {Shadow} from 'react-native-shadow-2';
 import {showSuccess} from '../../apps/others/helperFunctions';
+import {productDetailsData} from '../../apps/reducers/product/productDetails';
 
-export default function () {
+export default function ({navigation}) {
   const getCategory = useSelector(state => state.category.categoriesData);
   const getData = useSelector(state => state.category_data.selectedData);
   const getSearchData = useSelector(state => state.search);
@@ -32,8 +33,34 @@ export default function () {
   const [activeCategory, setActiveCategory] = useState(getCategDataFinal);
   const [slug, setSlug] = useState(null);
 
-  // search
+  const [product_slug, setProductSlug] = useState(null);
+  const [category_slug, setCategorySlug] = useState(null);
 
+  const getProductCategoryName = () => {
+    if (!getCategory || !Array.isArray(getCategory.categories)) {
+      return null;
+    }
+    const category = getCategory.categories.find(c => c.id === category_slug);
+    return category ? category.slug : null;
+  };
+
+  const productCategoryName = getProductCategoryName();
+
+  const getInfo = () => {
+    if (productCategoryName && product_slug) {
+      dispatch(
+        productDetailsData({
+          category_slug: productCategoryName,
+          product_slug: product_slug,
+        }),
+      );
+      setProductSlug(null);
+      setCategorySlug(null);
+      navigation.navigate(ROUTES.PRODUCT_DETAILS);
+    }
+  };
+
+  // search
   const [query, setQuery] = useState(null);
   const handleSearch = () => {
     dispatch(
@@ -46,10 +73,13 @@ export default function () {
   const getSearchLength =
     getSearchData && getSearchData?.data?.searchResults?.data.length > 0;
 
-  // selectedData
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (productCategoryName) {
+      getInfo();
+    }
+
     if (query !== null) {
       if (getSearchLength) {
         showSuccess({message: 'Product Found'});
@@ -57,7 +87,7 @@ export default function () {
         showSuccess({message: 'Product Not Found'});
       }
     }
-  }, [activeCategory, getSearchLength]);
+  }, [activeCategory, getSearchLength, product_slug, category_slug]);
 
   return (
     <View className="flex-1 relative" style={{backgroundColor: COLORS.BGColor}}>
@@ -108,8 +138,8 @@ export default function () {
                   <TouchableOpacity
                     key={item.id}
                     onPress={() => {
-                      // setProductSlug(item.slug);
-                      // setCategorySlug(item.category_id);
+                      setProductSlug(item.slug);
+                      setCategorySlug(item.category_id);
                     }}>
                     <View className="p-2">
                       <Shadow
@@ -225,7 +255,7 @@ export default function () {
               {getCategory?.categories?.map((item, index) => {
                 let isActive = activeCategory === item.id;
                 let textClass = isActive
-                  ? 'text-base tracking-widest font-bold'
+                  ? 'text-base tracking-widest text-base font-bold'
                   : 'text-base tracking-widest';
 
                 return (
@@ -270,7 +300,15 @@ export default function () {
               showsHorizontalScrollIndicator={false}>
               {getData && getData.data.length > 0
                 ? getData.data.map((item, index) => (
-                    <Card item={item} index={index} key={index} />
+                    <Card
+                      item={item}
+                      index={index}
+                      key={index}
+                      onPressCart={() => {
+                        setProductSlug(item.slug);
+                        setCategorySlug(item.category_id);
+                      }}
+                    />
                   ))
                 : null}
             </ScrollView>
