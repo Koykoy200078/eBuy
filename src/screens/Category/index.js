@@ -24,6 +24,7 @@ import {productDetailsData} from '../../apps/reducers/product/productDetails';
 import {productData} from '../../apps/reducers/product/productIndex';
 import {categoryData} from '../../apps/reducers/category/categories';
 import {getCartCount} from '../../apps/reducers/cartCount';
+import {getWishlistCount} from '../../apps/reducers/wishlistCount';
 
 export default function ({navigation}) {
   const getCategory = useSelector(state => state.category.categoriesData);
@@ -45,6 +46,7 @@ export default function ({navigation}) {
     dispatch(productData());
     dispatch(categoryData());
     dispatch(getCartCount());
+    dispatch(getWishlistCount());
   };
 
   const onRefresh = useCallback(() => {

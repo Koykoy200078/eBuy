@@ -15,6 +15,7 @@ import {
   Home,
   Login,
   ProductInfo,
+  ProfileInfo,
   ROUTES,
   Register,
   Welcome,
@@ -48,8 +49,11 @@ const MainStack = createStackNavigator();
 const Main = () => {
   return (
     <MainStack.Navigator screenOptions={(options, {headerShown: false})}>
+      <MainStack.Screen name={ROUTES.PROFILE_INFO} component={ProfileInfo} />
+
       <MainStack.Screen name="Tab" component={TabBar} />
       <MainStack.Screen name={ROUTES.PRODUCT_DETAILS} component={ProductInfo} />
+      {/* <MainStack.Screen name={ROUTES.PROFILE_INFO} component={ProfileInfo} /> */}
     </MainStack.Navigator>
   );
 };
@@ -59,7 +63,7 @@ const TabBar = () => {
   const getCount = useSelector(state => state.cartCount.cart_count);
   return (
     <Tab.Navigator
-      initialRouteName={ROUTES.CART}
+      initialRouteName={ROUTES.HOME}
       screenOptions={({route}) => ({
         headerShown: false,
         tabBarIcon: ({focused, color, size}) => {

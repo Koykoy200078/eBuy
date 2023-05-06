@@ -19,6 +19,7 @@ import {Shadow} from 'react-native-shadow-2';
 import {categoryData} from '../../apps/reducers/category/categories';
 import {productDetailsData} from '../../apps/reducers/product/productDetails';
 import {getCartCount} from '../../apps/reducers/cartCount';
+import { getWishlistCount } from '../../apps/reducers/wishlistCount';
 
 export default function ({navigation}) {
   const {width} = Dimensions.get('window');
@@ -60,6 +61,7 @@ export default function ({navigation}) {
     dispatch(productData());
     dispatch(categoryData());
     dispatch(getCartCount());
+    dispatch(getWishlistCount());
   };
 
   const onRefresh = useCallback(() => {

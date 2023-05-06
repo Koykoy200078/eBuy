@@ -16,6 +16,11 @@ import {cartCountData} from './cartCount';
 import {cartAdd} from './cartAddItem';
 
 import {searchData} from './search';
+
+// Wishlist
+import {wishlistCountData} from './wishlistCount';
+// user item count
+import {userItemCountData} from './userItemCount';
 export default function* rootSaga() {
   yield all([
     // auth/login
@@ -37,5 +42,11 @@ export default function* rootSaga() {
 
     // search
     searchData(),
+
+    // wishlist
+    wishlistCountData(),
+
+    // user item count
+    userItemCountData(),
   ]);
 }

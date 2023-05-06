@@ -30,10 +30,13 @@ import category from './category/categories';
 import category_data from './categoriesData';
 
 import cartCount from './cartCount';
+import wishlistCount from './wishlistCount';
 
 import cartAddItem from './cartAddItem';
 
 import search from './search';
+
+import userItemCount from './userItemCount';
 
 const rootReducer = combineReducers({
   authLogin: persistReducer(authPersistConfig, authLogin),
@@ -52,6 +55,12 @@ const rootReducer = combineReducers({
 
   // search
   search,
+
+  // wishlist
+  wishlistCount,
+
+  // user item count
+  userItemCount,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);

@@ -13,4 +13,7 @@ export default {
   wishlist_light: require('../../../assets/images/wishlist_light.png'),
 
   add_to_cart_dark: require('../../../assets/images/add-to-cart-dark.png'),
+  cart: require('../../../assets/images/cart.png'),
+
+  peso: require('../../../assets/images/peso_sign.png'),
 };

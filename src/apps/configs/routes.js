@@ -9,4 +9,5 @@ export default {
   ACCOUNT: 'Account',
 
   PRODUCT_DETAILS: 'Product Details',
+  PROFILE_INFO: 'Profile Info',
 };
