@@ -10,16 +10,35 @@ import {
 import {COLORS, ROUTES} from '../..';
 import ScreenWrapper from '../../components/ScreenWraper';
 import Carousel from 'react-native-reanimated-carousel';
-import {productData} from '../../apps/reducers/product/productIndex';
+import {
+  productData,
+  resetProductData,
+} from '../../apps/reducers/product/productIndex';
 import {useSelector, useDispatch} from 'react-redux';
 import {FlashList} from '@shopify/flash-list';
 
 import {Shadow} from 'react-native-shadow-2';
 
-import {categoryData} from '../../apps/reducers/category/categories';
-import {productDetailsData} from '../../apps/reducers/product/productDetails';
-import {getCartCount} from '../../apps/reducers/cartCount';
-import { getWishlistCount } from '../../apps/reducers/wishlistCount';
+import {
+  categoryData,
+  resetCategoryData,
+} from '../../apps/reducers/category/categories';
+import {
+  productDetailsData,
+  resetProductDetailsData,
+} from '../../apps/reducers/product/productDetails';
+import {getCartCount, resetCartCount} from '../../apps/reducers/cartCount';
+import {
+  getWishlistCount,
+  resetWishlistCount,
+} from '../../apps/reducers/wishlistCount';
+import {resetUserData, userData} from '../../apps/reducers/userData';
+import {userLogout} from '../../apps/reducers/auth/authLogout';
+import {resetLogin} from '../../apps/reducers/auth/authLogin';
+import {resetRegister} from '../../apps/reducers/auth/authRegister';
+import {resetSelectedCategoryData} from '../../apps/reducers/categoriesData';
+import {resetUserItemCount} from '../../apps/reducers/userItemCount';
+import {resetWishlistItemsShow} from '../../apps/reducers/wishlistItemShow';
 
 export default function ({navigation}) {
   const {width} = Dimensions.get('window');
@@ -62,6 +81,22 @@ export default function ({navigation}) {
     dispatch(categoryData());
     dispatch(getCartCount());
     dispatch(getWishlistCount());
+    dispatch(userData());
+  };
+
+  const onLogout = () => {
+    dispatch(userLogout());
+    dispatch(resetLogin());
+    dispatch(resetRegister());
+    dispatch(resetProductData());
+    dispatch(resetCategoryData());
+    dispatch(resetProductDetailsData());
+    dispatch(resetSelectedCategoryData());
+    dispatch(resetCartCount());
+    dispatch(resetWishlistCount());
+    dispatch(resetUserItemCount());
+    dispatch(resetWishlistItemsShow());
+    dispatch(resetUserData());
   };
 
   const onRefresh = useCallback(() => {
@@ -85,6 +120,7 @@ export default function ({navigation}) {
       <View className="flex-row justify-between items-center p-3">
         <Text className="text-3xl font-bold shadow-sm italic">eBuy</Text>
         <TouchableOpacity
+          onPress={() => onLogout()}
           className="p-2 px-3 border border-gray-200 rounded-full"
           style={{backgroundColor: COLORS.borderColor}}>
           <Text className="font-bold" style={{color: COLORS.textColor}}>

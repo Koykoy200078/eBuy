@@ -7,6 +7,8 @@ export {default as COLORS} from './apps/configs/colors';
 export {default as IMAGES} from './apps/configs/images';
 export {default as ROUTES} from './apps/configs/routes';
 
+export {default as Verify} from './screens/Verify';
+
 export {default as Home} from './screens/Home';
 export {default as Category} from './screens/Category';
 export {default as Cart} from './screens/Cart';
@@ -14,3 +16,7 @@ export {default as Account} from './screens/Account';
 export {default as ProductInfo} from './screens/ProductInfo';
 export {default as Search} from './screens/Search';
 export {default as ProfileInfo} from './screens/ProfileInfo';
+
+export {default as Wishlist} from './screens/Wishlist';
+export {default as SellItem} from './screens/SellItem';
+export {default as SellForm} from './screens/SellItem/SellForm';

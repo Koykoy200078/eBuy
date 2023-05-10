@@ -12,8 +12,11 @@ import {
 import {COLORS, IMAGES, ROUTES} from '../../..';
 import {Icons} from '../../../apps/configs/icons';
 import DropShadow from 'react-native-drop-shadow';
-import {showError} from '../../../apps/others/helperFunctions';
-import {userRegister} from '../../../apps/reducers/auth/authRegister';
+import {showError, showSuccess} from '../../../apps/others/helperFunctions';
+import {
+  resetRegister,
+  userRegister,
+} from '../../../apps/reducers/auth/authRegister';
 import {useSelector, useDispatch} from 'react-redux';
 
 export default function ({navigation}) {
@@ -27,7 +30,16 @@ export default function ({navigation}) {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {}, [name, email, password, confirmPassword]);
+  useEffect(() => {
+    if (authRegister === true) {
+      showSuccess({
+        message: 'Successfully registered',
+        description: 'Check your email for verification',
+      });
+      dispatch(resetRegister());
+      navigation.navigate(ROUTES.LOGIN);
+    }
+  }, [authRegister, name, email, password, confirmPassword]);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);

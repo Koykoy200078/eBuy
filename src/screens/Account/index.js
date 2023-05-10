@@ -26,15 +26,20 @@ import {
   getUserItemCount,
   resetUserItemCount,
 } from '../../apps/reducers/userItemCount';
+import {resetUserData, userData, userData2} from '../../apps/reducers/userData';
+import {resetUserUpdateData} from '../../apps/reducers/userUpdateData';
+import {
+  getWishlistItemsShow,
+  resetWishlistItemsShow,
+} from '../../apps/reducers/wishlistItemShow';
+
 export default function ({navigation}) {
   const session = useSelector(state => state.authLogin.userData);
   const cartCount = useSelector(state => state.cartCount.cart_count);
   const getwishlistCount = useSelector(state => state.wishlistCount.data);
   const getUserSellCount = useSelector(state => state.userItemCount.data);
-  // const getUserData = useSelector(state => state.user.userDetails);
+  const {user} = useSelector(state => state.userData.data);
 
-  console.log('getUserSellCount ===> ', getUserSellCount);
-  const [data, setData] = useState(''); //getUserData
   const dispatch = useDispatch();
 
   const onLogout = () => {
@@ -48,12 +53,18 @@ export default function ({navigation}) {
     dispatch(resetCartCount());
     dispatch(resetWishlistCount());
     dispatch(resetUserItemCount());
+    dispatch(resetWishlistItemsShow());
+    dispatch(resetUserData());
   };
 
   useEffect(() => {
+    dispatch(userData());
+    dispatch(userData2());
+
     dispatch(getCartCount());
     dispatch(getWishlistCount());
     dispatch(getUserItemCount());
+    dispatch(getWishlistItemsShow());
   }, []);
 
   const renderProfile = () => {
@@ -70,11 +81,12 @@ export default function ({navigation}) {
           </View>
 
           <View className="w-[100%] p-2 items-center justify-center mt-2">
-            <Text className="text-xl font-bold">
-              {data.username ? data.username : session.user.name}
-            </Text>
-            <Text className="text-base italic">
-              {data.email ? data.email : session.user.email}
+            <Text className="text-xl font-bold">{user && user.name}</Text>
+            <Text className="text-base italic">{user && user.email}</Text>
+            <Text className="text-sm italic">
+              {user && user.email_verified_at !== null
+                ? 'Account Verified'
+                : 'Account Not Verified'}
             </Text>
           </View>
         </View>
@@ -127,7 +139,7 @@ export default function ({navigation}) {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate(ROUTES.CHANGE_PASSWORD)}>
+            onPress={() => navigation.navigate(ROUTES.WISHLIST)}>
             <View className="flex-row w-[100%] h-fit items-center justify-between p-2">
               <View className="flex-row items-center">
                 <View className="w-[30] h-[30] items-center justify-center">
@@ -162,7 +174,7 @@ export default function ({navigation}) {
               </View>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate(ROUTES.SELL)}>
             <View className="flex-row w-[100%] h-fit items-center justify-between p-2">
               <View className="flex-row items-center justify-center">
                 <View className="w-[30] h-[30] items-center justify-center">

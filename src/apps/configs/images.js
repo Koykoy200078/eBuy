@@ -16,4 +16,5 @@ export default {
   cart: require('../../../assets/images/cart.png'),
 
   peso: require('../../../assets/images/peso_sign.png'),
+  mail: require('../../../assets/images/mail.gif'),
 };

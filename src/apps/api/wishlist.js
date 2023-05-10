@@ -21,3 +21,24 @@ export function* fetchWishlistCount() {
     return data;
   }
 }
+
+export function* fetchWishlistItemData() {
+  const auth = yield select(state => state.authLogin.userData.access_token);
+
+  const options = {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${auth}`,
+    },
+  };
+  const response = yield fetch(BASE_URI + '/wishlist', options);
+  const data = yield response.json();
+
+  if (response.ok) {
+    return data;
+  } else {
+    return data;
+  }
+}

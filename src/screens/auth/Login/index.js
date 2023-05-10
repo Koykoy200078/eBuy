@@ -20,6 +20,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ({navigation}) {
   const loading = useSelector(state => state.authLogin.isLoading);
+  const {errorMsg} = useSelector(state => state.authLogin);
   const {width, height} = Dimensions.get('window');
   const [showPassword, setShowPassword] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -31,6 +32,14 @@ export default function ({navigation}) {
 
   useEffect(() => {
     dispatch(resetLogin());
+
+    if (
+      errorMsg?.errors.email ===
+      'Please verify your email first, we have sent you a verification email'
+    ) {
+      navigation.navigate(ROUTES.VERIFY, {email: email, password: password});
+      dispatch(resetLogin());
+    }
 
     const getData = async () => {
       try {
@@ -47,7 +56,7 @@ export default function ({navigation}) {
     };
 
     getData();
-  }, [success, email, password]);
+  }, [errorMsg, success, email, password]);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);

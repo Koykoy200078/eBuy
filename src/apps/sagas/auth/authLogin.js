@@ -15,8 +15,13 @@ export function* loginUserAsync(action) {
 
   const response = yield call(userLogin, action.payload);
 
-  if (response && response.errors) {
+  if (
+    response &&
+    response.errors?.email ===
+      'Please verify your email first, we have sent you a verification email'
+  ) {
     yield put({type: USER_LOGIN_ERROR, response});
+  } else if (response && response.errors) {
     showError({
       message: 'Something went wrong!',
       description: 'Please check your credentials',
@@ -25,7 +30,6 @@ export function* loginUserAsync(action) {
     yield put({type: USER_LOGIN_COMPLETED, response});
     showSuccess({
       message: response.message,
-      description: `Welcome ${response.user.name}`,
     });
   }
 }

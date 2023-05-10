@@ -9,6 +9,7 @@ const INITIAL_STATE = {
   isLoading: false,
   userData: null,
   error: false,
+  errorMsg: null,
 };
 
 export default function reducer(state = INITIAL_STATE, action = {}) {
@@ -32,6 +33,7 @@ export default function reducer(state = INITIAL_STATE, action = {}) {
         isLoading: false,
         userData: null,
         error: true,
+        errorMsg: action.response,
       };
 
     case 'RESET_LOGIN':

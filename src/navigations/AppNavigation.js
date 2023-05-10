@@ -18,7 +18,11 @@ import {
   ProfileInfo,
   ROUTES,
   Register,
+  SellForm,
+  SellItem,
+  Verify,
   Welcome,
+  Wishlist,
 } from '..';
 import {Icons} from '../apps/configs/icons';
 
@@ -41,6 +45,7 @@ const Auth = () => {
       <AuthStack.Screen name={ROUTES.WELCOME} component={Welcome} />
       <AuthStack.Screen name={ROUTES.LOGIN} component={Login} />
       <AuthStack.Screen name={ROUTES.REGISTER} component={Register} />
+      <AuthStack.Screen name={ROUTES.VERIFY} component={Verify} />
     </AuthStack.Navigator>
   );
 };
@@ -48,12 +53,15 @@ const Auth = () => {
 const MainStack = createStackNavigator();
 const Main = () => {
   return (
-    <MainStack.Navigator screenOptions={(options, {headerShown: false})}>
-      <MainStack.Screen name={ROUTES.PROFILE_INFO} component={ProfileInfo} />
-
-      <MainStack.Screen name="Tab" component={TabBar} />
+    <MainStack.Navigator
+      initialRouteName={ROUTES.TAB}
+      screenOptions={(options, {headerShown: false})}>
+      <MainStack.Screen name={ROUTES.TAB} component={TabBar} />
       <MainStack.Screen name={ROUTES.PRODUCT_DETAILS} component={ProductInfo} />
-      {/* <MainStack.Screen name={ROUTES.PROFILE_INFO} component={ProfileInfo} /> */}
+      <MainStack.Screen name={ROUTES.PROFILE_INFO} component={ProfileInfo} />
+      <MainStack.Screen name={ROUTES.WISHLIST} component={Wishlist} />
+      <MainStack.Screen name={ROUTES.SELL} component={SellItem} />
+      <MainStack.Screen name={ROUTES.SELL_FORM} component={SellForm} />
     </MainStack.Navigator>
   );
 };
@@ -82,8 +90,8 @@ const TabBar = () => {
             iconName = focused ? 'basket-outline' : 'basket-sharp';
           } else if (route.name === ROUTES.ACCOUNT) {
             iconName = focused
-              ? 'person-circle-sharp'
-              : 'person-circle-outline';
+              ? 'person-circle-outline'
+              : 'person-circle-sharp';
           }
           return <Icons.Ionicons name={iconName} size={size} color={color} />;
         },
@@ -110,8 +118,7 @@ const TabBar = () => {
 };
 
 export default () => {
-  const authLogin = useSelector(state => state.authLogin);
-  const {userData, error} = authLogin;
+  const {userData, error} = useSelector(state => state.authLogin);
 
   return (
     <NavigationContainer>
