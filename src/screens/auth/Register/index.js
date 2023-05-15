@@ -20,26 +20,11 @@ import {
 import {useSelector, useDispatch} from 'react-redux';
 
 export default function ({navigation}) {
-  const {width, height} = Dimensions.get('window');
-  const authRegister = useSelector(state => state.authRegister.success);
   const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (authRegister === true) {
-      showSuccess({
-        message: 'Successfully registered',
-        description: 'Check your email for verification',
-      });
-      dispatch(resetRegister());
-      navigation.navigate(ROUTES.LOGIN);
-    }
-  }, [authRegister, name, email, password, confirmPassword]);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -53,7 +38,11 @@ export default function ({navigation}) {
       });
     } else {
       if (password === confirmPassword) {
-        dispatch(userRegister({name, email, password}));
+        navigation.navigate(ROUTES.REGISTER_DETAILS, {
+          name: name,
+          email: email,
+          password: password,
+        });
       } else {
         showError({
           message: 'Something went wrong',
@@ -65,7 +54,7 @@ export default function ({navigation}) {
 
   return (
     <View className="flex-1" style={{backgroundColor: COLORS.BGColor}}>
-      <SafeAreaView className="flex">
+      <SafeAreaView className="flex mt-2">
         <View className="flex-row justify-start">
           <TouchableOpacity
             onPress={() => navigation.goBack()}
@@ -110,91 +99,105 @@ export default function ({navigation}) {
               borderTopRightRadius: 50,
             }}>
             <View className="form space-y-2">
-              <Text
-                className="ml-4 font-bold"
-                style={{color: COLORS.textColor}}>
-                Name
-              </Text>
-              <TextInput
-                className="p-4 rounded-2xl"
-                style={{
-                  backgroundColor: COLORS.borderColor,
-                  color: COLORS.textColor,
-                }}
-                onChangeText={val => setName(val)}
-                placeholder="Enter your name"
-              />
-              <Text
-                className="ml-4 font-bold"
-                style={{color: COLORS.textColor}}>
-                Email Address
-              </Text>
-              <TextInput
-                className="p-4 rounded-2xl"
-                style={{
-                  backgroundColor: COLORS.borderColor,
-                  color: COLORS.textColor,
-                }}
-                onChangeText={val => setEmail(val)}
-                placeholder="Enter your email address"
-              />
-
-              <Text
-                className="ml-4 font-bold"
-                style={{color: COLORS.textColor}}>
-                Password
-              </Text>
-              <View className="flex-row items-center">
+              <View className="h-fit w-[100%]">
+                <Text
+                  className="text-sm font-bold"
+                  style={{color: COLORS.textColor}}>
+                  Name
+                </Text>
                 <TextInput
-                  className="flex-1 p-4 rounded-2xl"
+                  className="p-2 rounded-md border h-[50]"
                   style={{
-                    backgroundColor: COLORS.borderColor,
                     color: COLORS.textColor,
                   }}
-                  onChangeText={val => setPassword(val)}
-                  secureTextEntry={!showPassword}
-                  placeholder="Enter your password"
+                  placeholder="Enter your name"
+                  value={name}
+                  onChangeText={val => setName(val)}
                 />
+              </View>
 
-                <View className="mx-4">
-                  <TouchableOpacity onPress={togglePasswordVisibility}>
-                    <Icons.Feather
-                      name={showPassword ? 'eye' : 'eye-off'}
-                      size={24}
-                      color={COLORS.textColor}
+              <View className="h-fit w-[100%]">
+                <Text
+                  className="text-sm font-bold"
+                  style={{color: COLORS.textColor}}>
+                  Email Address
+                </Text>
+                <TextInput
+                  className="p-2 rounded-md border h-[50]"
+                  style={{
+                    color: COLORS.textColor,
+                  }}
+                  placeholder="Enter your email address"
+                  value={email}
+                  onChangeText={val => setEmail(val)}
+                />
+              </View>
+
+              <View className="h-fit w-[100%]">
+                <Text
+                  className="text-sm font-bold"
+                  style={{color: COLORS.textColor}}>
+                  Password
+                </Text>
+                <View className="flex-row items-center">
+                  <View className="w-[250]">
+                    <TextInput
+                      className="p-2 rounded-md border h-[50]"
+                      style={{
+                        color: COLORS.textColor,
+                      }}
+                      placeholder="Enter your password"
+                      value={password}
+                      onChangeText={val => setPassword(val)}
+                      secureTextEntry={!showPassword}
                     />
-                  </TouchableOpacity>
+                  </View>
+
+                  <View className="mx-4">
+                    <TouchableOpacity onPress={togglePasswordVisibility}>
+                      <Icons.Feather
+                        name={showPassword ? 'eye' : 'eye-off'}
+                        size={24}
+                        color={COLORS.textColor}
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
 
-              <Text
-                className="ml-4 font-bold"
-                style={{color: COLORS.textColor}}>
-                Confirm Password
-              </Text>
-              <View className="flex-row items-center">
-                <TextInput
-                  className="flex-1 p-4 rounded-2xl"
-                  style={{
-                    backgroundColor: COLORS.borderColor,
-                    color: COLORS.textColor,
-                  }}
-                  onChangeText={val => setConfirmPassword(val)}
-                  secureTextEntry={!showPassword}
-                  placeholder="Confirm your password"
-                />
-
-                <View className="mx-4">
-                  <TouchableOpacity onPress={togglePasswordVisibility}>
-                    <Icons.Feather
-                      name={showPassword ? 'eye' : 'eye-off'}
-                      size={24}
-                      color={COLORS.textColor}
+              <View className="h-fit w-[100%]">
+                <Text
+                  className="text-sm font-bold"
+                  style={{color: COLORS.textColor}}>
+                  Confirm Password
+                </Text>
+                <View className="flex-row items-center">
+                  <View className="w-[250]">
+                    <TextInput
+                      className="p-2 rounded-md border h-[50]"
+                      style={{
+                        color: COLORS.textColor,
+                      }}
+                      onChangeText={val => setConfirmPassword(val)}
+                      secureTextEntry={!showPassword}
+                      placeholder="Confirm your password"
                     />
-                  </TouchableOpacity>
+                  </View>
+
+                  <View className="mx-4">
+                    <TouchableOpacity onPress={togglePasswordVisibility}>
+                      <Icons.Feather
+                        name={showPassword ? 'eye' : 'eye-off'}
+                        size={24}
+                        color={COLORS.textColor}
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
+            </View>
 
+            <View className="mt-4">
               <TouchableOpacity
                 onPress={() => onRegister()}
                 className="py-3 rounded-xl"
@@ -202,7 +205,7 @@ export default function ({navigation}) {
                 <Text
                   className="text-xl font-bold text-center"
                   style={{color: COLORS.textWhite}}>
-                  Register
+                  Next
                 </Text>
               </TouchableOpacity>
             </View>

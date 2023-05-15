@@ -23,7 +23,6 @@ export function* createUserAccountAsync(action) {
     yield put({type: USER_REGISTER_COMPLETED, response});
     showSuccess({
       message: response.message,
-      description: `Welcome ${response.user.name}`,
     });
   }
 }

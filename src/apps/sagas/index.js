@@ -16,6 +16,7 @@ import {categoryData} from './categoriesData';
 
 import {cartCountData} from './cartCount';
 import {cartAdd} from './cartAddItem';
+import {cartData} from './cartData';
 
 import {searchData} from './search';
 
@@ -44,6 +45,7 @@ export default function* rootSaga() {
     // cart
     cartCountData(),
     cartAdd(),
+    cartData(),
 
     // search
     searchData(),

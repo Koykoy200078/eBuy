@@ -117,55 +117,63 @@ export default function ({navigation}) {
               borderTopRightRadius: 50,
             }}>
             <View className="form space-y-2">
-              <Text
-                className="ml-4 font-bold"
-                style={{color: COLORS.textColor}}>
-                Email Address
-              </Text>
-              <TextInput
-                className="p-4 rounded-2xl mb-3"
-                onChangeText={val => setEmail(val)}
-                style={{
-                  backgroundColor: COLORS.borderColor,
-                  color: COLORS.textColor,
-                }}
-                placeholder="Enter your email address"
-              />
-
-              <Text
-                className="ml-4 font-bold"
-                style={{color: COLORS.textColor}}>
-                Password
-              </Text>
-              <View className="flex-row items-center">
+              <View className="h-fit w-[100%]">
+                <Text
+                  className="text-sm font-bold"
+                  style={{color: COLORS.textColor}}>
+                  Email Address
+                </Text>
                 <TextInput
-                  className="flex-1 p-4 rounded-2xl"
+                  className="p-2 rounded-md border h-[50]"
                   style={{
-                    backgroundColor: COLORS.borderColor,
                     color: COLORS.textColor,
                   }}
-                  onChangeText={val => setPassword(val)}
-                  secureTextEntry={!showPassword}
-                  placeholder="Enter your password"
+                  placeholder="Enter your email address"
+                  value={email}
+                  onChangeText={val => setEmail(val)}
                 />
+              </View>
 
-                <View className="mx-4">
-                  <TouchableOpacity onPress={togglePasswordVisibility}>
-                    <Icons.Feather
-                      name={showPassword ? 'eye' : 'eye-off'}
-                      size={24}
-                      color={COLORS.textColor}
+              <View className="h-fit w-[100%]">
+                <Text
+                  className="text-sm font-bold"
+                  style={{color: COLORS.textColor}}>
+                  Password
+                </Text>
+                <View className="flex-row items-center">
+                  <View className="w-[250]">
+                    <TextInput
+                      className="p-2 rounded-md border h-[50]"
+                      style={{
+                        color: COLORS.textColor,
+                      }}
+                      placeholder="Enter your password"
+                      value={password}
+                      onChangeText={val => setPassword(val)}
+                      secureTextEntry={!showPassword}
                     />
-                  </TouchableOpacity>
+                  </View>
+
+                  <View className="mx-4">
+                    <TouchableOpacity onPress={togglePasswordVisibility}>
+                      <Icons.Feather
+                        name={showPassword ? 'eye' : 'eye-off'}
+                        size={24}
+                        color={COLORS.textColor}
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
 
-              <TouchableOpacity className="flex items-end mb-4">
+              {/* <TouchableOpacity className="flex items-end mb-4">
                 <Text className="font-bold" style={{color: COLORS.textColor}}>
                   Forgot Password?
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
+            </View>
 
+            <View className="mt-4">
               <TouchableOpacity
                 onPress={() => onLogin()}
                 className="py-3 rounded-xl"
@@ -197,7 +205,7 @@ export default function ({navigation}) {
               </TouchableOpacity>
             </View>
 
-            <View className="flex-row justify-center mt-4">
+            <View className="flex-row justify-center mt-8">
               <Text className="font-semibold" style={{color: COLORS.textColor}}>
                 Don't have an account?
               </Text>

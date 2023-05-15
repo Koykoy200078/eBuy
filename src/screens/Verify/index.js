@@ -8,8 +8,6 @@ export default function ({navigation, route}) {
   const {width} = Dimensions.get('window');
   const {email, password} = route.params;
 
-  console.log('params ==> ', email, password);
-
   const dispatch = useDispatch();
   useEffect(() => {
     const intervalId = setInterval(() => {

@@ -32,6 +32,7 @@ import {
   getWishlistItemsShow,
   resetWishlistItemsShow,
 } from '../../apps/reducers/wishlistItemShow';
+import {resetCartData} from '../../apps/reducers/cartData';
 
 export default function ({navigation}) {
   const session = useSelector(state => state.authLogin.userData);
@@ -55,6 +56,7 @@ export default function ({navigation}) {
     dispatch(resetUserItemCount());
     dispatch(resetWishlistItemsShow());
     dispatch(resetUserData());
+    dispatch(resetCartData());
   };
 
   useEffect(() => {

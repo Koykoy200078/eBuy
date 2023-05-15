@@ -2,6 +2,7 @@ export default {
   WELCOME: 'Welcome',
   LOGIN: 'Login',
   REGISTER: 'Register',
+  REGISTER_DETAILS: 'RegisterDetails',
   VERIFY: 'Verify',
   TAB: 'Tab',
 

@@ -18,6 +18,7 @@ import {
   ProfileInfo,
   ROUTES,
   Register,
+  RegisterDetails,
   SellForm,
   SellItem,
   Verify,
@@ -41,10 +42,16 @@ const options = {
 const AuthStack = createStackNavigator();
 const Auth = () => {
   return (
-    <AuthStack.Navigator screenOptions={(options, {headerShown: false})}>
+    <AuthStack.Navigator
+      initialRouteName={ROUTES.WELCOME}
+      screenOptions={(options, {headerShown: false})}>
       <AuthStack.Screen name={ROUTES.WELCOME} component={Welcome} />
       <AuthStack.Screen name={ROUTES.LOGIN} component={Login} />
       <AuthStack.Screen name={ROUTES.REGISTER} component={Register} />
+      <AuthStack.Screen
+        name={ROUTES.REGISTER_DETAILS}
+        component={RegisterDetails}
+      />
       <AuthStack.Screen name={ROUTES.VERIFY} component={Verify} />
     </AuthStack.Navigator>
   );

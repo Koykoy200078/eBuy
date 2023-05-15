@@ -34,6 +34,7 @@ import wishlistCount from './wishlistCount';
 import wishlistItemShow from './wishlistItemShow';
 
 import cartAddItem from './cartAddItem';
+import cartData from './cartData';
 
 import search from './search';
 
@@ -55,6 +56,7 @@ const rootReducer = combineReducers({
 
   cartCount,
   cartAddItem,
+  cartData,
 
   // search
   search,

@@ -39,6 +39,7 @@ import {resetRegister} from '../../apps/reducers/auth/authRegister';
 import {resetSelectedCategoryData} from '../../apps/reducers/categoriesData';
 import {resetUserItemCount} from '../../apps/reducers/userItemCount';
 import {resetWishlistItemsShow} from '../../apps/reducers/wishlistItemShow';
+import {cartData, resetCartData} from '../../apps/reducers/cartData';
 
 export default function ({navigation}) {
   const {width} = Dimensions.get('window');
@@ -82,6 +83,7 @@ export default function ({navigation}) {
     dispatch(getCartCount());
     dispatch(getWishlistCount());
     dispatch(userData());
+    dispatch(cartData());
   };
 
   const onLogout = () => {
@@ -97,6 +99,7 @@ export default function ({navigation}) {
     dispatch(resetUserItemCount());
     dispatch(resetWishlistItemsShow());
     dispatch(resetUserData());
+    dispatch(resetCartData());
   };
 
   const onRefresh = useCallback(() => {
