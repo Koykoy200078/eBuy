@@ -5,6 +5,8 @@ export default {
   REGISTER_DETAILS: 'RegisterDetails',
   VERIFY: 'Verify',
   TAB: 'Tab',
+  VIEWALL: 'ViewAll',
+  CHANGE_PASSWORD: 'Change Password',
 
   HOME: 'Home',
   CATEGORY: 'Category',

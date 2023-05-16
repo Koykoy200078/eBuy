@@ -17,4 +17,6 @@ export default {
 
   peso: require('../../../assets/images/peso_sign.png'),
   mail: require('../../../assets/images/mail.gif'),
+  verified: require('../../../assets/images/verified.png'),
+  user: require('../../../assets/images/default.png'),
 };

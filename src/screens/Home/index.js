@@ -121,7 +121,11 @@ export default function ({navigation}) {
   return (
     <View className="flex-1 relative" style={{backgroundColor: COLORS.BGColor}}>
       <View className="flex-row justify-between items-center p-3">
-        <Text className="text-3xl font-bold shadow-sm italic">eBuy</Text>
+        <Text
+          className="text-3xl font-extrabold shadow-sm italic"
+          style={COLORS.textColor}>
+          eBuy
+        </Text>
         <TouchableOpacity
           onPress={() => onLogout()}
           className="p-2 px-3 border border-gray-200 rounded-full"
@@ -160,6 +164,7 @@ export default function ({navigation}) {
         <View className="flex-row justify-between items-center">
           <Text className="text-xl font-bold">New Arrival</Text>
           <TouchableOpacity
+            onPress={() => navigation.navigate(ROUTES.VIEWALL)}
             className="p-2 px-3 border-gray-200 rounded-full"
             style={{backgroundColor: COLORS.borderColor}}>
             <Text className="font-bold" style={{color: COLORS.textColor}}>

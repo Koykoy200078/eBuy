@@ -12,6 +12,7 @@ import {
   Account,
   Cart,
   Category,
+  ChangePassword,
   Home,
   Login,
   ProductInfo,
@@ -22,6 +23,7 @@ import {
   SellForm,
   SellItem,
   Verify,
+  ViewAll,
   Welcome,
   Wishlist,
 } from '..';
@@ -64,6 +66,11 @@ const Main = () => {
       initialRouteName={ROUTES.TAB}
       screenOptions={(options, {headerShown: false})}>
       <MainStack.Screen name={ROUTES.TAB} component={TabBar} />
+      <MainStack.Screen name={ROUTES.VIEWALL} component={ViewAll} />
+      <MainStack.Screen
+        name={ROUTES.CHANGE_PASSWORD}
+        component={ChangePassword}
+      />
       <MainStack.Screen name={ROUTES.PRODUCT_DETAILS} component={ProductInfo} />
       <MainStack.Screen name={ROUTES.PROFILE_INFO} component={ProfileInfo} />
       <MainStack.Screen name={ROUTES.WISHLIST} component={Wishlist} />

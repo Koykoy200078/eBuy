@@ -7,48 +7,63 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {COLORS, IMAGES} from '../..';
 import {CheckBox} from '@rneui/themed';
 import {Shadow} from 'react-native-shadow-2';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Icons} from '../../apps/configs/icons';
+import {RefreshControl} from 'react-native-gesture-handler';
+import {cartData} from '../../apps/reducers/cartData';
 
 export default function () {
   const {cart} = useSelector(state => state.cartData.data);
   const {width} = Dimensions.get('window');
-  const [checkItem, setCheckItem] = useState([]);
-  const [selectedIds, setSelectedIds] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+  const [selectedItems, setSelectedItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
-  const aa = cart.map(item => {
-    return item.items.map(items => {
-      return items;
-    });
-  });
-  console.log('aa ==> ', aa);
-  console.log('totalPrice ==> ', totalPrice);
+  const dispatch = useDispatch();
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    dispatch(cartData());
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   useEffect(() => {
-    // Calculate total price of selected items
-    let price = 0;
-    // aa.forEach(item => {
-    //   if (selectedIds.includes(item.id)) {
-    //     price += item.product_price * item.quantity;
-    //   }
-    // });
-    // setTotalPrice(price);
-  }, [selectedIds, totalPrice, checkItem]);
+    calculateTotalPrice();
+  }, [selectedItems]);
 
-  const handleCheckBox = id => {
-    let ids = [...selectedIds];
-    if (ids.includes(id)) {
-      ids = ids.filter(item => item !== id);
+  const handleCheckBox = cartItemId => {
+    if (selectedItems.includes(cartItemId)) {
+      setSelectedItems(prevItems => prevItems.filter(id => id !== cartItemId));
     } else {
-      ids.push(id);
+      setSelectedItems(prevItems => [...prevItems, cartItemId]);
     }
-    setSelectedIds(ids);
   };
+
+  const calculateTotalPrice = () => {
+    let total = 0;
+    cart.forEach(item => {
+      if (selectedItems.includes(item.cart_item_id)) {
+        total += item.subtotal_price;
+      }
+    });
+    setTotalPrice(total);
+  };
+
+  // Group items by store name
+  const groupedCart = cart.reduce((acc, item) => {
+    if (!acc[item.store_name]) {
+      acc[item.store_name] = [item];
+    } else {
+      acc[item.store_name].push(item);
+    }
+    return acc;
+  }, {});
 
   return (
     <View className="flex-1 relative" style={{backgroundColor: COLORS.BGColor}}>
@@ -61,11 +76,17 @@ export default function () {
           </Text>
         </View>
 
-        <ScrollView className="py-1" showsVerticalScrollIndicator={false}>
-          {cart.map(item => {
+        <ScrollView
+          className="py-1"
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }>
+          {Object.keys(groupedCart).map(storeName => {
+            const items = groupedCart[storeName];
             return (
               <View
-                key={item.product_user_id}
+                key={storeName}
                 className="px-2 space-y-2"
                 style={{width: width, marginVertical: 10}}>
                 <View className="my-0">
@@ -87,7 +108,7 @@ export default function () {
                           <Text
                             className="ml-2 text-sm font-bold"
                             style={{color: COLORS.textColor}}>
-                            {item.storename}
+                            {storeName}
                           </Text>
                         </View>
 
@@ -104,86 +125,87 @@ export default function () {
 
                       <View className="w-12/12 h-[1] border mx-2 mb-3" />
 
-                      {item.items.map(items => {
-                        return (
-                          <View
-                            key={items.id}
-                            className="flex flex-row ml-2 mt-0 mb-2 justify-start">
-                            <CheckBox
-                              containerStyle={{
-                                marginLeft: 0,
-                                marginRight: 0,
-                                backgroundColor: 'transparent',
-                                borderWidth: 0,
-                              }}
-                              // checked={checkItem}
-                              checked={selectedIds.includes(item.cart_id)}
-                              checkedColor="#1dd1a1"
-                              onPress={() => handleCheckBox(items.id)}
-                            />
-                            <Image
-                              source={{
-                                uri: items.image_url,
-                              }}
-                              style={{width: 100, height: 100, borderRadius: 6}}
-                            />
+                      {items.map(item => (
+                        <View
+                          key={item.cart_item_id}
+                          className="flex flex-row ml-2 mt-0 mb-2 justify-start">
+                          <CheckBox
+                            containerStyle={{
+                              marginLeft: 0,
+                              marginRight: 0,
+                              backgroundColor: 'transparent',
+                              borderWidth: 0,
+                            }}
+                            checked={selectedItems.includes(item.cart_item_id)}
+                            checkedColor="#1dd1a1"
+                            onPress={() => handleCheckBox(item.cart_item_id)}
+                          />
+                          <Image
+                            source={{
+                              uri: item.image_url,
+                            }}
+                            style={{
+                              width: 100,
+                              height: 100,
+                              borderRadius: 6,
+                            }}
+                          />
 
-                            <View
-                              className="flex items-start ml-2 h-[70]"
-                              style={{width: width / 2.1}}>
-                              <View className="flex flex-col justify-center items-start w-full h-[70]">
-                                <Text
-                                  className="text-sm text-center font-bold"
-                                  numberOfLines={3}
-                                  ellipsizeMode="tail"
-                                  style={{color: COLORS.textColor}}>
-                                  {items.item_name}
+                          <View
+                            className="flex items-start ml-2 h-[70]"
+                            style={{width: width / 2.1}}>
+                            <View className="flex flex-col justify-center items-start w-full h-[70]">
+                              <Text
+                                className="text-sm text-center font-bold"
+                                numberOfLines={3}
+                                ellipsizeMode="tail"
+                                style={{color: COLORS.textColor}}>
+                                {item.product_name}
+                              </Text>
+                            </View>
+
+                            <View className="w-full h-[1] border" />
+
+                            <View className="flex flex-row items-center justify-between">
+                              <View className="flex-row w-[80]">
+                                <Text className="text-sm font-bold text-red-600">
+                                  ₱ {item.selling_price}
                                 </Text>
                               </View>
 
-                              <View className="w-full h-[1] border" />
-
-                              <View className="flex flex-row items-center justify-between">
-                                <View className="flex-row w-[80]">
-                                  <Text className="text-sm font-bold text-red-600">
-                                    ₱ {items.product.selling_price}
-                                  </Text>
-                                </View>
-
-                                <View className="flex-row">
-                                  <TouchableOpacity>
-                                    <View className="flex justify-center items-center h-8 w-8">
-                                      <Text
-                                        className="font-bold"
-                                        style={{color: COLORS.textColor}}>
-                                        -
-                                      </Text>
-                                    </View>
-                                  </TouchableOpacity>
-
+                              <View className="flex-row">
+                                <TouchableOpacity>
                                   <View className="flex justify-center items-center h-8 w-8">
                                     <Text
                                       className="font-bold"
                                       style={{color: COLORS.textColor}}>
-                                      {items.quantity}
+                                      -
                                     </Text>
                                   </View>
+                                </TouchableOpacity>
 
-                                  <TouchableOpacity>
-                                    <View className="flex justify-center items-center h-8 w-8">
-                                      <Text
-                                        className="font-bold"
-                                        style={{color: COLORS.textColor}}>
-                                        +
-                                      </Text>
-                                    </View>
-                                  </TouchableOpacity>
+                                <View className="flex justify-center items-center h-8 w-8">
+                                  <Text
+                                    className="font-bold"
+                                    style={{color: COLORS.textColor}}>
+                                    {item.quantity}
+                                  </Text>
                                 </View>
+
+                                <TouchableOpacity>
+                                  <View className="flex justify-center items-center h-8 w-8">
+                                    <Text
+                                      className="font-bold"
+                                      style={{color: COLORS.textColor}}>
+                                      +
+                                    </Text>
+                                  </View>
+                                </TouchableOpacity>
                               </View>
                             </View>
                           </View>
-                        );
-                      })}
+                        </View>
+                      ))}
                     </View>
                   </Shadow>
                 </View>
@@ -201,7 +223,7 @@ export default function () {
               style={{color: COLORS.textColor}}>
               Total Price: ₱{' '}
               <Text className="text-sm font-bold text-red-600">
-                {/* {totalPrice} */}
+                {totalPrice}
               </Text>
             </Text>
 

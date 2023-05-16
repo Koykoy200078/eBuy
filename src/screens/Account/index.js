@@ -75,9 +75,7 @@ export default function ({navigation}) {
         <View className="items-center justify-center my-2">
           <View className="w-fit h-fit rounded-full">
             <Image
-              source={{
-                uri: 'https://avatars.githubusercontent.com/u/31362410?v=4',
-              }}
+              source={IMAGES.user}
               className="w-[130] h-[130] rounded-full"
             />
           </View>
@@ -85,11 +83,14 @@ export default function ({navigation}) {
           <View className="w-[100%] p-2 items-center justify-center mt-2">
             <Text className="text-xl font-bold">{user && user.name}</Text>
             <Text className="text-base italic">{user && user.email}</Text>
-            <Text className="text-sm italic">
-              {user && user.email_verified_at !== null
-                ? 'Account Verified'
-                : 'Account Not Verified'}
-            </Text>
+            <View className="flex-row items-center justify-center mt-2">
+              <Image source={IMAGES.verified} style={{width: 18, height: 20}} />
+              <Text className="ml-1 text-sm italic">
+                {user && user.email_verified_at !== null
+                  ? 'Account Verified'
+                  : 'Account Not Verified'}
+              </Text>
+            </View>
           </View>
         </View>
       </View>

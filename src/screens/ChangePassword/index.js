@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image, SafeAreaView, Alert} from 'react-native';
+import {View, Text, Image, SafeAreaView} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {useDispatch, useSelector} from 'react-redux';
 import {Icons} from '../../apps/configs/icons';
@@ -17,52 +17,44 @@ export default function ({navigation}) {
 
   const dispatch = useDispatch();
 
-  const [fullName, setFullName] = useState(null);
-  const [storeName, setStoreName] = useState(null);
-  const [phoneNumber, setPhoneNumber] = useState(null);
-  const [address, setAddress] = useState(null);
-  const [zipCode, setZipCode] = useState(null);
+  const [oldPassword, setOldPassword] = useState(null);
+  const [newPassword, setNewPassword] = useState(null);
+  const [confirmNewPass, setConfirmNewPass] = useState(null);
 
-  console.log('data ===> ', fullName, phoneNumber, address, zipCode, storeName);
-  const saveInfo = () => {
-  //  Alert.alert('Update Profile?', '')
-    Alert.alert
-  };
+  const saveInfo = () => {};
 
   const resetFormFields = () => {
-    setFullName(null);
-    setPhoneNumber(null);
-    setAddress(null);
-    setZipCode(null);
-    setStoreName(null);
+    setOldPassword(null);
+    setNewPassword(null);
+    setConfirmNewPass(null);
   };
 
-  useEffect(() => {
-    dispatch(userData());
+  //   useEffect(() => {
+  //     dispatch(userData());
 
-    if (updateUser) {
-      const {message} = updateUser;
-      switch (message) {
-        case 'User Profile Updated':
-          showSuccess({
-            message: message,
-          });
-          break;
-        case message.pin_code:
-          showError({
-            message: message.pin_code,
-          });
-          break;
-        default:
-          showError({
-            message: 'Something went wrong',
-            description: 'Please try again',
-          });
-      }
-      dispatch(resetUserUpdateData());
-      resetFormFields();
-    }
-  }, [updateUser]);
+  //     if (updateUser) {
+  //       const {message} = updateUser;
+  //       switch (message) {
+  //         case 'User Profile Updated':
+  //           showSuccess({
+  //             message: message,
+  //           });
+  //           break;
+  //         case message.pin_code:
+  //           showError({
+  //             message: message.pin_code,
+  //           });
+  //           break;
+  //         default:
+  //           showError({
+  //             message: 'Something went wrong',
+  //             description: 'Please try again',
+  //           });
+  //       }
+  //       dispatch(resetUserUpdateData());
+  //       resetFormFields();
+  //     }
+  //   }, [updateUser]);
 
   const renderProfile = () => {
     return (
@@ -82,100 +74,46 @@ export default function ({navigation}) {
       <View className="w-[100%] h-fit items-start justify-center p-2">
         <View className="h-[65] w-[100%] mb-2">
           <Text className="text-sm font-bold" style={{color: COLORS.textColor}}>
-            Full Name
+            Old Password
           </Text>
           <TextInput
             className="p-2 rounded-md border"
             style={{
               color: COLORS.textColor,
             }}
-            placeholder={data ? data.username : 'Enter your full name'}
-            value={fullName}
-            onChangeText={val => setFullName(val)}
+            placeholder={'Old Password'}
+            value={oldPassword}
+            onChangeText={val => setOldPassword(val)}
           />
         </View>
 
         <View className="h-[65] w-[100%] mb-2">
           <Text className="text-sm font-bold" style={{color: COLORS.textColor}}>
-            Store Name
+            New Password
           </Text>
           <TextInput
             className="p-2 rounded-md border"
             style={{
               color: COLORS.textColor,
             }}
-            placeholder={data ? data.storename : 'Enter your store name'}
-            value={storeName}
-            onChangeText={val => setStoreName(val)}
+            placeholder={'New Password'}
+            value={newPassword}
+            onChangeText={val => setNewPassword(val)}
           />
         </View>
 
         <View className="h-[65] w-[100%] mb-2">
           <Text className="text-sm font-bold" style={{color: COLORS.textColor}}>
-            Email Address
-          </Text>
-          <TextInput
-            className="p-2 rounded-md border"
-            style={{
-              backgroundColor: COLORS.borderColor,
-              color: COLORS.textColor,
-            }}
-            value={data ? data.email : ''}
-            editable={false}
-            selectTextOnFocus={false}
-          />
-        </View>
-
-        <View className="flex-row justify-between mb-2">
-          <View className="h-[65] w-[57%] mr-1">
-            <Text
-              className="text-sm font-bold"
-              style={{color: COLORS.textColor}}>
-              Phone Number
-            </Text>
-            <TextInput
-              className="p-2 rounded-md border"
-              style={{
-                color: COLORS.textColor,
-              }}
-              placeholder={data ? data.phone : 'Enter your phone number'}
-              value={phoneNumber}
-              onChangeText={val => setPhoneNumber(val)}
-              keyboardType="numeric"
-            />
-          </View>
-
-          <View className="h-[65] w-[40%] ml-1">
-            <Text
-              className="text-sm font-bold"
-              style={{color: COLORS.textColor}}>
-              Zipcode
-            </Text>
-            <TextInput
-              className="p-2 rounded-md border"
-              style={{
-                color: COLORS.textColor,
-              }}
-              placeholder={data ? data.pin_code : 'Enter your zipCode'}
-              value={zipCode}
-              onChangeText={val => setZipCode(val)}
-              keyboardType="numeric"
-            />
-          </View>
-        </View>
-
-        <View className="h-[65] w-[100%] mb-2">
-          <Text className="text-sm font-bold" style={{color: COLORS.textColor}}>
-            Delivery Address
+            Confirm New Password
           </Text>
           <TextInput
             className="p-2 rounded-md border"
             style={{
               color: COLORS.textColor,
             }}
-            placeholder={data ? data.address : 'Enter your Delivery Address'}
-            value={address}
-            onChangeText={val => setAddress(val)}
+            placeholder={'Confirm New Password'}
+            value={confirmNewPass}
+            onChangeText={val => setConfirmNewPass(val)}
           />
         </View>
 
