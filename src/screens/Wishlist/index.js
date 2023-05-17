@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  Alert,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 
@@ -21,11 +22,15 @@ import {
   getWishlistItemsShow,
   resetWishlistItemsShow,
 } from '../../apps/reducers/wishlistItemShow';
+import {wishlistRemove} from '../../apps/reducers/wishlistRemove';
+import {showError, showSuccess} from '../../apps/others/helperFunctions';
+import {resetWishlistRemove} from '../../apps/reducers/wishlistRemove';
 
 export default function ({navigation}) {
   const {width} = Dimensions.get('window');
   const getCategory = useSelector(state => state.category.categoriesData);
   const getWishlistData = useSelector(state => state.wishlistItemShow.data);
+  const getData = useSelector(state => state.wishlistRemove.data);
 
   const [product_slug, setProductSlug] = useState(null);
   const [category_slug, setCategorySlug] = useState(null);
@@ -57,10 +62,27 @@ export default function ({navigation}) {
   };
 
   useEffect(() => {
-    dispatch(getWishlistItemsShow());
-
     if (productCategoryName) {
       getInfo();
+    }
+
+    if (getData) {
+      if (getData.message === 'Wishlist item removed successfully') {
+        dispatch(getWishlistItemsShow());
+        dispatch(resetWishlistRemove());
+        showSuccess({
+          message: 'Success',
+          description: 'Wishlist item removed successfully',
+        });
+      } else {
+        showError({
+          message: 'Error',
+          description: 'Something went wrong',
+        });
+
+        dispatch(getWishlistItemsShow());
+        dispatch(resetWishlistRemove());
+      }
     }
   }, [product_slug, category_slug]);
   return (
@@ -147,7 +169,32 @@ export default function ({navigation}) {
 
                           <View className="w-fit h-fit items-end justify-center flex-col">
                             <View className="flex-row p-1 items-center justify-center">
-                              <TouchableOpacity>
+                              <TouchableOpacity
+                                onPress={() => {
+                                  Alert.alert(
+                                    'Remove',
+                                    'Are you sure you want to remove this item from your wishlist?',
+                                    [
+                                      {
+                                        text: 'Cancel',
+                                        onPress: () => {},
+                                        style: 'cancel',
+                                      },
+                                      {
+                                        text: 'Remove',
+                                        onPress: () => {
+                                          dispatch(
+                                            wishlistRemove({
+                                              product_id: item.id,
+                                            }),
+                                          );
+
+                                          dispatch(getWishlistItemsShow());
+                                        },
+                                      },
+                                    ],
+                                  );
+                                }}>
                                 <View className="mx-1">
                                   <Icons.Octicons
                                     name="trash"

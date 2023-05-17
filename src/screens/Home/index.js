@@ -40,14 +40,20 @@ import {resetSelectedCategoryData} from '../../apps/reducers/categoriesData';
 import {resetUserItemCount} from '../../apps/reducers/userItemCount';
 import {resetWishlistItemsShow} from '../../apps/reducers/wishlistItemShow';
 import {cartData, resetCartData} from '../../apps/reducers/cartData';
-import {cartItemIncrement} from '../../apps/reducers/cartIncrement';
+import {resetCartItemIncrement} from '../../apps/reducers/cartIncrement';
 import {resetCartItemDecrement} from '../../apps/reducers/cartDecrement';
+import {
+  myProductsData,
+  resetMyProductsData,
+} from '../../apps/reducers/product/myProduct';
+import {resetChangePassword} from '../../apps/reducers/changepass';
+import {resetWishlistAdd} from '../../apps/reducers/wishlistAdd';
+import {resetWishlistRemove} from '../../apps/reducers/wishlistRemove';
 
 export default function ({navigation}) {
   const {width} = Dimensions.get('window');
   const getIndex = useSelector(state => state.productIndex.productData);
   const getCategory = useSelector(state => state.category.categoriesData);
-  const getCount = useSelector(state => state.cartCount.cart_count);
 
   const [product_slug, setProductSlug] = useState(null);
   const [category_slug, setCategorySlug] = useState(null);
@@ -86,6 +92,7 @@ export default function ({navigation}) {
     dispatch(getWishlistCount());
     dispatch(userData());
     dispatch(cartData());
+    dispatch(myProductsData());
   };
 
   const onLogout = () => {
@@ -102,8 +109,12 @@ export default function ({navigation}) {
     dispatch(resetWishlistItemsShow());
     dispatch(resetUserData());
     dispatch(resetCartData());
-    dispatch(cartItemIncrement());
+    dispatch(resetCartItemIncrement());
     dispatch(resetCartItemDecrement());
+    dispatch(resetMyProductsData());
+    dispatch(resetChangePassword());
+    dispatch(resetWishlistAdd());
+    dispatch(resetWishlistRemove());
   };
 
   const onRefresh = useCallback(() => {

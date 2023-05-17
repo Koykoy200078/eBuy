@@ -45,6 +45,13 @@ import userUpdateData from './userUpdateData';
 import cartIncrement from './cartIncrement';
 import cartDecrement from './cartDecrement';
 
+import myProduct from './product/myProduct';
+
+import changepass from './changepass';
+
+import wishlistAdd from './wishlistAdd';
+import wishlistRemove from './wishlistRemove';
+
 const rootReducer = combineReducers({
   authLogin: persistReducer(authPersistConfig, authLogin),
   authRegister,
@@ -76,6 +83,12 @@ const rootReducer = combineReducers({
 
   cartIncrement,
   cartDecrement,
+
+  myProduct,
+  changepass,
+
+  wishlistAdd,
+  wishlistRemove,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);

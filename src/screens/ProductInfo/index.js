@@ -15,12 +15,14 @@ import {resetProductDetailsData} from '../../apps/reducers/product/productDetail
 import {showError, showSuccess} from '../../apps/others/helperFunctions';
 import {addToCart, resetAddToCart} from '../../apps/reducers/cartAddItem';
 import {getCartCount} from '../../apps/reducers/cartCount';
+import {resetWishlistAdd, wishlistAdd} from '../../apps/reducers/wishlistAdd';
 
 export default function ({navigation}) {
   const {width} = Dimensions.get('window');
   const getDetails = useSelector(state => state.productDetails.productDetails);
   const getCount = useSelector(state => state.cartCount.cart_count);
   const getCartData = useSelector(state => state.cartAddItem.data);
+  const getWishlistData = useSelector(state => state.wishlistAdd.data);
 
   const [selectedColorId, setSelectedColorId] = useState(null);
   const [selectedColorName, setSelectedColorName] = useState(null);
@@ -74,7 +76,45 @@ export default function ({navigation}) {
         dispatch(resetAddToCart());
       }
     }
-  }, [getCartData, isSuccess, APImessage, selectedColorId, selectedColorName]);
+
+    if (getWishlistData) {
+      if (getWishlistData.message === 'Wishlist added successfully') {
+        showSuccess({
+          message: 'Success',
+          description: 'Product added to wishlist',
+        });
+        dispatch(resetWishlistAdd());
+      } else if (getWishlistData.message === 'Already added to wishlist') {
+        showError({
+          message: 'Error',
+          description: 'Product already added to wishlist',
+        });
+        dispatch(resetWishlistAdd());
+      } else if (
+        getWishlistData.message === 'You cannot buy your own product'
+      ) {
+        showError({
+          message: 'Error',
+          description: 'You cannot add to wishlist your own product',
+        });
+        dispatch(resetWishlistAdd());
+      } else {
+        showError({
+          message: 'Error',
+          description: 'Something went wrong',
+        });
+        dispatch(resetWishlistAdd());
+      }
+    }
+  }, [
+    getCartData,
+    isSuccess,
+    APImessage,
+    selectedColorId,
+    selectedColorName,
+    getWishlistData,
+    getDetails,
+  ]);
 
   const defaultBorderStyle = {borderWidth: 1, borderColor: '#000'};
   const greenBorderStyle = {borderWidth: 2, borderColor: '#0f0'};
@@ -87,6 +127,7 @@ export default function ({navigation}) {
             onPress={() => {
               dispatch(resetProductDetailsData());
               dispatch(resetAddToCart());
+              dispatch(resetWishlistAdd());
               setSelectedColorId(null);
               setSelectedColorName(null);
               navigation.goBack();
@@ -146,10 +187,16 @@ export default function ({navigation}) {
               <Text
                 className="text-xl font-bold"
                 style={{color: COLORS.textColor}}>
-                ₱ {getDetails && getDetails.product.selling_price}{' '}
+                ₱{' '}
+                {getDetails &&
+                  getDetails.product &&
+                  getDetails.product.selling_price}{' '}
               </Text>
               <Text className="line-through text-sm">
-                ₱ {getDetails && getDetails.product.original_price}
+                ₱{' '}
+                {getDetails &&
+                  getDetails.product &&
+                  getDetails.product.original_price}
               </Text>
             </View>
 
@@ -171,6 +218,7 @@ export default function ({navigation}) {
 
             <View className="flex-row space-x-3">
               {getDetails &&
+                getDetails.product_colors &&
                 getDetails.product_colors.map(item => {
                   const borderStyle =
                     item.product_color_id === selectedColorId
@@ -211,7 +259,9 @@ export default function ({navigation}) {
 
             <View>
               <Text className="text-sm" style={{color: COLORS.textColor}}>
-                {getDetails && getDetails.product.description}
+                {getDetails &&
+                  getDetails.product &&
+                  getDetails.product.description}
               </Text>
             </View>
           </View>
@@ -220,7 +270,14 @@ export default function ({navigation}) {
 
       <View className="flex-row items-center justify-between px-2 my-2">
         <View className="w-2/12">
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              dispatch(
+                wishlistAdd({
+                  product_id: getDetails && getDetails.product.id,
+                }),
+              )
+            }>
             <View
               className="px-3 justify-center items-center w-[100%] h-12 rounded-md"
               style={{backgroundColor: COLORS.primary}}>

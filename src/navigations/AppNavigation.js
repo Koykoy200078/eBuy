@@ -6,8 +6,8 @@ import {
   createStackNavigator,
 } from '@react-navigation/stack';
 
-import {Dimensions, Easing, View, Text, TouchableOpacity} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import {Dimensions, Easing} from 'react-native';
+import {useSelector} from 'react-redux';
 import {
   Account,
   Cart,
@@ -20,7 +20,6 @@ import {
   ROUTES,
   Register,
   RegisterDetails,
-  SellForm,
   SellItem,
   Verify,
   ViewAll,
@@ -75,7 +74,6 @@ const Main = () => {
       <MainStack.Screen name={ROUTES.PROFILE_INFO} component={ProfileInfo} />
       <MainStack.Screen name={ROUTES.WISHLIST} component={Wishlist} />
       <MainStack.Screen name={ROUTES.SELL} component={SellItem} />
-      <MainStack.Screen name={ROUTES.SELL_FORM} component={SellForm} />
     </MainStack.Navigator>
   );
 };

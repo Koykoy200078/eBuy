@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image, SafeAreaView} from 'react-native';
+import {View, Text, Image, SafeAreaView, Alert} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {useDispatch, useSelector} from 'react-redux';
 import {Icons} from '../../apps/configs/icons';
@@ -10,10 +10,13 @@ import {
 } from '../../apps/reducers/userUpdateData';
 import {showError, showSuccess} from '../../apps/others/helperFunctions';
 import {userData} from '../../apps/reducers/userData';
+import {
+  changePassword,
+  resetChangePassword,
+} from '../../apps/reducers/changepass';
 
 export default function ({navigation}) {
-  const data = useSelector(state => state.userData.data2);
-  const updateUser = useSelector(state => state.userUpdateData.data);
+  const data = useSelector(state => state.changepass.data);
 
   const dispatch = useDispatch();
 
@@ -21,40 +24,61 @@ export default function ({navigation}) {
   const [newPassword, setNewPassword] = useState(null);
   const [confirmNewPass, setConfirmNewPass] = useState(null);
 
-  const saveInfo = () => {};
+  console.log('data ==> ', data);
+
+  const saveInfo = () => {
+    if (oldPassword) {
+      if (confirmNewPass !== newPassword) {
+        showError({
+          message: 'New Password and Confirm Password does not match',
+        });
+      } else {
+        Alert.alert('Info', 'Are you sure you want to change password?', [
+          {
+            text: 'Cancel',
+            onPress: () => {},
+            style: 'cancel',
+          },
+          {
+            text: 'Yes',
+            onPress: () => {
+              dispatch(
+                changePassword({
+                  current_password: oldPassword,
+                  password: newPassword,
+                }),
+              );
+            },
+          },
+        ]);
+      }
+    } else {
+      showError({
+        message: 'Please enter old password',
+      });
+    }
+  };
 
   const resetFormFields = () => {
     setOldPassword(null);
     setNewPassword(null);
     setConfirmNewPass(null);
+    dispatch(resetChangePassword());
   };
 
-  //   useEffect(() => {
-  //     dispatch(userData());
-
-  //     if (updateUser) {
-  //       const {message} = updateUser;
-  //       switch (message) {
-  //         case 'User Profile Updated':
-  //           showSuccess({
-  //             message: message,
-  //           });
-  //           break;
-  //         case message.pin_code:
-  //           showError({
-  //             message: message.pin_code,
-  //           });
-  //           break;
-  //         default:
-  //           showError({
-  //             message: 'Something went wrong',
-  //             description: 'Please try again',
-  //           });
-  //       }
-  //       dispatch(resetUserUpdateData());
-  //       resetFormFields();
-  //     }
-  //   }, [updateUser]);
+  useEffect(() => {
+    if (data && data.message === ' Current Password does not match') {
+      showError({
+        message: 'Current Password does not match',
+      });
+      resetFormFields();
+    } else if (data && data.message === 'Password Updated Successfully') {
+      showSuccess({
+        message: 'Password changed successfully',
+      });
+      resetFormFields();
+    }
+  }, [data]);
 
   const renderProfile = () => {
     return (

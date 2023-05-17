@@ -1,40 +1,44 @@
 import {View, Text, SafeAreaView, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
-import {COLORS, ROUTES} from '../..';
+import React, {useEffect} from 'react';
+import {COLORS} from '../..';
 import {Icons} from '../../apps/configs/icons';
 import {FlatList} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {myProductsData} from '../../apps/reducers/product/myProduct';
 
 export default function ({navigation}) {
-  const [items, setItems] = useState([
-    {id: '1', name: 'index 1', price: 10.99, status: 'Not Verified'},
-    {id: '2', name: 'index 2', price: 5.99, status: 'Not Verified'},
-    {id: '3', name: 'index 3', price: 2.99, status: 'Not Verified'},
-  ]);
+  const data = useSelector(state => state.myProduct.data);
+  const dispatch = useDispatch();
 
-  const addItem = () => {
-    const newItem = {
-      id: Math.random().toString(),
-      name: `Item ${items.length + 1}`,
-      price: 0,
-      status: 'In Stock',
-    };
-    setItems([newItem, ...items]);
-  };
+  useEffect(() => {
+    dispatch(myProductsData());
+  }, []);
 
   const renderHeader = () => (
     <View
       style={{
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingVertical: 10,
+        alignItems: 'flex-start',
+        paddingVertical: 5,
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
       }}>
-      <Text style={{fontWeight: 'bold', fontSize: 16}}>Name</Text>
-      <Text style={{fontWeight: 'bold', fontSize: 16}}>Price</Text>
-      <Text style={{fontWeight: 'bold', fontSize: 16}}>Status</Text>
-      <Text style={{fontWeight: 'bold', fontSize: 16}}>Action</Text>
+      <Text
+        className="text-center text-sm"
+        style={{fontWeight: 'bold', fontSize: 16}}>
+        Name
+      </Text>
+      <Text
+        className="text-center text-sm"
+        style={{fontWeight: 'bold', fontSize: 16}}>
+        Price
+      </Text>
+      <Text
+        className="text-center text-sm"
+        style={{fontWeight: 'bold', fontSize: 16}}>
+        Status
+      </Text>
     </View>
   );
 
@@ -50,34 +54,28 @@ export default function ({navigation}) {
       }}
       className="space-x-2">
       <Text
-        numberOfLines={1}
-        ellipsizeMode="tail"
+        // numberOfLines={2}
+        className="text-center text-sm"
         style={{flex: 1, fontSize: 16}}>
         {item.name}
       </Text>
-      <Text
-        numberOfLines={1}
-        ellipsizeMode="tail"
-        style={{flex: 1, fontSize: 16}}>
-        ₱ {item.price}
+      <Text className="text-center text-sm" style={{flex: 1, fontSize: 16}}>
+        ₱ {item.selling_price}
       </Text>
-      <Text
-        numberOfLines={1}
-        ellipsizeMode="tail"
-        style={{flex: 1, fontSize: 16}}>
-        {item.status}
-      </Text>
-      <TouchableOpacity
-        style={{
-          backgroundColor: '#2196F3',
-          borderRadius: 5,
-          paddingHorizontal: 10,
-          paddingVertical: 5,
-        }}>
-        <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
-          Edit
+
+      {item.status === 0 ? (
+        <Text
+          className="text-green-500 text-center text-sm"
+          style={{flex: 1, fontSize: 16}}>
+          Verified
         </Text>
-      </TouchableOpacity>
+      ) : (
+        <Text
+          className="text-red-500 text-end text-sm"
+          style={{flex: 1, fontSize: 16}}>
+          Not Verified
+        </Text>
+      )}
     </View>
   );
 
@@ -105,15 +103,8 @@ export default function ({navigation}) {
         </View>
 
         <View style={{flex: 1, paddingTop: 50, paddingHorizontal: 20}}>
-          <TouchableOpacity
-            className="p-2 absolute top-3 right-3 rounded-md bg-blue-500"
-            onPress={() => navigation.navigate(ROUTES.SELL_FORM)}>
-            <Text className="font-bold" style={{color: COLORS.textWhite}}>
-              Add
-            </Text>
-          </TouchableOpacity>
           <FlatList
-            data={items}
+            data={data}
             renderItem={renderItem}
             keyExtractor={item => item.id}
             ListHeaderComponent={renderHeader}

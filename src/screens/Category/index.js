@@ -15,21 +15,26 @@ import {COLORS, IMAGES, ROUTES, Search} from '../..';
 import {Icons} from '../../apps/configs/icons';
 import * as Animatable from 'react-native-animatable';
 import {useSelector, useDispatch} from 'react-redux';
-import {selectedCategoryData} from '../../apps/reducers/categoriesData';
+import {
+  resetSelectedCategoryData,
+  selectedCategoryData,
+} from '../../apps/reducers/categoriesData';
 import Card from '../../components/Card';
 import {productSearch, resetProductSearch} from '../../apps/reducers/search';
 import {Shadow} from 'react-native-shadow-2';
-import {showSuccess} from '../../apps/others/helperFunctions';
+import {showError, showSuccess} from '../../apps/others/helperFunctions';
 import {productDetailsData} from '../../apps/reducers/product/productDetails';
 import {productData} from '../../apps/reducers/product/productIndex';
 import {categoryData} from '../../apps/reducers/category/categories';
 import {getCartCount} from '../../apps/reducers/cartCount';
 import {getWishlistCount} from '../../apps/reducers/wishlistCount';
+import {resetWishlistAdd, wishlistAdd} from '../../apps/reducers/wishlistAdd';
 
 export default function ({navigation}) {
   const getCategory = useSelector(state => state.category.categoriesData);
   const getData = useSelector(state => state.category_data.selectedData);
   const getSearchData = useSelector(state => state.search);
+  const getWishlistData = useSelector(state => state.wishlistAdd.data);
 
   const getCategData =
     getCategory && getCategory.categories.map(index => index.id);
@@ -108,7 +113,43 @@ export default function ({navigation}) {
         showSuccess({message: 'Product Not Found'});
       }
     }
-  }, [activeCategory, getSearchLength, product_slug, category_slug]);
+
+    if (getWishlistData) {
+      if (getWishlistData.message === 'Wishlist added successfully') {
+        showSuccess({
+          message: 'Success',
+          description: 'Product added to wishlist',
+        });
+        dispatch(resetWishlistAdd());
+      } else if (getWishlistData.message === 'Already added to wishlist') {
+        showError({
+          message: 'Error',
+          description: 'Product already added to wishlist',
+        });
+        dispatch(resetWishlistAdd());
+      } else if (
+        getWishlistData.message === 'You cannot buy your own product'
+      ) {
+        showError({
+          message: 'Error',
+          description: 'You cannot add to wishlist your own product',
+        });
+        dispatch(resetWishlistAdd());
+      } else {
+        showError({
+          message: 'Error',
+          description: 'Something went wrong',
+        });
+        dispatch(resetWishlistAdd());
+      }
+    }
+  }, [
+    activeCategory,
+    getSearchLength,
+    product_slug,
+    category_slug,
+    getWishlistData,
+  ]);
 
   return (
     <View className="flex-1 relative" style={{backgroundColor: COLORS.BGColor}}>
@@ -333,6 +374,13 @@ export default function ({navigation}) {
                       item={item}
                       index={index}
                       key={index}
+                      onPressWishlist={() => {
+                        dispatch(
+                          wishlistAdd({
+                            product_id: item.id,
+                          }),
+                        );
+                      }}
                       onPressCart={() => {
                         setProductSlug(item.slug);
                         setCategorySlug(item.category_id);

@@ -104,3 +104,37 @@ export function* updateUserInfo(payload) {
     return data;
   }
 }
+
+// change password
+export function* changeUserPassword(payload) {
+  const {current_password, password} = payload;
+  console.log('payload ===> ', payload);
+
+  const auth = yield select(state => state.authLogin.userData.access_token);
+  const url =
+    BASE_URI +
+    '/change-password' +
+    '?current_password=' +
+    current_password +
+    '&password=' +
+    password;
+
+  const options = {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${auth}`,
+    },
+  };
+
+  const response = yield fetch(url, options);
+
+  const data = yield response.json();
+
+  if (response.ok) {
+    return data;
+  } else {
+    return data;
+  }
+}

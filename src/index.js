@@ -20,5 +20,4 @@ export {default as ProfileInfo} from './screens/ProfileInfo';
 export {default as ViewAll} from './screens/ViewAll';
 export {default as Wishlist} from './screens/Wishlist';
 export {default as SellItem} from './screens/SellItem';
-export {default as SellForm} from './screens/SellItem/SellForm';
 export {default as ChangePassword} from './screens/ChangePassword';
