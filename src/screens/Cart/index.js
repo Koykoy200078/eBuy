@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  Alert,
 } from 'react-native';
 import React, {useState, useEffect, useCallback} from 'react';
 import {COLORS, IMAGES} from '../..';
@@ -15,15 +16,29 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Icons} from '../../apps/configs/icons';
 import {RefreshControl} from 'react-native-gesture-handler';
 import {cartData} from '../../apps/reducers/cartData';
+import {
+  cartItemDataIncrement,
+  resetCartItemIncrement,
+} from '../../apps/reducers/cartIncrement';
+import {
+  cartItemDataDecrement,
+  resetCartItemDecrement,
+} from '../../apps/reducers/cartDecrement';
+import {showError} from '../../apps/others/helperFunctions';
 
 export default function () {
   const {cart} = useSelector(state => state.cartData.data);
+  const aa = useSelector(state => state.cartIncrement.data);
+  const bb = useSelector(state => state.cartDecrement.data);
   const {width} = Dimensions.get('window');
   const [refreshing, setRefreshing] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
   const dispatch = useDispatch();
+
+  console.log('aa ==> ', aa);
+  console.log('bb ==>', bb);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -35,7 +50,19 @@ export default function () {
 
   useEffect(() => {
     calculateTotalPrice();
-  }, [selectedItems]);
+
+    if (aa && aa.status === 200) {
+      dispatch(cartData());
+      dispatch(resetCartItemIncrement());
+      dispatch(resetCartItemDecrement());
+    } else if (bb && bb.status === 200) {
+      dispatch(cartData());
+      dispatch(resetCartItemIncrement());
+      dispatch(resetCartItemDecrement());
+    } else {
+      dispatch(cartData());
+    }
+  }, [selectedItems, totalPrice, aa, bb]);
 
   const handleCheckBox = cartItemId => {
     if (selectedItems.includes(cartItemId)) {
@@ -174,7 +201,23 @@ export default function () {
                               </View>
 
                               <View className="flex-row">
-                                <TouchableOpacity>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    if (item.quantity === 1) {
+                                      showError({
+                                        message: 'Quantity Limit Reached',
+                                        description:
+                                          'Quantity cannot be decreased further',
+                                      });
+                                    } else {
+                                      dispatch(
+                                        cartItemDataDecrement({
+                                          cartId: item.cart_item_id,
+                                        }),
+                                      );
+                                      setSelectedItems([]);
+                                    }
+                                  }}>
                                   <View className="flex justify-center items-center h-8 w-8">
                                     <Text
                                       className="font-bold"
@@ -192,7 +235,26 @@ export default function () {
                                   </Text>
                                 </View>
 
-                                <TouchableOpacity>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    if (
+                                      item.product_colors.quantity ===
+                                      item.quantity
+                                    ) {
+                                      showError({
+                                        message: 'Quantity Limit Reached',
+                                        description:
+                                          'Quantity cannot be increased further',
+                                      });
+                                    } else {
+                                      dispatch(
+                                        cartItemDataIncrement({
+                                          cartId: item.cart_item_id,
+                                        }),
+                                      );
+                                      setSelectedItems([]);
+                                    }
+                                  }}>
                                   <View className="flex justify-center items-center h-8 w-8">
                                     <Text
                                       className="font-bold"

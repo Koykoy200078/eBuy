@@ -27,6 +27,9 @@ import {wishlistData} from './wishlistItemShow';
 import {userItemCountData} from './userItemCount';
 import {userUpdateData} from './userUpdateData';
 
+import {cartIncrement} from './cartIncrement';
+import {cartDecrement} from './cartDecrement';
+
 export default function* rootSaga() {
   yield all([
     // auth/login
@@ -59,5 +62,8 @@ export default function* rootSaga() {
     userData(),
     userData2(),
     userUpdateData(),
+
+    cartIncrement(),
+    cartDecrement(),
   ]);
 }

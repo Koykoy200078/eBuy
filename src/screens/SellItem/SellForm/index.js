@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {useDispatch, useSelector} from 'react-redux';
-import {COLORS} from '../../..';
+import {COLORS, IMAGES} from '../../..';
 import {Icons} from '../../../apps/configs/icons';
 import {Shadow} from 'react-native-shadow-2';
 
@@ -52,9 +52,7 @@ export default function ({navigation}) {
       <View className="w-[100%] h-fit items-center justify-center p-2">
         <View className="w-fit h-fit rounded-md">
           <Image
-            source={{
-              uri: 'https://avatars.githubusercontent.com/u/31362410?v=4',
-            }}
+            source={IMAGES.user}
             className="w-[250] h-[160] rounded-md"
             resizeMode="contain"
           />

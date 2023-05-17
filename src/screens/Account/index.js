@@ -33,6 +33,8 @@ import {
   resetWishlistItemsShow,
 } from '../../apps/reducers/wishlistItemShow';
 import {resetCartData} from '../../apps/reducers/cartData';
+import {cartItemIncrement} from '../../apps/reducers/cartIncrement';
+import { resetCartItemDecrement } from '../../apps/reducers/cartDecrement';
 
 export default function ({navigation}) {
   const session = useSelector(state => state.authLogin.userData);
@@ -57,6 +59,8 @@ export default function ({navigation}) {
     dispatch(resetWishlistItemsShow());
     dispatch(resetUserData());
     dispatch(resetCartData());
+    dispatch(cartItemIncrement());
+    dispatch(resetCartItemDecrement());
   };
 
   useEffect(() => {

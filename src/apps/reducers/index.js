@@ -42,6 +42,9 @@ import userItemCount from './userItemCount';
 import userData from './userData';
 import userUpdateData from './userUpdateData';
 
+import cartIncrement from './cartIncrement';
+import cartDecrement from './cartDecrement';
+
 const rootReducer = combineReducers({
   authLogin: persistReducer(authPersistConfig, authLogin),
   authRegister,
@@ -70,6 +73,9 @@ const rootReducer = combineReducers({
   userData,
 
   userUpdateData,
+
+  cartIncrement,
+  cartDecrement,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);

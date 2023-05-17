@@ -72,3 +72,62 @@ export function* getCartData(payload) {
     return data;
   }
 }
+
+export function* incrementItem(payload) {
+  const {cartId} = payload;
+
+  const auth = yield select(state => state.authLogin.userData.access_token);
+  const url = BASE_URI + '/cart/incrementQuantity/' + cartId;
+
+  const options = {
+    method: 'PUT',
+    headers: {
+      'ngrok-skip-browser-warning': '69420',
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${auth}`,
+    },
+    body: JSON.stringify({...payload}),
+  };
+
+  const response = yield fetch(url, options);
+
+  const data = yield response.json();
+
+  console.log('data incrementItem ==> ', data);
+
+  if (response.ok) {
+    return data;
+  } else {
+    return data;
+  }
+}
+
+export function* decrementItem(payload) {
+  const {cartId} = payload;
+
+  const auth = yield select(state => state.authLogin.userData.access_token);
+  const url = BASE_URI + '/cart/decrementQuantity/' + cartId;
+  const options = {
+    method: 'PUT',
+    headers: {
+      'ngrok-skip-browser-warning': '69420',
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${auth}`,
+    },
+    body: JSON.stringify({...payload}),
+  };
+
+  const response = yield fetch(url, options);
+
+  const data = yield response.json();
+
+  console.log('data incrementItem ==> ', data);
+
+  if (response.ok) {
+    return data;
+  } else {
+    return data;
+  }
+}

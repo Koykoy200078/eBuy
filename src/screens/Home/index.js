@@ -40,6 +40,8 @@ import {resetSelectedCategoryData} from '../../apps/reducers/categoriesData';
 import {resetUserItemCount} from '../../apps/reducers/userItemCount';
 import {resetWishlistItemsShow} from '../../apps/reducers/wishlistItemShow';
 import {cartData, resetCartData} from '../../apps/reducers/cartData';
+import {cartItemIncrement} from '../../apps/reducers/cartIncrement';
+import {resetCartItemDecrement} from '../../apps/reducers/cartDecrement';
 
 export default function ({navigation}) {
   const {width} = Dimensions.get('window');
@@ -100,6 +102,8 @@ export default function ({navigation}) {
     dispatch(resetWishlistItemsShow());
     dispatch(resetUserData());
     dispatch(resetCartData());
+    dispatch(cartItemIncrement());
+    dispatch(resetCartItemDecrement());
   };
 
   const onRefresh = useCallback(() => {

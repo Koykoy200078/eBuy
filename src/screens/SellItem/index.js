@@ -6,9 +6,9 @@ import {FlatList} from 'react-native';
 
 export default function ({navigation}) {
   const [items, setItems] = useState([
-    {id: '1', name: 'aaaaaaaaaaaaaaaa 1', price: 10.99, status: 'Verified'},
-    {id: '2', name: 'bbbbbbbbbbbbbbbb 2', price: 5.99, status: 'Verified'},
-    {id: '3', name: 'cccccccccccccccc 3', price: 2.99, status: 'Not Verified'},
+    {id: '1', name: 'index 1', price: 10.99, status: 'Not Verified'},
+    {id: '2', name: 'index 2', price: 5.99, status: 'Not Verified'},
+    {id: '3', name: 'index 3', price: 2.99, status: 'Not Verified'},
   ]);
 
   const addItem = () => {
