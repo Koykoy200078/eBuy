@@ -15,6 +15,8 @@ export default {
   add_to_cart_dark: require('../../../assets/images/add-to-cart-dark.png'),
   cart: require('../../../assets/images/cart.png'),
 
+  success: require('../../../assets/images/success.gif'),
+
   peso: require('../../../assets/images/peso_sign.png'),
   mail: require('../../../assets/images/mail.gif'),
   verified: require('../../../assets/images/verified.png'),

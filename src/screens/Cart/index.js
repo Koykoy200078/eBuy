@@ -9,7 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import React, {useState, useEffect, useCallback} from 'react';
-import {COLORS, IMAGES} from '../..';
+import {COLORS, IMAGES, ROUTES} from '../..';
 import {CheckBox} from '@rneui/themed';
 import {Shadow} from 'react-native-shadow-2';
 import {useDispatch, useSelector} from 'react-redux';
@@ -24,12 +24,16 @@ import {
   cartItemDataDecrement,
   resetCartItemDecrement,
 } from '../../apps/reducers/cartDecrement';
-import {showError} from '../../apps/others/helperFunctions';
+import {showError, showSuccess} from '../../apps/others/helperFunctions';
+import {resetUserData, userData} from '../../apps/reducers/userData';
+import {removeCart, removeCartReset} from '../../apps/reducers/cartRemove';
 
-export default function () {
+export default function ({navigation}) {
   const {cart} = useSelector(state => state.cartData.data);
+  const data = useSelector(state => state.userData.data2);
   const aa = useSelector(state => state.cartIncrement.data);
   const bb = useSelector(state => state.cartDecrement.data);
+  const getRemove = useSelector(state => state.cartRemove.data);
   const {width} = Dimensions.get('window');
   const [refreshing, setRefreshing] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
@@ -37,8 +41,7 @@ export default function () {
 
   const dispatch = useDispatch();
 
-  console.log('aa ==> ', aa);
-  console.log('bb ==>', bb);
+  console.log('cart ===> ', cart);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -50,6 +53,7 @@ export default function () {
 
   useEffect(() => {
     calculateTotalPrice();
+    dispatch(userData());
 
     if (aa && aa.status === 200) {
       dispatch(cartData());
@@ -62,7 +66,33 @@ export default function () {
     } else {
       dispatch(cartData());
     }
-  }, [selectedItems, totalPrice, aa, bb]);
+
+    if (getRemove && getRemove.status === 200) {
+      dispatch(removeCartReset());
+      showSuccess({
+        message: 'Item removed from cart',
+      });
+    }
+  }, [selectedItems, totalPrice, aa, bb, data, getRemove]);
+
+  const onNavigate = () => {
+    if (
+      data !== null &&
+      data.address !== null &&
+      data.email !== null &&
+      data.phone !== null &&
+      data.pin_code !== null &&
+      data.username !== null
+    ) {
+      navigation.navigate(ROUTES.CHECKOUT);
+    } else {
+      showError({
+        message: 'Something went wrong!',
+        description: 'Please complete your profile first',
+      });
+      dispatch(resetUserData());
+    }
+  };
 
   const handleCheckBox = cartItemId => {
     if (selectedItems.includes(cartItemId)) {
@@ -91,6 +121,13 @@ export default function () {
     }
     return acc;
   }, {});
+
+  const convertToLowerCase = colorName => {
+    if (colorName) {
+      return colorName.toLocaleLowerCase();
+    }
+    return '';
+  };
 
   return (
     <View className="flex-1 relative" style={{backgroundColor: COLORS.BGColor}}>
@@ -138,16 +175,6 @@ export default function () {
                             {storeName}
                           </Text>
                         </View>
-
-                        <TouchableOpacity>
-                          <View className="flex justify-center items-center h-full mr-1">
-                            <Text
-                              className="text-sm font-bold"
-                              style={{color: COLORS.textColor}}>
-                              Remove
-                            </Text>
-                          </View>
-                        </TouchableOpacity>
                       </View>
 
                       <View className="w-12/12 h-[1] border mx-2 mb-3" />
@@ -155,28 +182,74 @@ export default function () {
                       {items.map(item => (
                         <View
                           key={item.cart_item_id}
-                          className="flex flex-row ml-2 mt-0 mb-2 justify-start">
-                          <CheckBox
-                            containerStyle={{
-                              marginLeft: 0,
-                              marginRight: 0,
-                              backgroundColor: 'transparent',
-                              borderWidth: 0,
-                            }}
-                            checked={selectedItems.includes(item.cart_item_id)}
-                            checkedColor="#1dd1a1"
-                            onPress={() => handleCheckBox(item.cart_item_id)}
-                          />
-                          <Image
-                            source={{
-                              uri: item.image_url,
-                            }}
-                            style={{
-                              width: 100,
-                              height: 100,
-                              borderRadius: 6,
-                            }}
-                          />
+                          className="flex flex-row ml-1 mt-0 mb-2 justify-start">
+                          <View className="flex-col">
+                            <CheckBox
+                              containerStyle={{
+                                marginLeft: 0,
+                                marginRight: 0,
+                                backgroundColor: 'transparent',
+                                borderWidth: 0,
+                              }}
+                              checked={selectedItems.includes(
+                                item.cart_item_id,
+                              )}
+                              checkedColor="#1dd1a1"
+                              onPress={() => handleCheckBox(item.cart_item_id)}
+                            />
+
+                            <TouchableOpacity
+                              onPress={() => {
+                                Alert.alert(
+                                  'Remove Item',
+                                  'Are you sure you want to remove this item from cart?',
+                                  [
+                                    {
+                                      text: 'Cancel',
+                                      onPress: () =>
+                                        console.log('Cancel Pressed'),
+                                      style: 'cancel',
+                                    },
+                                    {
+                                      text: 'YES',
+                                      onPress: () => {
+                                        dispatch(
+                                          removeCart({
+                                            cartId: item.cart_item_id,
+                                          }),
+                                        );
+                                      },
+                                    },
+                                  ],
+                                );
+                              }}>
+                              <View className="ml-3">
+                                <Icons.Octicons
+                                  name="trash"
+                                  size={20}
+                                  color={COLORS.primary}
+                                />
+                              </View>
+                            </TouchableOpacity>
+                          </View>
+                          <View className="flex-col my-2">
+                            <Image
+                              source={{
+                                uri: item.image_url,
+                              }}
+                              style={{
+                                width: 100,
+                                height: 100,
+                                borderRadius: 6,
+                              }}
+                            />
+
+                            <Text
+                              className="text-xs"
+                              style={{color: COLORS.textColor}}>
+                              Color: {item.product_colors.color_name}
+                            </Text>
+                          </View>
 
                           <View
                             className="flex items-start ml-2 h-[70]"
@@ -289,9 +362,11 @@ export default function () {
               </Text>
             </Text>
 
-            <TouchableOpacity>
-              <View className="flex justify-center items-center h-10 w-24 border rounded-md">
-                <Text className="font-bold" style={{color: COLORS.textColor}}>
+            <TouchableOpacity onPress={() => onNavigate()}>
+              <View
+                className="flex justify-center items-center h-10 w-24 rounded-md"
+                style={{backgroundColor: COLORS.primary}}>
+                <Text className="font-bold" style={{color: COLORS.textWhite}}>
                   Checkout
                 </Text>
               </View>

@@ -15,6 +15,8 @@ export default {
   WISHLIST: 'Wishlist',
   SELL: 'Sell',
   SELL_FORM: 'SellForm',
+  CHECKOUT: 'Checkout',
+  SUCCESS: 'Success',
 
   PRODUCT_DETAILS: 'Product Details',
   PROFILE_INFO: 'Profile Info',

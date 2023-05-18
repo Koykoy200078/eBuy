@@ -32,7 +32,7 @@ import {
   getWishlistCount,
   resetWishlistCount,
 } from '../../apps/reducers/wishlistCount';
-import {resetUserData, userData} from '../../apps/reducers/userData';
+import {resetUserData, userData, userData2} from '../../apps/reducers/userData';
 import {userLogout} from '../../apps/reducers/auth/authLogout';
 import {resetLogin} from '../../apps/reducers/auth/authLogin';
 import {resetRegister} from '../../apps/reducers/auth/authRegister';
@@ -49,9 +49,11 @@ import {
 import {resetChangePassword} from '../../apps/reducers/changepass';
 import {resetWishlistAdd} from '../../apps/reducers/wishlistAdd';
 import {resetWishlistRemove} from '../../apps/reducers/wishlistRemove';
+import {removeCartReset} from '../../apps/reducers/cartRemove';
 
 export default function ({navigation}) {
   const {width} = Dimensions.get('window');
+  const data = useSelector(state => state.userData.data2);
   const getIndex = useSelector(state => state.productIndex.productData);
   const getCategory = useSelector(state => state.category.categoriesData);
 
@@ -91,6 +93,7 @@ export default function ({navigation}) {
     dispatch(getCartCount());
     dispatch(getWishlistCount());
     dispatch(userData());
+    dispatch(userData2());
     dispatch(cartData());
     dispatch(myProductsData());
   };
@@ -115,6 +118,7 @@ export default function ({navigation}) {
     dispatch(resetChangePassword());
     dispatch(resetWishlistAdd());
     dispatch(resetWishlistRemove());
+    dispatch(removeCartReset());
   };
 
   const onRefresh = useCallback(() => {

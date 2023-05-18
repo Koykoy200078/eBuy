@@ -37,6 +37,8 @@ import {changePassword} from './changepass';
 import {getWishlist} from './wishlistAdd';
 import {removeWishlist} from './wishlistRemove';
 
+import {cartRemoveItemData} from './cartRemove';
+
 export default function* rootSaga() {
   yield all([
     // auth/login
@@ -77,5 +79,6 @@ export default function* rootSaga() {
     changePassword(),
     getWishlist(),
     removeWishlist(),
+    cartRemoveItemData(),
   ]);
 }

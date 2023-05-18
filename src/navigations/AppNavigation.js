@@ -13,6 +13,7 @@ import {
   Cart,
   Category,
   ChangePassword,
+  Checkout,
   Home,
   Login,
   ProductInfo,
@@ -21,6 +22,7 @@ import {
   Register,
   RegisterDetails,
   SellItem,
+  Success,
   Verify,
   ViewAll,
   Welcome,
@@ -74,6 +76,8 @@ const Main = () => {
       <MainStack.Screen name={ROUTES.PROFILE_INFO} component={ProfileInfo} />
       <MainStack.Screen name={ROUTES.WISHLIST} component={Wishlist} />
       <MainStack.Screen name={ROUTES.SELL} component={SellItem} />
+      <MainStack.Screen name={ROUTES.CHECKOUT} component={Checkout} />
+      <MainStack.Screen name={ROUTES.SUCCESS} component={Success} />
     </MainStack.Navigator>
   );
 };

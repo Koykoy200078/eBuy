@@ -52,6 +52,7 @@ import changepass from './changepass';
 import wishlistAdd from './wishlistAdd';
 import wishlistRemove from './wishlistRemove';
 
+import cartRemove from './cartRemove';
 const rootReducer = combineReducers({
   authLogin: persistReducer(authPersistConfig, authLogin),
   authRegister,
@@ -89,6 +90,8 @@ const rootReducer = combineReducers({
 
   wishlistAdd,
   wishlistRemove,
+
+  cartRemove,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);

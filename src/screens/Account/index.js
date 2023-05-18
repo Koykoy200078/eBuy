@@ -36,9 +36,10 @@ import {resetCartData} from '../../apps/reducers/cartData';
 import {resetCartItemIncrement} from '../../apps/reducers/cartIncrement';
 import {resetCartItemDecrement} from '../../apps/reducers/cartDecrement';
 import {resetMyProductsData} from '../../apps/reducers/product/myProduct';
-import { resetChangePassword } from '../../apps/reducers/changepass';
-import { resetWishlistAdd } from '../../apps/reducers/wishlistAdd';
-import { resetWishlistRemove } from '../../apps/reducers/wishlistRemove';
+import {resetChangePassword} from '../../apps/reducers/changepass';
+import {resetWishlistAdd} from '../../apps/reducers/wishlistAdd';
+import {resetWishlistRemove} from '../../apps/reducers/wishlistRemove';
+import {removeCartReset} from '../../apps/reducers/cartRemove';
 
 export default function ({navigation}) {
   const session = useSelector(state => state.authLogin.userData);
@@ -69,6 +70,7 @@ export default function ({navigation}) {
     dispatch(resetChangePassword());
     dispatch(resetWishlistAdd());
     dispatch(resetWishlistRemove());
+    dispatch(removeCartReset());
   };
 
   useEffect(() => {

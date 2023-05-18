@@ -131,3 +131,30 @@ export function* decrementItem(payload) {
     return data;
   }
 }
+
+export function* cartRemoveItem(payload) {
+  const {cartId} = payload;
+
+  const auth = yield select(state => state.authLogin.userData.access_token);
+  const url = BASE_URI + '/cart/remove/' + cartId;
+
+  const options = {
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${auth}`,
+    },
+    body: JSON.stringify({...payload}),
+  };
+
+  const response = yield fetch(url, options);
+
+  const data = yield response.json();
+
+  if (response.ok) {
+    return data;
+  } else {
+    return data;
+  }
+}
