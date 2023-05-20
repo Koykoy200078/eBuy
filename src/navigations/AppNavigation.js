@@ -29,6 +29,7 @@ import {
   Wishlist,
 } from '..';
 import {Icons} from '../apps/configs/icons';
+import Orders from '../screens/Orders';
 
 const width = Dimensions.get('window').width;
 
@@ -77,6 +78,7 @@ const Main = () => {
       <MainStack.Screen name={ROUTES.WISHLIST} component={Wishlist} />
       <MainStack.Screen name={ROUTES.SELL} component={SellItem} />
       <MainStack.Screen name={ROUTES.CHECKOUT} component={Checkout} />
+      <MainStack.Screen name={ROUTES.ORDERS} component={Orders} />
       <MainStack.Screen name={ROUTES.SUCCESS} component={Success} />
     </MainStack.Navigator>
   );

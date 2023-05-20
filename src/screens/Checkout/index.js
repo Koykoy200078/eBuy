@@ -6,23 +6,54 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import {COLORS} from '../..';
+import {COLORS, ROUTES} from '../..';
 import {Icons} from '../../apps/configs/icons';
 import {Shadow} from 'react-native-shadow-2';
 import {CheckBox} from '@rneui/themed';
 import {useDispatch, useSelector} from 'react-redux';
 import {userData, userData2} from '../../apps/reducers/userData';
+import {checkOut, resetCheckOut} from '../../apps/reducers/checkout';
 
-export default function ({navigation}) {
+export default function ({navigation, route}) {
   const data = useSelector(state => state.userData.data2);
+  const myCheckoutData = useSelector(state => state.checkout.data);
+  const {totalPrice, selectedItems} = route.params;
 
-  console.log('data ==> ', data);
+  console.log('myCheckoutData ==> ', myCheckoutData);
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(userData());
     dispatch(userData2());
-  }, []);
+
+    if (myCheckoutData && myCheckoutData.success === true) {
+      navigation.navigate(ROUTES.SUCCESS);
+      dispatch(resetCheckOut());
+    }
+  }, [myCheckoutData]);
+
+  const confirmOrder = () => {
+    if (
+      data !== null &&
+      data.address !== null &&
+      data.email !== null &&
+      data.phone !== null &&
+      data.pin_code !== null &&
+      data.username !== null
+    ) {
+      dispatch(
+        checkOut({
+          fullname: data.username,
+          email: data.email,
+          phone: data.phone,
+          pincode: data.pin_code,
+          address: data.address,
+          payment_mode: 'Cash On Delivery',
+          selectedIds: selectedItems,
+        }),
+      );
+    }
+  };
   return (
     <View className="flex-1 relative" style={{backgroundColor: COLORS.BGColor}}>
       <SafeAreaView className="flex-1">
@@ -50,7 +81,7 @@ export default function ({navigation}) {
           {/* total Amount */}
           <View className="p-2">
             <Shadow
-              className="w-[346] h-[110] rounded-lg"
+              className="w-[346] h-[160] rounded-lg"
               distance={5}
               startColor={COLORS.borderColor}>
               <View className="flex flex-col justify-between">
@@ -67,7 +98,7 @@ export default function ({navigation}) {
                     <Text
                       className="text-sm font-bold"
                       style={{color: COLORS.textColor}}>
-                      ₱ 1000
+                      ₱ {totalPrice}
                     </Text>
                   </View>
                 </View>
@@ -76,14 +107,28 @@ export default function ({navigation}) {
 
                 <View className="flex flex-col ml-2 mt-0 mb-2 justify-start">
                   <Text
-                    className="text-base font-bold"
+                    className="text-xs font-bold"
                     style={{color: COLORS.textColor}}>
-                    * Items will be delivered in 3 - 5 days.
+                    * Your items will be delivered within 3-5 business days.
                   </Text>
                   <Text
-                    className="text-base font-bold"
+                    className="text-xs font-bold"
                     style={{color: COLORS.textColor}}>
-                    * Tax and other charges are included ?
+                    * Tax and other charges are included in the total cost.
+                  </Text>
+                  <Text
+                    className="text-xs font-bold"
+                    style={{color: COLORS.textColor}}>
+                    * You can track your order using the tracking number
+                    provided in the{' '}
+                    <Text className="font-extrabold">'My Order Items'</Text>{' '}
+                    section of your account.
+                  </Text>
+                  <Text
+                    className="text-xs font-bold"
+                    style={{color: COLORS.textColor}}>
+                    * If you have any questions or concerns, please contact our
+                    customer support team.
                   </Text>
                 </View>
               </View>
@@ -244,7 +289,7 @@ export default function ({navigation}) {
         </ScrollView>
 
         <View className="p-2 mb-2">
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => confirmOrder()}>
             <View
               className="flex flex-row items-center h-[50] justify-center rounded-md"
               style={{backgroundColor: COLORS.primary}}>

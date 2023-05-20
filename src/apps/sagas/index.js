@@ -39,6 +39,10 @@ import {removeWishlist} from './wishlistRemove';
 
 import {cartRemoveItemData} from './cartRemove';
 
+import {checkoutItem} from './checkout';
+
+import {ordersData} from './orders';
+
 export default function* rootSaga() {
   yield all([
     // auth/login
@@ -80,5 +84,8 @@ export default function* rootSaga() {
     getWishlist(),
     removeWishlist(),
     cartRemoveItemData(),
+
+    checkoutItem(),
+    ordersData(),
   ]);
 }

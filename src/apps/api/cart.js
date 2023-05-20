@@ -94,8 +94,6 @@ export function* incrementItem(payload) {
 
   const data = yield response.json();
 
-  console.log('data incrementItem ==> ', data);
-
   if (response.ok) {
     return data;
   } else {
@@ -122,8 +120,6 @@ export function* decrementItem(payload) {
   const response = yield fetch(url, options);
 
   const data = yield response.json();
-
-  console.log('data incrementItem ==> ', data);
 
   if (response.ok) {
     return data;

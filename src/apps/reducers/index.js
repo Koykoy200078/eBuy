@@ -53,6 +53,11 @@ import wishlistAdd from './wishlistAdd';
 import wishlistRemove from './wishlistRemove';
 
 import cartRemove from './cartRemove';
+
+import checkout from './checkout';
+
+import orders from './orders';
+
 const rootReducer = combineReducers({
   authLogin: persistReducer(authPersistConfig, authLogin),
   authRegister,
@@ -92,6 +97,10 @@ const rootReducer = combineReducers({
   wishlistRemove,
 
   cartRemove,
+
+  checkout,
+
+  orders,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);

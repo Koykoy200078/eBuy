@@ -41,8 +41,6 @@ export default function ({navigation}) {
 
   const dispatch = useDispatch();
 
-  console.log('cart ===> ', cart);
-
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     dispatch(cartData());
@@ -84,7 +82,17 @@ export default function ({navigation}) {
       data.pin_code !== null &&
       data.username !== null
     ) {
-      navigation.navigate(ROUTES.CHECKOUT);
+      if (selectedItems.length > 0) {
+        navigation.navigate(ROUTES.CHECKOUT, {
+          totalPrice: totalPrice,
+          selectedItems: selectedItems,
+        });
+      } else {
+        showError({
+          message: 'Something went wrong!',
+          description: 'Please select items to checkout',
+        });
+      }
     } else {
       showError({
         message: 'Something went wrong!',
@@ -113,21 +121,33 @@ export default function ({navigation}) {
   };
 
   // Group items by store name
-  const groupedCart = cart.reduce((acc, item) => {
-    if (!acc[item.store_name]) {
-      acc[item.store_name] = [item];
-    } else {
-      acc[item.store_name].push(item);
-    }
-    return acc;
-  }, {});
+  // const groupedCart = cart.reduce((acc, item) => {
+  //   if (!acc[item.store_name]) {
+  //     acc[item.store_name] = [item];
+  //   } else {
+  //     acc[item.store_name].push(item);
+  //   }
+  //   return acc;
+  // }, {});
 
-  const convertToLowerCase = colorName => {
-    if (colorName) {
-      return colorName.toLocaleLowerCase();
+  function groupCartByStore(cart) {
+    if (!cart) {
+      return {};
     }
-    return '';
-  };
+
+    const groupedCart = cart.reduce((acc, item) => {
+      if (!acc[item.store_name]) {
+        acc[item.store_name] = [item];
+      } else {
+        acc[item.store_name].push(item);
+      }
+      return acc;
+    }, {});
+
+    return groupedCart;
+  }
+
+  const groupedCart = groupCartByStore(cart);
 
   return (
     <View className="flex-1 relative" style={{backgroundColor: COLORS.BGColor}}>
@@ -177,12 +197,12 @@ export default function ({navigation}) {
                         </View>
                       </View>
 
-                      <View className="w-12/12 h-[1] border mx-2 mb-3" />
+                      <View className="w-12/12 h-[1] border mx-2 mb-2" />
 
                       {items.map(item => (
                         <View
                           key={item.cart_item_id}
-                          className="flex flex-row ml-1 mt-0 mb-2 justify-start">
+                          className="flex flex-row ml-1 mt-0 mb-4 justify-start">
                           <View className="flex-col">
                             <CheckBox
                               containerStyle={{
@@ -243,12 +263,6 @@ export default function ({navigation}) {
                                 borderRadius: 6,
                               }}
                             />
-
-                            <Text
-                              className="text-xs"
-                              style={{color: COLORS.textColor}}>
-                              Color: {item.product_colors.color_name}
-                            </Text>
                           </View>
 
                           <View
@@ -263,6 +277,12 @@ export default function ({navigation}) {
                                 {item.product_name}
                               </Text>
                             </View>
+
+                            <Text
+                              className="text-xs my-1 font-bold text-center"
+                              style={{color: COLORS.textColor}}>
+                              Color: {item.product_colors.color_name}
+                            </Text>
 
                             <View className="w-full h-[1] border" />
 

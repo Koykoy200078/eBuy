@@ -24,8 +24,6 @@ export default function ({navigation}) {
   const [newPassword, setNewPassword] = useState(null);
   const [confirmNewPass, setConfirmNewPass] = useState(null);
 
-  console.log('data ==> ', data);
-
   const saveInfo = () => {
     if (oldPassword) {
       if (confirmNewPass !== newPassword) {

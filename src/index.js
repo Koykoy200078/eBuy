@@ -22,4 +22,5 @@ export {default as Wishlist} from './screens/Wishlist';
 export {default as SellItem} from './screens/SellItem';
 export {default as ChangePassword} from './screens/ChangePassword';
 export {default as Checkout} from './screens/Checkout';
+import {default as Orders} from './screens/Orders';
 export {default as Success} from './screens/Success';

@@ -50,7 +50,6 @@ export function* createAccount(payload) {
   const response = yield fetch(url, options);
   const data = yield response.json();
 
-  console.log('data ==> ', data);
   if (response.ok) {
     return data;
   } else {

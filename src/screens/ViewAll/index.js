@@ -43,8 +43,6 @@ export default function ({navigation}) {
 
   const productCategoryName = getProductCategoryName();
 
-  console.log('productCategoryName ==> ');
-
   const getInfo = () => {
     if (productCategoryName && product_slug) {
       dispatch(
@@ -67,7 +65,6 @@ export default function ({navigation}) {
     }
   }, [product_slug, category_slug]);
 
-  console.log('getIndex ==> ', getIndex);
   return (
     <View className="flex-1 relative" style={{backgroundColor: COLORS.BGColor}}>
       <SafeAreaView className="flex-1">

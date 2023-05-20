@@ -150,3 +150,15 @@ export const CART_REMOVE = 'Cart/CART_REMOVE';
 export const CART_REMOVE_REQUEST = 'Cart/CART_REMOVE_REQUEST';
 export const CART_REMOVE_COMPLETED = 'Cart/CART_REMOVE_COMPLETED';
 export const CART_REMOVE_ERROR = 'Cart/CART_REMOVE_ERROR';
+
+// checkout
+export const CHECKOUT = 'Cart/CHECKOUT';
+export const CHECKOUT_REQUEST = 'Cart/CHECKOUT_REQUEST';
+export const CHECKOUT_COMPLETED = 'Cart/CHECKOUT_COMPLETED';
+export const CHECKOUT_ERROR = 'Cart/CHECKOUT_ERROR';
+
+// orders
+export const ORDERS = 'Cart/ORDERS';
+export const ORDERS_REQUEST = 'Cart/ORDERS_REQUEST';
+export const ORDERS_COMPLETED = 'Cart/ORDERS_COMPLETED';
+export const ORDERS_ERROR = 'Cart/ORDERS_ERROR';

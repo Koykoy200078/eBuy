@@ -6,6 +6,8 @@ import {userLogout} from '../apps/reducers/auth/authLogout';
 import {resetLogin} from '../apps/reducers/auth/authLogin';
 import {resetRegister} from '../apps/reducers/auth/authRegister';
 import {resetProductData} from '../apps/reducers/product/productIndex';
+import {getCartCount} from '../apps/reducers/cartCount';
+import {getWishlistCount} from '../apps/reducers/wishlistCount';
 
 const AuthContext = createContext();
 const AuthProvider = props => {
@@ -25,6 +27,20 @@ const AuthProvider = props => {
   useEffect(() => {
     checkLogin();
   }, [getIndex]);
+
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     if (authLogin) {
+  //       dispatch(getCartCount());
+  //       dispatch(getWishlistCount());
+  //       console.log('has user');
+  //     } else {
+  //       console.log('no user');
+  //     }
+  //   }, 3000);
+
+  //   return () => clearInterval(intervalId);
+  // }, []);
 
   function checkLogin() {
     setUser(authLogin);

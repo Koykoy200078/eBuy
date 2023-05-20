@@ -40,6 +40,8 @@ import {resetChangePassword} from '../../apps/reducers/changepass';
 import {resetWishlistAdd} from '../../apps/reducers/wishlistAdd';
 import {resetWishlistRemove} from '../../apps/reducers/wishlistRemove';
 import {removeCartReset} from '../../apps/reducers/cartRemove';
+import {resetCheckOut} from '../../apps/reducers/checkout';
+import {getOrders, resetOrders} from '../../apps/reducers/orders';
 
 export default function ({navigation}) {
   const session = useSelector(state => state.authLogin.userData);
@@ -47,6 +49,7 @@ export default function ({navigation}) {
   const getwishlistCount = useSelector(state => state.wishlistCount.data);
   const getUserSellCount = useSelector(state => state.userItemCount.data);
   const {user} = useSelector(state => state.userData.data);
+  const {orders} = useSelector(state => state.orders.data);
 
   const dispatch = useDispatch();
 
@@ -71,6 +74,8 @@ export default function ({navigation}) {
     dispatch(resetWishlistAdd());
     dispatch(resetWishlistRemove());
     dispatch(removeCartReset());
+    dispatch(resetCheckOut());
+    dispatch(resetOrders());
   };
 
   useEffect(() => {
@@ -81,6 +86,8 @@ export default function ({navigation}) {
     dispatch(getWishlistCount());
     dispatch(getUserItemCount());
     dispatch(getWishlistItemsShow());
+
+    dispatch(getOrders());
   }, []);
 
   const renderProfile = () => {
@@ -218,6 +225,41 @@ export default function ({navigation}) {
                     </Text>
                   </View>
                 ) : null}
+              </View>
+
+              <View>
+                <Icons.FontAwesome name="angle-right" size={20} />
+              </View>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigation.navigate(ROUTES.ORDERS)}>
+            <View className="flex-row w-[100%] h-fit items-center justify-between p-2">
+              <View className="flex-row items-center justify-center">
+                <View className="w-[30] h-[30] items-center justify-center">
+                  <Image
+                    source={IMAGES.peso}
+                    style={{
+                      width: 25,
+                      height: 25,
+                    }}
+                  />
+                </View>
+
+                <Text
+                  className="mx-2 text-base font-bold"
+                  style={{color: COLORS.textColor}}>
+                  My Orders
+                </Text>
+                {/* {getUserSellCount && getUserSellCount.productCount > 0 ? (
+                  <View className="rounded-full bg-red-500 w-5 items-center">
+                    <Text
+                      className="font-bold"
+                      style={{color: COLORS.textWhite}}>
+                      {getUserSellCount.productCount}
+                    </Text>
+                  </View>
+                ) : null} */}
               </View>
 
               <View>

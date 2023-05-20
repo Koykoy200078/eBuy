@@ -16,6 +16,7 @@ export default {
   SELL: 'Sell',
   SELL_FORM: 'SellForm',
   CHECKOUT: 'Checkout',
+  ORDERS: 'Orders',
   SUCCESS: 'Success',
 
   PRODUCT_DETAILS: 'Product Details',

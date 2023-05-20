@@ -83,7 +83,6 @@ export function* updateUserInfo(payload) {
     '&storename=' +
     storename;
 
-  // console.log('url ===> ', url);
   const auth = yield select(state => state.authLogin.userData.access_token);
   const options = {
     method: 'PUT',
@@ -108,7 +107,6 @@ export function* updateUserInfo(payload) {
 // change password
 export function* changeUserPassword(payload) {
   const {current_password, password} = payload;
-  console.log('payload ===> ', payload);
 
   const auth = yield select(state => state.authLogin.userData.access_token);
   const url =

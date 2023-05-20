@@ -23,10 +23,28 @@ export default function ({navigation}) {
   const [address, setAddress] = useState(null);
   const [zipCode, setZipCode] = useState(null);
 
-  console.log('data ===> ', fullName, phoneNumber, address, zipCode, storeName);
   const saveInfo = () => {
-  //  Alert.alert('Update Profile?', '')
-    Alert.alert
+    Alert.alert('Save Info', 'Are you sure you want to save this info?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: () => {
+          dispatch(
+            getUserUpdateData({
+              username: fullName ? fullName : data.username,
+              storename: storeName ? storeName : data.storename,
+              phone: phoneNumber ? phoneNumber : data.phone,
+              pin_code: zipCode ? zipCode : data.pin_code,
+              address: address ? address : data.address,
+            }),
+          );
+        },
+      },
+    ]);
   };
 
   const resetFormFields = () => {
@@ -47,6 +65,7 @@ export default function ({navigation}) {
           showSuccess({
             message: message,
           });
+          navigation.goBack();
           break;
         case message.pin_code:
           showError({
