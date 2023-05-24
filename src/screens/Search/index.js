@@ -22,6 +22,7 @@ export default function ({
           value={value}
           onChangeText={onChangeText}
           style={{color: COLORS.textColor}}
+          placeholderTextColor={COLORS.textColor}
         />
       </View>
 

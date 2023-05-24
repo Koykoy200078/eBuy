@@ -31,24 +31,28 @@ export default function ({navigation}) {
           message: 'New Password and Confirm Password does not match',
         });
       } else {
-        Alert.alert('Info', 'Are you sure you want to change password?', [
-          {
-            text: 'Cancel',
-            onPress: () => {},
-            style: 'cancel',
-          },
-          {
-            text: 'Yes',
-            onPress: () => {
-              dispatch(
-                changePassword({
-                  current_password: oldPassword,
-                  password: newPassword,
-                }),
-              );
+        Alert.alert(
+          'Change Password',
+          'Are you sure you want to change password?',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => console.log('Cancel Pressed'),
+              style: 'cancel',
             },
-          },
-        ]);
+            {
+              text: 'Yes',
+              onPress: () => {
+                dispatch(
+                  changePassword({
+                    current_password: oldPassword,
+                    password: newPassword,
+                  }),
+                );
+              },
+            },
+          ],
+        );
       }
     } else {
       showError({

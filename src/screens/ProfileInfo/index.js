@@ -109,6 +109,7 @@ export default function ({navigation}) {
               color: COLORS.textColor,
             }}
             placeholder={data ? data.username : 'Enter your full name'}
+            placeholderTextColor={COLORS.textColor}
             value={fullName}
             onChangeText={val => setFullName(val)}
           />
@@ -124,6 +125,7 @@ export default function ({navigation}) {
               color: COLORS.textColor,
             }}
             placeholder={data ? data.storename : 'Enter your store name'}
+            placeholderTextColor={COLORS.textColor}
             value={storeName}
             onChangeText={val => setStoreName(val)}
           />
@@ -158,6 +160,7 @@ export default function ({navigation}) {
                 color: COLORS.textColor,
               }}
               placeholder={data ? data.phone : 'Enter your phone number'}
+              placeholderTextColor={COLORS.textColor}
               value={phoneNumber}
               onChangeText={val => setPhoneNumber(val)}
               keyboardType="numeric"
@@ -193,6 +196,7 @@ export default function ({navigation}) {
               color: COLORS.textColor,
             }}
             placeholder={data ? data.address : 'Enter your Delivery Address'}
+            placeholderTextColor={COLORS.textColor}
             value={address}
             onChangeText={val => setAddress(val)}
           />

@@ -127,7 +127,8 @@ const TabBar = () => {
         name={ROUTES.CART}
         component={Cart}
         options={{
-          tabBarBadge: getCount && getCount.cart_count,
+          tabBarBadge:
+            getCount && getCount.cart_count > 0 ? getCount.cart_count : null,
         }}
       />
       <Tab.Screen name={ROUTES.ACCOUNT} component={Account} />

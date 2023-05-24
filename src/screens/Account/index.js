@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -54,28 +55,47 @@ export default function ({navigation}) {
   const dispatch = useDispatch();
 
   const onLogout = () => {
-    dispatch(userLogout());
-    dispatch(resetLogin());
-    dispatch(resetRegister());
-    dispatch(resetProductData());
-    dispatch(resetCategoryData());
-    dispatch(resetProductDetailsData());
-    dispatch(resetSelectedCategoryData());
-    dispatch(resetCartCount());
-    dispatch(resetWishlistCount());
-    dispatch(resetUserItemCount());
-    dispatch(resetWishlistItemsShow());
-    dispatch(resetUserData());
-    dispatch(resetCartData());
-    dispatch(resetCartItemIncrement());
-    dispatch(resetCartItemDecrement());
-    dispatch(resetMyProductsData());
-    dispatch(resetChangePassword());
-    dispatch(resetWishlistAdd());
-    dispatch(resetWishlistRemove());
-    dispatch(removeCartReset());
-    dispatch(resetCheckOut());
-    dispatch(resetOrders());
+    Alert.alert(
+      'Logout',
+      'Are you sure you want to logout?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {
+          text: 'Logout',
+          onPress: () => {
+            dispatch(userLogout());
+            dispatch(resetLogin());
+            dispatch(resetRegister());
+            dispatch(resetProductData());
+            dispatch(resetCategoryData());
+            dispatch(resetProductDetailsData());
+            dispatch(resetSelectedCategoryData());
+            dispatch(resetCartCount());
+            dispatch(resetWishlistCount());
+            dispatch(resetUserItemCount());
+            dispatch(resetWishlistItemsShow());
+            dispatch(resetUserData());
+            dispatch(resetCartData());
+            dispatch(resetCartItemIncrement());
+            dispatch(resetCartItemDecrement());
+            dispatch(resetMyProductsData());
+            dispatch(resetChangePassword());
+            dispatch(resetWishlistAdd());
+            dispatch(resetWishlistRemove());
+            dispatch(removeCartReset());
+            dispatch(resetCheckOut());
+            dispatch(resetOrders());
+          },
+        },
+      ],
+      {
+        cancelable: true,
+      },
+    );
   };
 
   useEffect(() => {
@@ -102,11 +122,21 @@ export default function ({navigation}) {
           </View>
 
           <View className="w-[100%] p-2 items-center justify-center mt-2">
-            <Text className="text-xl font-bold">{user && user.name}</Text>
-            <Text className="text-base italic">{user && user.email}</Text>
+            <Text
+              className="text-xl font-bold"
+              style={{color: COLORS.textColor}}>
+              {user && user.name}
+            </Text>
+            <Text
+              className="text-base italic"
+              style={{color: COLORS.textColor}}>
+              {user && user.email}
+            </Text>
             <View className="flex-row items-center justify-center mt-2">
               <Image source={IMAGES.verified} style={{width: 19, height: 22}} />
-              <Text className="ml-1 text-sm italic">
+              <Text
+                className="ml-1 text-sm italic"
+                style={{color: COLORS.textColor}}>
                 {user && user.email_verified_at !== null
                   ? 'Account Verified'
                   : 'Account Not Verified'}
@@ -125,7 +155,9 @@ export default function ({navigation}) {
         showsVerticalScrollIndicator={false}>
         {/* Account */}
         <View className="w-[100%] h-fit mb-2">
-          <Text className="text-xs font-bold">ACCOUNT</Text>
+          <Text className="text-xs font-bold" style={{color: COLORS.textColor}}>
+            ACCOUNT
+          </Text>
 
           <TouchableOpacity onPress={() => navigation.navigate(ROUTES.CART)}>
             <View className="flex-row w-[100%] h-fit items-center justify-between p-2">
@@ -263,7 +295,9 @@ export default function ({navigation}) {
 
         {/* Settings */}
         <View className="w-[100%] h-fit mb-2">
-          <Text className="text-xs font-bold">SETTINGS</Text>
+          <Text className="text-xs font-bold" style={{color: COLORS.textColor}}>
+            SETTINGS
+          </Text>
 
           <TouchableOpacity
             onPress={() => navigation.navigate(ROUTES.PROFILE_INFO)}>

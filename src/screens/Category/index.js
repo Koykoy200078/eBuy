@@ -29,6 +29,7 @@ import {categoryData} from '../../apps/reducers/category/categories';
 import {getCartCount} from '../../apps/reducers/cartCount';
 import {getWishlistCount} from '../../apps/reducers/wishlistCount';
 import {resetWishlistAdd, wishlistAdd} from '../../apps/reducers/wishlistAdd';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ({navigation}) {
   const getCategory = useSelector(state => state.category.categoriesData);
@@ -223,7 +224,7 @@ export default function ({navigation}) {
                             />
                           </View>
 
-                          <View className="w-[217] h-[160]">
+                          <View className="w-[227] h-[160]">
                             <View className="absolute top-0 right-0 items-center justify-center w-fit">
                               <View
                                 className="p-1 w-fit rounded-bl-md rounded-tr-md flex-row"
@@ -277,7 +278,9 @@ export default function ({navigation}) {
                                 <Text
                                   className="flex-shrink text-base"
                                   style={{color: COLORS.textColor}}>
-                                  {item.quantity}
+                                  {item.quantity
+                                    ? item.quantity
+                                    : 'No stocks available'}
                                 </Text>
                               </View>
                             </View>

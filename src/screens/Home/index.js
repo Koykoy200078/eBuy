@@ -52,6 +52,7 @@ import {resetWishlistRemove} from '../../apps/reducers/wishlistRemove';
 import {removeCartReset} from '../../apps/reducers/cartRemove';
 import {resetCheckOut} from '../../apps/reducers/checkout';
 import {getOrders, resetOrders} from '../../apps/reducers/orders';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ({navigation}) {
   const {width} = Dimensions.get('window');
@@ -168,7 +169,7 @@ export default function ({navigation}) {
         />
       </View>
 
-      <View className="px-2 mt-2 space-y-2">
+      <View className="px-2 mt-2 space-y-1">
         <View className="flex-row justify-between items-center">
           <Text
             className="text-2xl font-bold italic"
@@ -178,8 +179,8 @@ export default function ({navigation}) {
           <TouchableOpacity
             onPress={() => navigation.navigate(ROUTES.VIEWALL)}
             className="p-2 px-3 border-gray-200 rounded-full"
-            style={{backgroundColor: COLORS.borderColor}}>
-            <Text className="font-bold" style={{color: COLORS.textColor}}>
+            style={{backgroundColor: COLORS.primary}}>
+            <Text className="font-bold" style={{color: COLORS.textWhite}}>
               View All
             </Text>
           </TouchableOpacity>
@@ -187,7 +188,7 @@ export default function ({navigation}) {
 
         <View className="w-full h-[168]" style={{flexDirection: 'row'}}>
           <FlashList
-            data={getIndex?.new_arrival_products}
+            data={getIndex?.trending_products}
             // numColumns={2}
             horizontal
             showsVerticalScrollIndicator={false}
@@ -223,14 +224,19 @@ export default function ({navigation}) {
                         }}
                       />
 
-                      <View className="absolute top-0 right-0 items-center justify-center w-fit">
+                      <View className="absolute top-0 right-0 items-center justify-center w-[56]">
                         <View
-                          className="p-1 w-fit rounded-bl-md rounded-tr-md"
+                          className="p-1 w-full rounded-bl-md rounded-tr-md"
                           style={{backgroundColor: COLORS.accent}}>
                           <Text
                             className="text-xs font-bold"
                             style={{color: COLORS.textColor}}>
                             {roundedPercentageOff}% OFF
+                          </Text>
+                          <Text
+                            className="text-xs font-bold"
+                            style={{color: COLORS.textColor}}>
+                            {item.sold_quantity} Sold
                           </Text>
                         </View>
                       </View>
@@ -265,7 +271,7 @@ export default function ({navigation}) {
         </View>
       </View>
 
-      <View className="px-2 mt-2 space-y-2">
+      <View className="px-2 mt-2 space-y-1">
         <View className="flex-row justify-between items-center">
           <Text
             className="text-2xl font-bold italic"
@@ -275,14 +281,14 @@ export default function ({navigation}) {
           <TouchableOpacity
             onPress={() => navigation.navigate(ROUTES.VIEWALL)}
             className="p-2 px-3 border-gray-200 rounded-full"
-            style={{backgroundColor: COLORS.borderColor}}>
-            <Text className="font-bold" style={{color: COLORS.textColor}}>
+            style={{backgroundColor: COLORS.primary}}>
+            <Text className="font-bold" style={{color: COLORS.textWhite}}>
               View All
             </Text>
           </TouchableOpacity>
         </View>
 
-        <View className="w-full h-[190]">
+        <View className="w-full h-[195]">
           <FlashList
             data={getIndex?.new_arrival_products}
             numColumns={2}
