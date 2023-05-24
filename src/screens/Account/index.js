@@ -233,7 +233,7 @@ export default function ({navigation}) {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => navigation.navigate(ROUTES.ORDERS)}>
+          {/* <TouchableOpacity onPress={() => navigation.navigate(ROUTES.ORDERS)}>
             <View className="flex-row w-[100%] h-fit items-center justify-between p-2">
               <View className="flex-row items-center justify-center">
                 <View className="w-[30] h-[30] items-center justify-center">
@@ -251,22 +251,14 @@ export default function ({navigation}) {
                   style={{color: COLORS.textColor}}>
                   My Orders
                 </Text>
-                {/* {getUserSellCount && getUserSellCount.productCount > 0 ? (
-                  <View className="rounded-full bg-red-500 w-5 items-center">
-                    <Text
-                      className="font-bold"
-                      style={{color: COLORS.textWhite}}>
-                      {getUserSellCount.productCount}
-                    </Text>
-                  </View>
-                ) : null} */}
+                
               </View>
 
               <View>
                 <Icons.FontAwesome name="angle-right" size={20} />
               </View>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         {/* Settings */}

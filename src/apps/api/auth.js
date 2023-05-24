@@ -1,22 +1,46 @@
 import {BASE_URI} from '../configs/url';
 
+// export function* userLogin(payload) {
+//   const options = {
+//     method: 'POST',
+//     headers: {
+//       Accept: 'application/json',
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify({...payload}),
+//   };
+
+//   const response = yield fetch(BASE_URI + '/auth/login', options);
+//   const data = yield response.json();
+
+//   if (response.ok) {
+//     return data;
+//   } else {
+//     return data;
+//   }
+// }
+
 export function* userLogin(payload) {
-  const options = {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({...payload}),
-  };
+  try {
+    const options = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({...payload}),
+    };
 
-  const response = yield fetch(BASE_URI + '/auth/login', options);
-  const data = yield response.json();
+    const response = yield fetch(`${BASE_URI}/auth/login`, options);
+    const data = yield response.json();
 
-  if (response.ok) {
-    return data;
-  } else {
-    return data;
+    if (response.ok) {
+      return data;
+    } else {
+      throw new Error(data.errors);
+    }
+  } catch (error) {
+    throw new Error('An error occurred during login.');
   }
 }
 
@@ -58,21 +82,25 @@ export function* createAccount(payload) {
 }
 
 export function* userLogout(payload) {
-  const options = {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({...payload}),
-  };
+  try {
+    const options = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({...payload}),
+    };
 
-  const response = yield fetch(BASE_URI + '/logout', options);
-  const data = yield response.json();
+    const response = yield fetch(`${BASE_URI}/logout`, options);
+    const data = yield response.json();
 
-  if (response.ok) {
-    return data;
-  } else {
-    return data;
+    if (response.ok) {
+      return data;
+    } else {
+      throw new Error(data.errors);
+    }
+  } catch (error) {
+    throw new Error('An error occurred during logout.');
   }
 }

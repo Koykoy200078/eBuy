@@ -13,24 +13,27 @@ import {userLogin} from '../../api/auth';
 export function* loginUserAsync(action) {
   yield put({type: USER_LOGIN_REQUEST});
 
-  const response = yield call(userLogin, action.payload);
+  try {
+    const response = yield call(userLogin, action.payload);
 
-  if (
-    response &&
-    response.errors?.email ===
-      'Please verify your email first, we have sent you a verification email'
-  ) {
-    yield put({type: USER_LOGIN_ERROR, response});
-  } else if (response && response.errors) {
+    if (
+      response &&
+      response.errors?.email ===
+        'Please verify your email first, we have sent you a verification email'
+    ) {
+      yield put({type: USER_LOGIN_ERROR, response});
+    } else {
+      yield put({type: USER_LOGIN_COMPLETED, response});
+      showSuccess({
+        message: response.message,
+      });
+    }
+  } catch (error) {
     showError({
       message: 'Something went wrong!',
       description: 'Please check your credentials',
     });
-  } else {
-    yield put({type: USER_LOGIN_COMPLETED, response});
-    showSuccess({
-      message: response.message,
-    });
+    yield put({type: USER_LOGIN_ERROR, error});
   }
 }
 

@@ -11,19 +11,26 @@ import {userLogout} from '../../api/auth';
 export function* logoutUserAsync(action) {
   yield put({type: USER_LOGOUT_REQUEST});
 
-  const response = yield call(userLogout, action.payload);
+  try {
+    const response = yield call(userLogout, action.payload);
 
-  if (response !== undefined && response.errors) {
-    yield put({type: USER_LOGOUT_ERROR, response});
+    if (response && response.errors) {
+      yield put({type: USER_LOGOUT_ERROR, response});
+      showError({
+        message: 'Something went wrong!',
+      });
+    } else {
+      yield put({type: USER_LOGOUT_COMPLETED, response});
+      showSuccess({
+        message: 'Logout successful',
+        description: 'You have been logged out successfully',
+      });
+    }
+  } catch (error) {
     showError({
       message: 'Something went wrong!',
     });
-  } else {
-    yield put({type: USER_LOGOUT_COMPLETED, response});
-    showSuccess({
-      message: 'Logout successful',
-      description: 'You have been logged out successfully',
-    });
+    yield put({type: USER_LOGOUT_ERROR, error});
   }
 }
 
