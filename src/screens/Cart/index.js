@@ -27,6 +27,8 @@ import {
 import {showError, showSuccess} from '../../apps/others/helperFunctions';
 import {resetUserData, userData} from '../../apps/reducers/userData';
 import {removeCart, removeCartReset} from '../../apps/reducers/cartRemove';
+import {getCartCount} from '../../apps/reducers/cartCount';
+import {getWishlistCount} from '../../apps/reducers/wishlistCount';
 
 export default function ({navigation}) {
   const {cart} = useSelector(state => state.cartData.data);
@@ -73,6 +75,15 @@ export default function ({navigation}) {
     }
   }, [selectedItems, totalPrice, aa, bb, data, getRemove]);
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      dispatch(getCartCount());
+      dispatch(getWishlistCount());
+    }, 3000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
   const onNavigate = () => {
     if (
       data !== null &&
@@ -103,10 +114,27 @@ export default function ({navigation}) {
   };
 
   const handleCheckBox = cartItemId => {
-    if (selectedItems.includes(cartItemId)) {
-      setSelectedItems(prevItems => prevItems.filter(id => id !== cartItemId));
-    } else {
-      setSelectedItems(prevItems => [...prevItems, cartItemId]);
+    const storeName = cart.find(
+      item => item.cart_item_id === cartItemId,
+    )?.store_name;
+    if (storeName) {
+      // Clear selected items in other stores
+      setSelectedItems(prevItems =>
+        prevItems.filter(id => {
+          const itemStoreName = cart.find(
+            item => item.cart_item_id === id,
+          )?.store_name;
+          return itemStoreName === storeName;
+        }),
+      );
+      // Toggle selected item
+      if (selectedItems.includes(cartItemId)) {
+        setSelectedItems(prevItems =>
+          prevItems.filter(id => id !== cartItemId),
+        );
+      } else {
+        setSelectedItems(prevItems => [...prevItems, cartItemId]);
+      }
     }
   };
 
@@ -121,15 +149,6 @@ export default function ({navigation}) {
   };
 
   // Group items by store name
-  // const groupedCart = cart.reduce((acc, item) => {
-  //   if (!acc[item.store_name]) {
-  //     acc[item.store_name] = [item];
-  //   } else {
-  //     acc[item.store_name].push(item);
-  //   }
-  //   return acc;
-  // }, {});
-
   function groupCartByStore(cart) {
     if (!cart) {
       return {};

@@ -8,51 +8,22 @@ import {
   RefreshControl,
 } from 'react-native';
 import {COLORS, ROUTES} from '../..';
-import ScreenWrapper from '../../components/ScreenWraper';
 import Carousel from 'react-native-reanimated-carousel';
-import {
-  productData,
-  resetProductData,
-} from '../../apps/reducers/product/productIndex';
+import {productData} from '../../apps/reducers/product/productIndex';
 import {useSelector, useDispatch} from 'react-redux';
 import {FlashList} from '@shopify/flash-list';
 
 import {Shadow} from 'react-native-shadow-2';
 
-import {
-  categoryData,
-  resetCategoryData,
-} from '../../apps/reducers/category/categories';
-import {
-  productDetailsData,
-  resetProductDetailsData,
-} from '../../apps/reducers/product/productDetails';
-import {getCartCount, resetCartCount} from '../../apps/reducers/cartCount';
-import {
-  getWishlistCount,
-  resetWishlistCount,
-} from '../../apps/reducers/wishlistCount';
-import {resetUserData, userData, userData2} from '../../apps/reducers/userData';
-import {userLogout} from '../../apps/reducers/auth/authLogout';
-import {resetLogin} from '../../apps/reducers/auth/authLogin';
-import {resetRegister} from '../../apps/reducers/auth/authRegister';
-import {resetSelectedCategoryData} from '../../apps/reducers/categoriesData';
-import {resetUserItemCount} from '../../apps/reducers/userItemCount';
-import {resetWishlistItemsShow} from '../../apps/reducers/wishlistItemShow';
-import {cartData, resetCartData} from '../../apps/reducers/cartData';
-import {resetCartItemIncrement} from '../../apps/reducers/cartIncrement';
-import {resetCartItemDecrement} from '../../apps/reducers/cartDecrement';
-import {
-  myProductsData,
-  resetMyProductsData,
-} from '../../apps/reducers/product/myProduct';
-import {resetChangePassword} from '../../apps/reducers/changepass';
-import {resetWishlistAdd} from '../../apps/reducers/wishlistAdd';
-import {resetWishlistRemove} from '../../apps/reducers/wishlistRemove';
-import {removeCartReset} from '../../apps/reducers/cartRemove';
-import {resetCheckOut} from '../../apps/reducers/checkout';
-import {getOrders, resetOrders} from '../../apps/reducers/orders';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {categoryData} from '../../apps/reducers/category/categories';
+import {productDetailsData} from '../../apps/reducers/product/productDetails';
+import {getCartCount} from '../../apps/reducers/cartCount';
+import {getWishlistCount} from '../../apps/reducers/wishlistCount';
+import {userData, userData2} from '../../apps/reducers/userData';
+import {cartData} from '../../apps/reducers/cartData';
+import {myProductsData} from '../../apps/reducers/product/myProduct';
+import {getOrders} from '../../apps/reducers/orders';
+import {ScrollView} from 'react-native-gesture-handler';
 
 export default function ({navigation}) {
   const {width} = Dimensions.get('window');
@@ -102,31 +73,6 @@ export default function ({navigation}) {
     dispatch(getOrders());
   };
 
-  const onLogout = () => {
-    dispatch(userLogout());
-    dispatch(resetLogin());
-    dispatch(resetRegister());
-    dispatch(resetProductData());
-    dispatch(resetCategoryData());
-    dispatch(resetProductDetailsData());
-    dispatch(resetSelectedCategoryData());
-    dispatch(resetCartCount());
-    dispatch(resetWishlistCount());
-    dispatch(resetUserItemCount());
-    dispatch(resetWishlistItemsShow());
-    dispatch(resetUserData());
-    dispatch(resetCartData());
-    dispatch(resetCartItemIncrement());
-    dispatch(resetCartItemDecrement());
-    dispatch(resetMyProductsData());
-    dispatch(resetChangePassword());
-    dispatch(resetWishlistAdd());
-    dispatch(resetWishlistRemove());
-    dispatch(removeCartReset());
-    dispatch(resetCheckOut());
-    dispatch(resetOrders());
-  };
-
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     loadAll();
@@ -144,7 +90,12 @@ export default function ({navigation}) {
   }, [product_slug, category_slug]);
 
   return (
-    <View className="flex-1 relative" style={{backgroundColor: COLORS.BGColor}}>
+    <ScrollView
+      className="flex-1 relative"
+      style={{backgroundColor: COLORS.BGColor}}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
       <View className="flex-row justify-center items-center rounded-xl mb-2">
         <Carousel
           loop
@@ -176,17 +127,9 @@ export default function ({navigation}) {
             style={{color: COLORS.textColor}}>
             Popular Items
           </Text>
-          <TouchableOpacity
-            onPress={() => navigation.navigate(ROUTES.VIEWALL)}
-            className="p-2 px-3 border-gray-200 rounded-full"
-            style={{backgroundColor: COLORS.primary}}>
-            <Text className="font-bold" style={{color: COLORS.textWhite}}>
-              View All
-            </Text>
-          </TouchableOpacity>
         </View>
 
-        <View className="w-full h-[168]" style={{flexDirection: 'row'}}>
+        <View className="h-[168]" style={{flexDirection: 'row', width: width}}>
           <FlashList
             data={getIndex?.trending_products}
             // numColumns={2}
@@ -194,9 +137,6 @@ export default function ({navigation}) {
             showsVerticalScrollIndicator={false}
             estimatedItemSize={200}
             keyExtractor={item => item.id}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
             renderItem={({item}) => {
               const priceDifference = item.original_price - item.selling_price;
               const percentageOff =
@@ -288,16 +228,13 @@ export default function ({navigation}) {
           </TouchableOpacity>
         </View>
 
-        <View className="w-full h-[195]">
+        <View className="h-[197]" style={{width: width}}>
           <FlashList
             data={getIndex?.new_arrival_products}
             numColumns={2}
             showsVerticalScrollIndicator={false}
             estimatedItemSize={200}
             keyExtractor={item => item.id}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
             renderItem={({item}) => {
               const priceDifference = item.original_price - item.selling_price;
               const percentageOff =
@@ -363,6 +300,6 @@ export default function ({navigation}) {
           />
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }

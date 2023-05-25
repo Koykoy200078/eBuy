@@ -4,6 +4,7 @@ export default {
   accent: '#4EFF92',
   textColor: '#000000',
   textWhite: '#FFFFFF',
+  textGray: '#B9C4CA',
   secondaryTextColor: '#B9C4CA',
   tertiaryTextColor: '#FFFFFF',
   BGColor: '#FFFFFF',

@@ -16,10 +16,15 @@ import {showError, showSuccess} from '../../apps/others/helperFunctions';
 import {addToCart, resetAddToCart} from '../../apps/reducers/cartAddItem';
 import {getCartCount} from '../../apps/reducers/cartCount';
 import {resetWishlistAdd, wishlistAdd} from '../../apps/reducers/wishlistAdd';
+import {ActivityIndicator} from 'react-native-paper';
 
 export default function ({navigation}) {
   const {width} = Dimensions.get('window');
   const getDetails = useSelector(state => state.productDetails.productDetails);
+  const isLoadingAddToCart = useSelector(
+    state => state.productDetails.isLoading,
+  );
+  const isLoadingWishlist = useSelector(state => state.wishlistAdd.isLoading);
   const getCount = useSelector(state => state.cartCount.cart_count);
   const getCartData = useSelector(state => state.cartAddItem.data);
   const getWishlistData = useSelector(state => state.wishlistAdd.data);
@@ -281,7 +286,11 @@ export default function ({navigation}) {
             <View
               className="px-3 justify-center items-center w-[100%] h-12 rounded-md"
               style={{backgroundColor: COLORS.primary}}>
-              <Image source={IMAGES.wishlist_light} className="w-[30] h-8" />
+              {isLoadingWishlist ? (
+                <ActivityIndicator color="#FFFFFF" />
+              ) : (
+                <Image source={IMAGES.wishlist_light} className="w-[30] h-8" />
+              )}
             </View>
           </TouchableOpacity>
         </View>
@@ -294,7 +303,11 @@ export default function ({navigation}) {
               <Text
                 className="text-xl font-bold"
                 style={{color: COLORS.textWhite}}>
-                Add to Cart
+                {isLoadingAddToCart ? (
+                  <ActivityIndicator color="#FFFFFF" />
+                ) : (
+                  'Add to Cart'
+                )}
               </Text>
             </View>
           </TouchableOpacity>

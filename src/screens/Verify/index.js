@@ -12,7 +12,7 @@ export default function ({navigation, route}) {
   useEffect(() => {
     const intervalId = setInterval(() => {
       dispatch(userLogin({email: email, password: password}));
-    }, 5000);
+    }, 10000);
 
     return () => clearInterval(intervalId);
   }, []);
@@ -22,7 +22,9 @@ export default function ({navigation, route}) {
         <View className="flex-col items-center justify-center">
           <Image source={IMAGES.mail} style={{width: width, height: 350}} />
           <View className="p-2">
-            <Text className="text-2xl font-bold text-center">
+            <Text
+              className="text-2xl font-bold text-center"
+              style={{color: COLORS.textColor}}>
               Please verify your email first, we have sent you a verification
               link.
             </Text>

@@ -59,7 +59,11 @@ export default function ({item, index, onPressWishlist, onPressCart}) {
 
               <TouchableOpacity onPress={onPressCart}>
                 <View className="w-8 h-10 items-center justify-center rounded-full">
-                  <Icons.Ionicons name="basket-sharp" size={30} />
+                  <Icons.Ionicons
+                    name="basket-sharp"
+                    size={30}
+                    color={COLORS.textColor}
+                  />
                 </View>
               </TouchableOpacity>
             </View>

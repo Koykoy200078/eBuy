@@ -17,6 +17,8 @@ import {showError} from '../../../apps/others/helperFunctions';
 import {useSelector, useDispatch} from 'react-redux';
 import {resetLogin, userLogin} from '../../../apps/reducers/auth/authLogin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import WebView from 'react-native-webview';
+import ModalPopup from '../../../apps/others/modalPopup';
 
 export default function ({navigation}) {
   const loading = useSelector(state => state.authLogin.isLoading);
@@ -27,6 +29,15 @@ export default function ({navigation}) {
 
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
+
+  const [openGoogle, setOpenGoogle] = useState(false);
+  const [data, setData] = useState('');
+
+  const handleMessage = event => {
+    const message = event.nativeEvent.data;
+    setData(message);
+  };
+  console.log('data ==> ', data);
 
   const dispatch = useDispatch();
 
@@ -56,7 +67,7 @@ export default function ({navigation}) {
     };
 
     getData();
-  }, [errorMsg, success, email, password]);
+  }, [errorMsg, success, email, password, openGoogle, data]);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -72,9 +83,46 @@ export default function ({navigation}) {
       dispatch(userLogin({email, password}));
     }
   };
+
+  function view001(openGoogle) {
+    return (
+      <ModalPopup visible={openGoogle} modalStyle="w-[90%] h-[80%] rounded">
+        <View className="h-full w-full">
+          <View className="flex-row w-fit h-[30] mx-[5] items-center justify-between border-b">
+            <Text
+              className="text-xs font-bold w-fit text-black"
+              numberOfLines={1}
+              ellipsizeMode="tail">
+              Sign in with Google
+            </Text>
+            <View className="justify-between items-end">
+              <TouchableOpacity
+                onPress={() => {
+                  setOpenGoogle(false);
+                }}>
+                <Icons.FontAwesome5 name="times" size={23} color="#000" />
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View className="w-full h-full">
+            <WebView
+              userAgent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.50"
+              source={{uri: 'https://ebuy.soon.it/auth/google/redirect'}}
+              showsVerticalScrollIndicator={false}
+              onMessage={handleMessage}
+              javaScriptEnabled={true}
+              thirdPartyCookiesEnabled={true}
+            />
+          </View>
+        </View>
+      </ModalPopup>
+    );
+  }
+
   return (
     <View className="flex-1" style={{backgroundColor: COLORS.BGColor}}>
-      <SafeAreaView className="flex">
+      <SafeAreaView className="flex mt-4">
         {!success ? (
           <View View className="flex-row justify-start">
             <TouchableOpacity
@@ -95,6 +143,8 @@ export default function ({navigation}) {
         </View>
       </SafeAreaView>
 
+      {view001(openGoogle, setOpenGoogle)}
+
       <ScrollView showsVerticalScrollIndicator={false}>
         <DropShadow
           style={{
@@ -113,64 +163,65 @@ export default function ({navigation}) {
             className="flex-1 px-8 pt-6"
             style={{
               backgroundColor: COLORS.BGColor,
-              borderTopLeftRadius: 50,
-              borderTopRightRadius: 50,
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
             }}>
-            <View className="form space-y-2">
-              <View className="h-fit w-[100%]">
-                <Text
-                  className="text-sm font-bold"
-                  style={{color: COLORS.textColor}}>
-                  Email Address
-                </Text>
+            <View className="space-y-4">
+              <View className="flex-row items-center justify-center h-fit w-[100%]">
+                <View className="ml-[-15] items-center">
+                  <Icons.Ionicons name="at" size={30} color={COLORS.textGray} />
+                </View>
                 <TextInput
-                  className="p-2 rounded-md border h-[50]"
+                  className="ml-2 p-2 border-b h-[50]"
                   style={{
                     color: COLORS.textColor,
+                    width: width - 100,
                   }}
                   placeholder="Enter your email address"
+                  placeholderTextColor={COLORS.textColor}
                   value={email}
                   onChangeText={val => setEmail(val)}
                 />
               </View>
 
-              <View className="h-fit w-[100%]">
-                <Text
-                  className="text-sm font-bold"
-                  style={{color: COLORS.textColor}}>
-                  Password
-                </Text>
-                <View className="flex-row items-center">
-                  <View className="w-[250]">
-                    <TextInput
-                      className="p-2 rounded-md border h-[50]"
-                      style={{
-                        color: COLORS.textColor,
-                      }}
-                      placeholder="Enter your password"
-                      value={password}
-                      onChangeText={val => setPassword(val)}
-                      secureTextEntry={!showPassword}
-                    />
-                  </View>
+              <View className="flex-row items-center justify-center h-fit w-[100%]">
+                <View className="ml-[-15] items-center">
+                  <Icons.Ionicons
+                    name="key"
+                    size={30}
+                    color={COLORS.textGray}
+                  />
+                </View>
 
-                  <View className="mx-4">
-                    <TouchableOpacity onPress={togglePasswordVisibility}>
-                      <Icons.Feather
-                        name={showPassword ? 'eye' : 'eye-off'}
-                        size={24}
-                        color={COLORS.textColor}
-                      />
-                    </TouchableOpacity>
-                  </View>
+                <TextInput
+                  className="ml-2 p-2 border-b h-[50]"
+                  style={{
+                    color: COLORS.textColor,
+                    width: width - 130,
+                  }}
+                  placeholder="Enter your password"
+                  placeholderTextColor={COLORS.textColor}
+                  value={password}
+                  onChangeText={val => setPassword(val)}
+                  secureTextEntry={!showPassword}
+                />
+
+                <View className="mx-1">
+                  <TouchableOpacity onPress={togglePasswordVisibility}>
+                    <Icons.Feather
+                      name={showPassword ? 'eye' : 'eye-off'}
+                      size={24}
+                      color={COLORS.textGray}
+                    />
+                  </TouchableOpacity>
                 </View>
               </View>
 
-              {/* <TouchableOpacity className="flex items-end mb-4">
+              <TouchableOpacity className="flex items-end mb-4">
                 <Text className="font-bold" style={{color: COLORS.textColor}}>
                   Forgot Password?
                 </Text>
-              </TouchableOpacity> */}
+              </TouchableOpacity>
             </View>
 
             <View className="mt-4">
@@ -191,17 +242,16 @@ export default function ({navigation}) {
               style={{color: COLORS.textColor}}>
               OR
             </Text>
-            <View className="flex-row justify-center space-x-12">
+            <View className="flex-row justify-center">
               <TouchableOpacity
-                className="p-2 rounded-2xl"
-                style={{backgroundColor: COLORS.borderColor}}>
+                className="p-2 rounded-2xl flex-row items-center border"
+                onPress={() => setOpenGoogle(true)}>
                 <Image source={IMAGES.google} className="w-8 h-8" />
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                className="p-2 rounded-2xl"
-                style={{backgroundColor: COLORS.borderColor}}>
-                <Image source={IMAGES.facebook} className="w-8 h-8" />
+                <Text
+                  className="text-base font-bold text-center py-3"
+                  style={{color: COLORS.textColor}}>
+                  Google
+                </Text>
               </TouchableOpacity>
             </View>
 

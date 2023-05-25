@@ -34,7 +34,10 @@ export default function ({navigation, route}) {
   const [selectedGender, setSelectedGender] = useState(null);
 
   const dispatch = useDispatch();
-  const {name, email, password} = route.params;
+  // const {name, email, password} = route.params;
+  let name = 'test';
+  let email = '';
+  let password = 'test';
 
   useEffect(() => {
     if (authRegister === true) {
@@ -131,39 +134,44 @@ export default function ({navigation, route}) {
             className="flex-1 px-8 pt-6"
             style={{
               backgroundColor: COLORS.BGColor,
-              borderTopLeftRadius: 50,
-              borderTopRightRadius: 50,
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
             }}>
-            <View className="form space-y-3">
-              <View className="h-fit w-[100%] mb-2">
-                <Text
-                  className="text-sm font-bold"
-                  style={{color: COLORS.textColor}}>
-                  Address
-                </Text>
+            <View className="space-y-4">
+              {/* Address */}
+              <View className="flex-row items-center justify-center h-fit w-[100%]">
+                <View className="ml-[-15] items-center">
+                  <Icons.Ionicons
+                    name="location-outline"
+                    size={30}
+                    color={COLORS.textGray}
+                  />
+                </View>
                 <TextInput
-                  className="p-2 rounded-md border h-[50]"
+                  className="ml-2 p-2 border-b h-[50]"
                   style={{
                     color: COLORS.textColor,
+                    width: width - 100,
                   }}
-                  placeholder="Enter your address"
+                  placeholder="Address"
+                  placeholderTextColor={COLORS.textColor}
                   value={address}
                   onChangeText={val => setAddress(val)}
                 />
               </View>
+
               <View className="flex-row justify-between mb-2">
                 <View className="h-fit w-[60%] mr-1">
                   <Text
                     className="text-sm font-bold"
-                    style={{color: COLORS.textColor}}>
-                    Phone Number
-                  </Text>
+                    style={{color: COLORS.textColor}}></Text>
                   <TextInput
                     className="p-2 rounded-md border h-[50]"
                     style={{
                       color: COLORS.textColor,
                     }}
-                    placeholder="Enter your phone number"
+                    placeholder="Phone Number"
+                    placeholderTextColor={COLORS.textColor}
                     value={phoneNumber}
                     onChangeText={val => setPhoneNumber(val)}
                     keyboardType="numeric"

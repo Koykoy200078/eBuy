@@ -154,6 +154,8 @@ export default function ({navigation}) {
               );
             })}
         </ScrollView>
+
+        <View className="absolute bottom-0 right-0 h-10" />
       </SafeAreaView>
     </View>
   );

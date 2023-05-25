@@ -20,6 +20,7 @@ import {
 import {useSelector, useDispatch} from 'react-redux';
 
 export default function ({navigation}) {
+  const {width, height} = Dimensions.get('window');
   const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
@@ -95,109 +96,120 @@ export default function ({navigation}) {
             className="flex-1 px-8 pt-6"
             style={{
               backgroundColor: COLORS.BGColor,
-              borderTopLeftRadius: 50,
-              borderTopRightRadius: 50,
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
             }}>
-            <View className="form space-y-2">
-              <View className="h-fit w-[100%]">
-                <Text
-                  className="text-sm font-bold"
-                  style={{color: COLORS.textColor}}>
-                  Name
-                </Text>
+            <View className="space-y-4">
+              {/* user */}
+              <View className="flex-row items-center justify-center h-fit w-[100%]">
+                <View className="ml-[-15] items-center">
+                  <Icons.Feather
+                    name="user"
+                    size={30}
+                    color={COLORS.textGray}
+                  />
+                </View>
                 <TextInput
-                  className="p-2 rounded-md border h-[50]"
+                  className="ml-2 p-2 border-b h-[50]"
                   style={{
                     color: COLORS.textColor,
+                    width: width - 100,
                   }}
-                  placeholder="Enter your name"
+                  placeholder="Full Name"
+                  placeholderTextColor={COLORS.textColor}
                   value={name}
                   onChangeText={val => setName(val)}
                 />
               </View>
 
-              <View className="h-fit w-[100%]">
-                <Text
-                  className="text-sm font-bold"
-                  style={{color: COLORS.textColor}}>
-                  Email Address
-                </Text>
+              {/* email */}
+              <View className="flex-row items-center justify-center h-fit w-[100%]">
+                <View className="ml-[-15] items-center">
+                  <Icons.Ionicons name="at" size={30} color={COLORS.textGray} />
+                </View>
                 <TextInput
-                  className="p-2 rounded-md border h-[50]"
+                  className="ml-2 p-2 border-b h-[50]"
                   style={{
                     color: COLORS.textColor,
+                    width: width - 100,
                   }}
-                  placeholder="Enter your email address"
+                  placeholder="Email Address"
+                  placeholderTextColor={COLORS.textColor}
                   value={email}
                   onChangeText={val => setEmail(val)}
                 />
               </View>
 
-              <View className="h-fit w-[100%]">
-                <Text
-                  className="text-sm font-bold"
-                  style={{color: COLORS.textColor}}>
-                  Password
-                </Text>
-                <View className="flex-row items-center">
-                  <View className="w-[250]">
-                    <TextInput
-                      className="p-2 rounded-md border h-[50]"
-                      style={{
-                        color: COLORS.textColor,
-                      }}
-                      placeholder="Enter your password"
-                      value={password}
-                      onChangeText={val => setPassword(val)}
-                      secureTextEntry={!showPassword}
-                    />
-                  </View>
+              {/* password */}
+              <View className="flex-row items-center justify-center h-fit w-[100%]">
+                <View className="ml-[-15] items-center">
+                  <Icons.Ionicons
+                    name="key"
+                    size={30}
+                    color={COLORS.textGray}
+                  />
+                </View>
 
-                  <View className="mx-4">
-                    <TouchableOpacity onPress={togglePasswordVisibility}>
-                      <Icons.Feather
-                        name={showPassword ? 'eye' : 'eye-off'}
-                        size={24}
-                        color={COLORS.textColor}
-                      />
-                    </TouchableOpacity>
-                  </View>
+                <TextInput
+                  className="ml-2 p-2 border-b h-[50]"
+                  style={{
+                    color: COLORS.textColor,
+                    width: width - 130,
+                  }}
+                  placeholder="Password"
+                  placeholderTextColor={COLORS.textColor}
+                  value={password}
+                  onChangeText={val => setPassword(val)}
+                  secureTextEntry={!showPassword}
+                />
+
+                <View className="mx-1">
+                  <TouchableOpacity onPress={togglePasswordVisibility}>
+                    <Icons.Feather
+                      name={showPassword ? 'eye' : 'eye-off'}
+                      size={24}
+                      color={COLORS.textGray}
+                    />
+                  </TouchableOpacity>
                 </View>
               </View>
 
-              <View className="h-fit w-[100%]">
-                <Text
-                  className="text-sm font-bold"
-                  style={{color: COLORS.textColor}}>
-                  Confirm Password
-                </Text>
-                <View className="flex-row items-center">
-                  <View className="w-[250]">
-                    <TextInput
-                      className="p-2 rounded-md border h-[50]"
-                      style={{
-                        color: COLORS.textColor,
-                      }}
-                      onChangeText={val => setConfirmPassword(val)}
-                      secureTextEntry={!showPassword}
-                      placeholder="Confirm your password"
-                    />
-                  </View>
+              {/* confirm password */}
+              <View className="flex-row items-center justify-center h-fit w-[100%]">
+                <View className="ml-[-15] items-center">
+                  <Icons.Ionicons
+                    name="key"
+                    size={30}
+                    color={COLORS.textGray}
+                  />
+                </View>
 
-                  <View className="mx-4">
-                    <TouchableOpacity onPress={togglePasswordVisibility}>
-                      <Icons.Feather
-                        name={showPassword ? 'eye' : 'eye-off'}
-                        size={24}
-                        color={COLORS.textColor}
-                      />
-                    </TouchableOpacity>
-                  </View>
+                <TextInput
+                  className="ml-2 p-2 border-b h-[50]"
+                  style={{
+                    color: COLORS.textColor,
+                    width: width - 130,
+                  }}
+                  placeholder="Confirm Password"
+                  placeholderTextColor={COLORS.textColor}
+                  value={confirmPassword}
+                  onChangeText={val => setConfirmPassword(val)}
+                  secureTextEntry={!showPassword}
+                />
+
+                <View className="mx-1">
+                  <TouchableOpacity onPress={togglePasswordVisibility}>
+                    <Icons.Feather
+                      name={showPassword ? 'eye' : 'eye-off'}
+                      size={24}
+                      color={COLORS.textGray}
+                    />
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>
 
-            <View className="mt-4">
+            <View className="mt-10">
               <TouchableOpacity
                 onPress={() => onRegister()}
                 className="py-3 rounded-xl"
