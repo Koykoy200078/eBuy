@@ -13,15 +13,21 @@ import {
 import {COLORS, IMAGES, ROUTES} from '../../..';
 import {Icons} from '../../../apps/configs/icons';
 import DropShadow from 'react-native-drop-shadow';
-import {showError} from '../../../apps/others/helperFunctions';
+import {showError, showSuccess} from '../../../apps/others/helperFunctions';
 import {useSelector, useDispatch} from 'react-redux';
 import {resetLogin, userLogin} from '../../../apps/reducers/auth/authLogin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import WebView from 'react-native-webview';
 import ModalPopup from '../../../apps/others/modalPopup';
+import {
+  forgotPassword,
+  resetForgot,
+} from '../../../apps/reducers/auth/authForgot';
+import {ActivityIndicator} from 'react-native-paper';
 
 export default function ({navigation}) {
   const loading = useSelector(state => state.authLogin.isLoading);
+  const forgotPass001 = useSelector(state => state.authForgot.data);
   const {errorMsg} = useSelector(state => state.authLogin);
   const {width, height} = Dimensions.get('window');
   const [showPassword, setShowPassword] = useState(false);
@@ -29,15 +35,9 @@ export default function ({navigation}) {
 
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
+  const [forgotPasswd, setForgotPasswd] = useState(null);
 
-  const [openGoogle, setOpenGoogle] = useState(false);
-  const [data, setData] = useState('');
-
-  const handleMessage = event => {
-    const message = event.nativeEvent.data;
-    setData(message);
-  };
-  console.log('data ==> ', data);
+  const [openForgot, setOpenForgot] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -50,6 +50,22 @@ export default function ({navigation}) {
     ) {
       navigation.navigate(ROUTES.VERIFY, {email: email, password: password});
       dispatch(resetLogin());
+    }
+
+    if (forgotPass001?.message === 'Reset link sent to your email') {
+      showSuccess({
+        message: 'Success',
+        description:
+          'Please check your email, we have sent you a link to reset your password',
+      });
+      dispatch(resetForgot());
+      setOpenForgot(false);
+    } else if (forgotPass001?.message === 'Unable to send reset link') {
+      showError({
+        message: 'Something went wrong',
+        description: 'Unable to send reset link',
+      });
+      dispatch(resetForgot());
     }
 
     const getData = async () => {
@@ -67,7 +83,7 @@ export default function ({navigation}) {
     };
 
     getData();
-  }, [errorMsg, success, email, password, openGoogle, data]);
+  }, [errorMsg, success, email, password, data, forgotPass001]);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -84,36 +100,68 @@ export default function ({navigation}) {
     }
   };
 
-  function view001(openGoogle) {
+  const onReset = () => {
+    if (!forgotPasswd) {
+      showError({
+        message: 'Something went wrong',
+        description: 'Please enter email',
+      });
+    } else {
+      dispatch(forgotPassword({email: forgotPasswd}));
+    }
+  };
+
+  function forgotPass(openForgot) {
     return (
-      <ModalPopup visible={openGoogle} modalStyle="w-[90%] h-[80%] rounded">
+      <ModalPopup visible={openForgot} modalStyle="w-[70%] h-[170] rounded">
         <View className="h-full w-full">
           <View className="flex-row w-fit h-[30] mx-[5] items-center justify-between border-b">
             <Text
               className="text-xs font-bold w-fit text-black"
               numberOfLines={1}
               ellipsizeMode="tail">
-              Sign in with Google
+              Forgot Password
             </Text>
             <View className="justify-between items-end">
               <TouchableOpacity
                 onPress={() => {
-                  setOpenGoogle(false);
+                  setOpenForgot(false);
                 }}>
                 <Icons.FontAwesome5 name="times" size={23} color="#000" />
               </TouchableOpacity>
             </View>
           </View>
 
-          <View className="w-full h-full">
-            <WebView
-              userAgent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.50"
-              source={{uri: 'https://ebuy.soon.it/auth/google/redirect'}}
-              showsVerticalScrollIndicator={false}
-              onMessage={handleMessage}
-              javaScriptEnabled={true}
-              thirdPartyCookiesEnabled={true}
-            />
+          <View className="space-y-2 items-center">
+            <View className="flex-row items-center justify-center h-fit w-[100%]">
+              <View className="ml-[-15] items-center">
+                <Icons.Ionicons name="at" size={25} color={COLORS.textGray} />
+              </View>
+              <TextInput
+                className="ml-2 p-2 border-b h-[50]"
+                style={{
+                  color: COLORS.textColor,
+                  width: width - 170,
+                }}
+                placeholder="Enter your email address"
+                placeholderTextColor={COLORS.textColor}
+                value={forgotPasswd}
+                onChangeText={val => setForgotPasswd(val)}
+              />
+            </View>
+
+            <View className="flex-row justify-center mt-[10] p-3 h-fit w-full">
+              <TouchableOpacity
+                onPress={() => onReset()}
+                className="p-3 rounded-md"
+                style={{backgroundColor: COLORS.primary}}>
+                <Text
+                  className="text-md font-bold text-center"
+                  style={{color: COLORS.textWhite}}>
+                  Reset Password
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </ModalPopup>
@@ -143,7 +191,7 @@ export default function ({navigation}) {
         </View>
       </SafeAreaView>
 
-      {view001(openGoogle, setOpenGoogle)}
+      {forgotPass(openForgot, setOpenForgot)}
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <DropShadow
@@ -217,8 +265,12 @@ export default function ({navigation}) {
                 </View>
               </View>
 
-              <TouchableOpacity className="flex items-end mb-4">
-                <Text className="font-bold" style={{color: COLORS.textColor}}>
+              <TouchableOpacity
+                className="flex items-end mb-4"
+                onPress={() => setOpenForgot(true)}>
+                <Text
+                  className="font-bold italic"
+                  style={{color: COLORS.textColor}}>
                   Forgot Password?
                 </Text>
               </TouchableOpacity>
@@ -227,42 +279,24 @@ export default function ({navigation}) {
             <View className="mt-4">
               <TouchableOpacity
                 onPress={() => onLogin()}
-                className="py-3 rounded-xl"
+                className="py-3 rounded-xl items-center"
                 style={{backgroundColor: COLORS.primary}}>
                 <Text
                   className="text-xl font-bold text-center"
                   style={{color: COLORS.textWhite}}>
-                  {loading ? 'Loading . . .' : 'Login'}
-                </Text>
-              </TouchableOpacity>
-            </View>
-
-            <Text
-              className="text-base font-bold text-center py-3"
-              style={{color: COLORS.textColor}}>
-              OR
-            </Text>
-            <View className="flex-row justify-center">
-              <TouchableOpacity
-                className="p-2 rounded-2xl flex-row items-center border"
-                onPress={() => setOpenGoogle(true)}>
-                <Image source={IMAGES.google} className="w-8 h-8" />
-                <Text
-                  className="text-base font-bold text-center py-3"
-                  style={{color: COLORS.textColor}}>
-                  Google
+                  {loading ? <ActivityIndicator color="#FFFFFF" /> : 'Login'}
                 </Text>
               </TouchableOpacity>
             </View>
 
             <View className="flex-row justify-center mt-8">
-              <Text className="font-semibold" style={{color: COLORS.textColor}}>
+              <Text className="italic" style={{color: COLORS.textColor}}>
                 Don't have an account?
               </Text>
               <TouchableOpacity
                 onPress={() => navigation.navigate(ROUTES.REGISTER)}>
                 <Text
-                  className="font-semibold"
+                  className="font-semibold italic"
                   style={{color: COLORS.textColor}}>
                   {'   '}
                   Register

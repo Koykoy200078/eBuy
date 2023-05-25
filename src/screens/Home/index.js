@@ -92,10 +92,7 @@ export default function ({navigation}) {
   return (
     <ScrollView
       className="flex-1 relative"
-      style={{backgroundColor: COLORS.BGColor}}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }>
+      style={{backgroundColor: COLORS.BGColor}}>
       <View className="flex-row justify-center items-center rounded-xl mb-2">
         <Carousel
           loop
@@ -228,13 +225,16 @@ export default function ({navigation}) {
           </TouchableOpacity>
         </View>
 
-        <View className="h-[197]" style={{width: width}}>
+        <View className="h-[200]" style={{width: width}}>
           <FlashList
             data={getIndex?.new_arrival_products}
             numColumns={2}
             showsVerticalScrollIndicator={false}
             estimatedItemSize={200}
             keyExtractor={item => item.id}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
             renderItem={({item}) => {
               const priceDifference = item.original_price - item.selling_price;
               const percentageOff =

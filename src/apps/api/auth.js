@@ -84,3 +84,29 @@ export function* userLogout(payload) {
     throw new Error('An error occurred during logout.');
   }
 }
+
+export function* forgotPassword(payload) {
+  const {email} = payload;
+  const url = BASE_URI + '/auth/forgot/password' + '?email=' + email;
+
+  try {
+    const options = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const response = yield fetch(url, options);
+    const data = yield response.json();
+
+    if (response.ok) {
+      return data;
+    } else {
+      return data;
+    }
+  } catch (error) {
+    throw new Error('An error occurred during login.');
+  }
+}

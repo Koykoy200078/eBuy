@@ -1,54 +1,50 @@
 import {
-  USER_REGISTER,
-  USER_REGISTER_COMPLETED,
-  USER_REGISTER_ERROR,
-  USER_REGISTER_REQUEST,
+  FORGOT_PASSWORD,
+  FORGOT_PASSWORD_COMPLETED,
+  FORGOT_PASSWORD_ERROR,
+  FORGOT_PASSWORD_REQUEST,
 } from '../../api/actions';
 
 const INITIAL_STATE = {
   isLoading: false,
-  success: false,
   data: null,
-  isRegisterError: false,
+  error: false,
 };
 
 export default function reducer(state = INITIAL_STATE, action = {}) {
   switch (action.type) {
-    case USER_REGISTER_REQUEST:
+    case FORGOT_PASSWORD_REQUEST:
       return {
         ...state,
         isLoading: true,
-        isRegisterError: false,
+        error: false,
       };
-    case USER_REGISTER_COMPLETED:
+    case FORGOT_PASSWORD_COMPLETED:
       return {
         ...state,
         isLoading: false,
         data: action.response,
-        success: true,
-        isRegisterError: false,
+        error: false,
       };
-    case USER_REGISTER_ERROR:
+    case FORGOT_PASSWORD_ERROR:
       return {
         ...state,
         isLoading: false,
-        success: false,
-        isRegisterError: true,
         data: null,
+        error: true,
       };
-
-    case 'RESET_REGISTER':
+    case 'RESET_FORGOT':
       return INITIAL_STATE;
     default:
       return state;
   }
 }
 
-export const userRegister = payload => ({
-  type: USER_REGISTER,
+export const forgotPassword = payload => ({
+  type: FORGOT_PASSWORD,
   payload,
 });
 
-export const resetRegister = () => ({
-  type: 'RESET_REGISTER',
+export const resetForgot = () => ({
+  type: 'RESET_FORGOT',
 });

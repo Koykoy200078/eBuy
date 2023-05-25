@@ -20,11 +20,12 @@ import {
 import {useSelector, useDispatch} from 'react-redux';
 import DatePicker from 'react-native-date-picker';
 import {Button, CheckBox} from '@rneui/themed';
-import {RadioButton} from 'react-native-paper';
+import {ActivityIndicator, RadioButton} from 'react-native-paper';
 
 export default function ({navigation, route}) {
   const {width, height} = Dimensions.get('window');
   const authRegister = useSelector(state => state.authRegister.success);
+  const userRegData = useSelector(state => state.authRegister.data);
   const loading = useSelector(state => state.authRegister.isLoading);
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
@@ -34,21 +35,25 @@ export default function ({navigation, route}) {
   const [selectedGender, setSelectedGender] = useState(null);
 
   const dispatch = useDispatch();
-  // const {name, email, password} = route.params;
-  let name = 'test';
-  let email = '';
-  let password = 'test';
+  const {name, email, password} = route.params;
 
   useEffect(() => {
-    if (authRegister === true) {
+    if (userRegData?.status === 'error') {
+      showError({
+        message: 'Something went wrong',
+        description: 'The email has already been taken, or something else',
+      });
+      dispatch(resetRegister());
+    } else if (userRegData?.status === 'success') {
       showSuccess({
-        message: 'Successfully registered',
-        description: 'Check your email for verification',
+        message: 'Success',
+        description:
+          'Your account has been created successfully, Check your email to verify your account',
       });
       dispatch(resetRegister());
       navigation.navigate(ROUTES.LOGIN);
     }
-  }, [authRegister, selectedGender]);
+  }, [authRegister, selectedGender, userRegData]);
 
   const formatDate = date => {
     const day = date.getDate().toString().padStart(2, '0');
@@ -235,12 +240,12 @@ export default function ({navigation, route}) {
 
               <TouchableOpacity
                 onPress={() => onRegister()}
-                className="py-3 rounded-xl"
+                className="py-3 rounded-xl items-center"
                 style={{backgroundColor: COLORS.primary}}>
                 <Text
                   className="text-xl font-bold text-center"
                   style={{color: COLORS.textWhite}}>
-                  {loading ? 'Loading . . .' : 'Register'}
+                  {loading ? <ActivityIndicator color="#FFFFFF" /> : 'Register'}
                 </Text>
               </TouchableOpacity>
             </View>

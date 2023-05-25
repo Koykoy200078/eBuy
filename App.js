@@ -32,6 +32,7 @@ import {resetWishlistRemove} from './src/apps/reducers/wishlistRemove';
 import {removeCartReset} from './src/apps/reducers/cartRemove';
 import {resetCheckOut} from './src/apps/reducers/checkout';
 import {resetOrders} from './src/apps/reducers/orders';
+import {resetForgot} from './src/apps/reducers/auth/authForgot';
 
 const {store, persistor, runSaga} = configureStore();
 
@@ -82,6 +83,7 @@ export default function ({navigation}) {
     store.dispatch(removeCartReset());
     store.dispatch(resetCheckOut());
     store.dispatch(resetOrders());
+    store.dispatch(resetForgot());
 
     store.dispatch(userLogout());
 

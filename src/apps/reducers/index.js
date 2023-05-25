@@ -22,6 +22,7 @@ const authPersistConfig = {
 import authLogin from './auth/authLogin';
 import authRegister from './auth/authRegister';
 import authLogout from './auth/authLogout';
+import authForgot from './auth/authForgot';
 
 import productIndex from './product/productIndex';
 import productDetails from './product/productDetails';
@@ -62,6 +63,7 @@ const rootReducer = combineReducers({
   authLogin: persistReducer(authPersistConfig, authLogin),
   authRegister,
   authLogout,
+  authForgot,
 
   // product
   productIndex,

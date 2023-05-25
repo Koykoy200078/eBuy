@@ -4,6 +4,7 @@ import {all} from 'redux-saga/effects';
 import {loginUser} from './auth/authLogin';
 import {createUserAccount} from './auth/authRegister';
 import {logoutUser} from './auth/authLogout';
+import {forgotUserPassword} from './auth/authForgot';
 
 import {userData, userData2} from './userData';
 
@@ -49,6 +50,7 @@ export default function* rootSaga() {
     loginUser(),
     createUserAccount(),
     logoutUser(),
+    forgotUserPassword(),
 
     // product
     product(),

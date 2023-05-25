@@ -43,6 +43,7 @@ import {resetWishlistRemove} from '../../apps/reducers/wishlistRemove';
 import {removeCartReset} from '../../apps/reducers/cartRemove';
 import {resetCheckOut} from '../../apps/reducers/checkout';
 import {getOrders, resetOrders} from '../../apps/reducers/orders';
+import {resetForgot} from '../../apps/reducers/auth/authForgot';
 
 export default function ({navigation}) {
   const session = useSelector(state => state.authLogin.userData);
@@ -89,6 +90,7 @@ export default function ({navigation}) {
             dispatch(removeCartReset());
             dispatch(resetCheckOut());
             dispatch(resetOrders());
+            dispatch(resetForgot());
           },
         },
       ],

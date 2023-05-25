@@ -26,17 +26,17 @@ export default function ({navigation}) {
       }}>
       <Text
         className="text-center text-sm"
-        style={{fontWeight: 'bold', fontSize: 16}}>
+        style={{fontWeight: 'bold', fontSize: 16, color: COLORS.textColor}}>
         Name
       </Text>
       <Text
         className="text-center text-sm"
-        style={{fontWeight: 'bold', fontSize: 16}}>
+        style={{fontWeight: 'bold', fontSize: 16, color: COLORS.textColor}}>
         Price
       </Text>
       <Text
         className="text-center text-sm"
-        style={{fontWeight: 'bold', fontSize: 16}}>
+        style={{fontWeight: 'bold', fontSize: 16, color: COLORS.textColor}}>
         Status
       </Text>
     </View>
@@ -56,10 +56,12 @@ export default function ({navigation}) {
       <Text
         // numberOfLines={2}
         className="text-center text-sm"
-        style={{flex: 1, fontSize: 16}}>
+        style={{flex: 1, fontSize: 16, color: COLORS.textColor}}>
         {item.name}
       </Text>
-      <Text className="text-center text-sm" style={{flex: 1, fontSize: 16}}>
+      <Text
+        className="text-center text-sm"
+        style={{flex: 1, fontSize: 16, color: COLORS.textColor}}>
         ₱ {item.selling_price}
       </Text>
 
