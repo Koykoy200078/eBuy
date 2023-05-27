@@ -83,7 +83,7 @@ export default function ({navigation}) {
     };
 
     getData();
-  }, [errorMsg, success, email, password, data, forgotPass001]);
+  }, [errorMsg, success, email, password, forgotPass001]);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);

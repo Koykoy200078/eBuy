@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {createStore, applyMiddleware, combineReducers} from 'redux';
 import {persistStore, persistReducer} from 'redux-persist';
-
+import thunk from 'redux-thunk';
 import createSagaMiddleware from 'redux-saga';
 
 const sagaMiddleware = createSagaMiddleware();
@@ -26,6 +26,9 @@ import authForgot from './auth/authForgot';
 
 import productIndex from './product/productIndex';
 import productDetails from './product/productDetails';
+import productSlides from './product/productSlides';
+import productNewArrivals from './product/productNewArrivals';
+import productTrending from './product/productTrending';
 
 import category from './category/categories';
 import category_data from './categoriesData';
@@ -68,6 +71,9 @@ const rootReducer = combineReducers({
   // product
   productIndex,
   productDetails,
+  productSlides,
+  productNewArrivals,
+  productTrending,
 
   category,
   category_data,
@@ -108,7 +114,10 @@ const rootReducer = combineReducers({
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
 
 export default () => {
-  let store = createStore(persistedReducer, applyMiddleware(sagaMiddleware));
+  let store = createStore(
+    persistedReducer,
+    applyMiddleware(sagaMiddleware, thunk),
+  );
   let persistor = persistStore(store);
 
   return {store, persistor, runSaga: sagaMiddleware.run};

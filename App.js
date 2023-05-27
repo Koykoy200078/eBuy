@@ -33,6 +33,7 @@ import {removeCartReset} from './src/apps/reducers/cartRemove';
 import {resetCheckOut} from './src/apps/reducers/checkout';
 import {resetOrders} from './src/apps/reducers/orders';
 import {resetForgot} from './src/apps/reducers/auth/authForgot';
+import {globalResetActions} from './src/globalResetActions';
 
 const {store, persistor, runSaga} = configureStore();
 
@@ -40,7 +41,7 @@ runSaga(rootSaga);
 
 export default function ({navigation}) {
   const backAction = () => {
-    Alert.alert('Confirm', 'Are you sure you want to exit?', [
+    Alert.alert('Exit', 'Are you sure you want to exit?', [
       {
         text: 'Cancel',
         onPress: () => null,
@@ -62,30 +63,7 @@ export default function ({navigation}) {
   }, []);
 
   function logout() {
-    store.dispatch(resetLogin());
-    store.dispatch(resetRegister());
-    store.dispatch(resetProductData());
-    store.dispatch(resetCategoryData());
-    store.dispatch(resetProductDetailsData());
-    store.dispatch(resetSelectedCategoryData());
-    store.dispatch(resetCartCount());
-    store.dispatch(resetWishlistCount());
-    store.dispatch(resetUserItemCount());
-    store.dispatch(resetWishlistItemsShow());
-    store.dispatch(resetUserData());
-    store.dispatch(resetCartData());
-    store.dispatch(resetCartItemIncrement());
-    store.dispatch(resetCartItemDecrement());
-    store.dispatch(resetMyProductsData());
-    store.dispatch(resetChangePassword());
-    store.dispatch(resetWishlistAdd());
-    store.dispatch(resetWishlistRemove());
-    store.dispatch(removeCartReset());
-    store.dispatch(resetCheckOut());
-    store.dispatch(resetOrders());
-    store.dispatch(resetForgot());
-
-    store.dispatch(userLogout());
+    store.dispatch(globalResetActions());
 
     BackHandler.exitApp();
   }

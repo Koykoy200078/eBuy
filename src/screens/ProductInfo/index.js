@@ -17,6 +17,7 @@ import {addToCart, resetAddToCart} from '../../apps/reducers/cartAddItem';
 import {getCartCount} from '../../apps/reducers/cartCount';
 import {resetWishlistAdd, wishlistAdd} from '../../apps/reducers/wishlistAdd';
 import {ActivityIndicator} from 'react-native-paper';
+import SkeletonContent from 'react-native-skeleton-content-nonexpo';
 
 export default function ({navigation}) {
   const {width} = Dimensions.get('window');
@@ -164,114 +165,146 @@ export default function ({navigation}) {
         </View>
       </SafeAreaView>
 
-      <View className="flex items-center">
-        <Image
-          source={
-            getDetails && getDetails.image_url
-              ? {uri: getDetails.image_url}
-              : IMAGES.loading
-          }
-          style={{width: width, height: width / 1.2}}
-        />
+      <View className="flex-1">
+        <SkeletonContent
+          containerStyle={{flex: 1, width: width, height: width / 1.2}}
+          isLoading={isLoadingAddToCart}
+          layout={[
+            {
+              width: width - 24,
+              height: width / 1.2,
+              marginHorizontal: 10,
+              marginVertical: 10,
+            },
+            {
+              width: width - 24,
+              height: width / 5,
+              marginHorizontal: 10,
+              marginVertical: 10,
+            },
+            {
+              width: width - 24,
+              height: width / 5,
+              marginHorizontal: 10,
+              marginVertical: 10,
+            },
+            {
+              width: width - 24,
+              height: width / 5,
+              marginHorizontal: 10,
+              marginVertical: 10,
+            },
+          ]}>
+          <View className="flex items-center">
+            <Image
+              source={
+                getDetails && getDetails.image_url
+                  ? {uri: getDetails.image_url}
+                  : IMAGES.loading
+              }
+              style={{width: width - 24, height: width / 1.2, borderRadius: 8}}
+            />
+          </View>
+
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View className="flex-col justify-between items-start px-2 mt-2 space-y-3">
+              <View className="flex">
+                <Text
+                  className="text-2xl font-bold text-center"
+                  style={{color: COLORS.textColor}}>
+                  {getDetails && getDetails.product
+                    ? getDetails.product.name
+                    : 'Loading . . .'}
+                </Text>
+              </View>
+
+              <View>
+                <View className="flex-row">
+                  <Text
+                    className="text-xl font-bold"
+                    style={{color: COLORS.textColor}}>
+                    ₱{' '}
+                    {getDetails &&
+                      getDetails.product &&
+                      getDetails.product.selling_price}{' '}
+                  </Text>
+                  <Text className="line-through text-sm">
+                    ₱{' '}
+                    {getDetails &&
+                      getDetails.product &&
+                      getDetails.product.original_price}
+                  </Text>
+                </View>
+
+                <Text
+                  className="text-xs font-medium"
+                  style={{color: COLORS.textColor}}>
+                  Tax included
+                </Text>
+              </View>
+
+              <View>
+                <View>
+                  <Text
+                    className="text-base font-extrabold"
+                    style={{color: COLORS.textColor}}>
+                    AVAILABLE COLOR: {selectedColorName}
+                  </Text>
+                </View>
+
+                <View className="flex-row space-x-3">
+                  {getDetails &&
+                    getDetails.product_colors &&
+                    getDetails.product_colors.map(item => {
+                      const borderStyle =
+                        item.product_color_id === selectedColorId
+                          ? greenBorderStyle
+                          : defaultBorderStyle;
+
+                      return (
+                        <TouchableOpacity
+                          key={item.product_color_id}
+                          onPress={() => {
+                            setSelectedColorId(item.product_color_id);
+                            setSelectedColorName(item.color_name);
+                          }}>
+                          <View
+                            className="w-8 h-8 rounded-full"
+                            style={[
+                              borderStyle,
+                              {
+                                backgroundColor: item.color_code,
+                              },
+                            ]}>
+                            <Text className="hidden">1</Text>
+                          </View>
+                        </TouchableOpacity>
+                      );
+                    })}
+                </View>
+              </View>
+
+              <View>
+                <View>
+                  <Text
+                    className="text-xl font-extrabold"
+                    style={{color: COLORS.textColor}}>
+                    Description
+                  </Text>
+                </View>
+
+                <View>
+                  <Text className="text-sm" style={{color: COLORS.textColor}}>
+                    {getDetails &&
+                      getDetails.product &&
+                      getDetails.product.description}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </ScrollView>
+        </SkeletonContent>
       </View>
-
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View className="flex-col justify-between items-start px-2 mt-2 space-y-3">
-          <View className="flex">
-            <Text
-              className="text-2xl font-bold text-center"
-              style={{color: COLORS.textColor}}>
-              {getDetails && getDetails.product
-                ? getDetails.product.name
-                : 'Loading . . .'}
-            </Text>
-          </View>
-
-          <View>
-            <View className="flex-row">
-              <Text
-                className="text-xl font-bold"
-                style={{color: COLORS.textColor}}>
-                ₱{' '}
-                {getDetails &&
-                  getDetails.product &&
-                  getDetails.product.selling_price}{' '}
-              </Text>
-              <Text className="line-through text-sm">
-                ₱{' '}
-                {getDetails &&
-                  getDetails.product &&
-                  getDetails.product.original_price}
-              </Text>
-            </View>
-
-            <Text
-              className="text-xs font-medium"
-              style={{color: COLORS.textColor}}>
-              Tax included
-            </Text>
-          </View>
-
-          <View>
-            <View>
-              <Text
-                className="text-xl font-extrabold"
-                style={{color: COLORS.textColor}}>
-                COLOR: {selectedColorName}
-              </Text>
-            </View>
-
-            <View className="flex-row space-x-3">
-              {getDetails &&
-                getDetails.product_colors &&
-                getDetails.product_colors.map(item => {
-                  const borderStyle =
-                    item.product_color_id === selectedColorId
-                      ? greenBorderStyle
-                      : defaultBorderStyle;
-
-                  return (
-                    <TouchableOpacity
-                      key={item.product_color_id}
-                      onPress={() => {
-                        setSelectedColorId(item.product_color_id);
-                        setSelectedColorName(item.color_name);
-                      }}>
-                      <View
-                        className="w-8 h-8 rounded-full"
-                        style={[
-                          borderStyle,
-                          {
-                            backgroundColor: item.color_code,
-                          },
-                        ]}>
-                        <Text className="hidden">1</Text>
-                      </View>
-                    </TouchableOpacity>
-                  );
-                })}
-            </View>
-          </View>
-
-          <View>
-            <View>
-              <Text
-                className="text-xl font-extrabold"
-                style={{color: COLORS.textColor}}>
-                Description
-              </Text>
-            </View>
-
-            <View>
-              <Text className="text-sm" style={{color: COLORS.textColor}}>
-                {getDetails &&
-                  getDetails.product &&
-                  getDetails.product.description}
-              </Text>
-            </View>
-          </View>
-        </View>
-      </ScrollView>
 
       <View className="flex-row items-center justify-between px-2 my-2">
         <View className="w-2/12">
@@ -286,7 +319,7 @@ export default function ({navigation}) {
             <View
               className="px-3 justify-center items-center w-[100%] h-12 rounded-md"
               style={{backgroundColor: COLORS.primary}}>
-              {isLoadingWishlist ? (
+              {isLoadingAddToCart ? (
                 <ActivityIndicator color="#FFFFFF" />
               ) : (
                 <Image source={IMAGES.wishlist_light} className="w-[30] h-8" />

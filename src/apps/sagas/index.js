@@ -11,6 +11,9 @@ import {userData, userData2} from './userData';
 // Product
 import {product} from './product/productIndex';
 import {productDetails} from './product/productDetails';
+import {productSlides} from './product/productSlides';
+import {productNewArrival} from './product/productNewArrivals';
+import {productTrending} from './product/productTrending';
 
 import {category} from './category/categories';
 import {categoryData} from './categoriesData';
@@ -55,6 +58,9 @@ export default function* rootSaga() {
     // product
     product(),
     productDetails(),
+    productSlides(),
+    productNewArrival(),
+    productTrending(),
 
     // category
     category(),

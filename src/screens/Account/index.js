@@ -44,6 +44,10 @@ import {removeCartReset} from '../../apps/reducers/cartRemove';
 import {resetCheckOut} from '../../apps/reducers/checkout';
 import {getOrders, resetOrders} from '../../apps/reducers/orders';
 import {resetForgot} from '../../apps/reducers/auth/authForgot';
+import {resetProductSlidesData} from '../../apps/reducers/product/productSlides';
+import {resetProductNewArrivalData} from '../../apps/reducers/product/productNewArrivals';
+import {resetProductTrendingData} from '../../apps/reducers/product/productTrending';
+import {globalResetActions} from '../../globalResetActions';
 
 export default function ({navigation}) {
   const session = useSelector(state => state.authLogin.userData);
@@ -68,29 +72,34 @@ export default function ({navigation}) {
         {
           text: 'Logout',
           onPress: () => {
-            dispatch(userLogout());
-            dispatch(resetLogin());
-            dispatch(resetRegister());
-            dispatch(resetProductData());
-            dispatch(resetCategoryData());
-            dispatch(resetProductDetailsData());
-            dispatch(resetSelectedCategoryData());
-            dispatch(resetCartCount());
-            dispatch(resetWishlistCount());
-            dispatch(resetUserItemCount());
-            dispatch(resetWishlistItemsShow());
-            dispatch(resetUserData());
-            dispatch(resetCartData());
-            dispatch(resetCartItemIncrement());
-            dispatch(resetCartItemDecrement());
-            dispatch(resetMyProductsData());
-            dispatch(resetChangePassword());
-            dispatch(resetWishlistAdd());
-            dispatch(resetWishlistRemove());
-            dispatch(removeCartReset());
-            dispatch(resetCheckOut());
-            dispatch(resetOrders());
-            dispatch(resetForgot());
+            // dispatch(userLogout());
+            // dispatch(resetLogin());
+            // dispatch(resetRegister());
+            // dispatch(resetProductData());
+            // dispatch(resetCategoryData());
+            // dispatch(resetProductDetailsData());
+            // dispatch(resetSelectedCategoryData());
+            // dispatch(resetCartCount());
+            // dispatch(resetWishlistCount());
+            // dispatch(resetUserItemCount());
+            // dispatch(resetWishlistItemsShow());
+            // dispatch(resetUserData());
+            // dispatch(resetCartData());
+            // dispatch(resetCartItemIncrement());
+            // dispatch(resetCartItemDecrement());
+            // dispatch(resetMyProductsData());
+            // dispatch(resetChangePassword());
+            // dispatch(resetWishlistAdd());
+            // dispatch(resetWishlistRemove());
+            // dispatch(removeCartReset());
+            // dispatch(resetCheckOut());
+            // dispatch(resetOrders());
+            // dispatch(resetForgot());
+            // dispatch(resetProductSlidesData());
+            // dispatch(resetProductNewArrivalData());
+            // dispatch(resetProductTrendingData());
+
+            dispatch(globalResetActions());
           },
         },
       ],

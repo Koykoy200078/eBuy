@@ -25,16 +25,28 @@ import {myProductsData} from '../../apps/reducers/product/myProduct';
 import {getOrders} from '../../apps/reducers/orders';
 import {ScrollView} from 'react-native-gesture-handler';
 
+import SkeletonContent from 'react-native-skeleton-content-nonexpo';
+import {productSlidesData} from '../../apps/reducers/product/productSlides';
+import {productTrendingData} from '../../apps/reducers/product/productTrending';
+import {productNewArrivalData} from '../../apps/reducers/product/productNewArrivals';
+
 export default function ({navigation}) {
   const {width} = Dimensions.get('window');
-  const data = useSelector(state => state.userData.data2);
   const getIndex = useSelector(state => state.productIndex.productData);
+
+  const {slidesLoading, slidesData} = useSelector(state => state.productSlides);
+  const {newArrivalLoading, newArrivalData} = useSelector(
+    state => state.productNewArrivals,
+  );
+  const {trendingLoading, trendingData} = useSelector(
+    state => state.productTrending,
+  );
+
   const getCategory = useSelector(state => state.category.categoriesData);
 
   const [product_slug, setProductSlug] = useState(null);
   const [category_slug, setCategorySlug] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
-
   const dispatch = useDispatch();
 
   const getProductCategoryName = () => {
@@ -71,6 +83,10 @@ export default function ({navigation}) {
     dispatch(cartData());
     dispatch(myProductsData());
     dispatch(getOrders());
+
+    dispatch(productSlidesData());
+    dispatch(productTrendingData());
+    dispatch(productNewArrivalData());
   };
 
   const onRefresh = useCallback(() => {
@@ -92,29 +108,49 @@ export default function ({navigation}) {
   return (
     <ScrollView
       className="flex-1 relative"
-      style={{backgroundColor: COLORS.BGColor}}>
+      style={{backgroundColor: COLORS.BGColor}}
+      showsVerticalScrollIndicator={false}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
       <View className="flex-row justify-center items-center rounded-xl mb-2">
-        <Carousel
-          loop
-          width={width}
-          height={width / 1.8}
-          autoPlay={true}
-          mode="parallax"
-          modeConfig={{
-            parallaxScrollingScale: 0.88,
-            parallaxScrollingOffset: 50,
+        <SkeletonContent
+          containerStyle={{
+            flex: 1,
+            width: width,
+            height: width / 1.8,
           }}
-          data={getIndex?.sliders}
-          scrollAnimationDuration={1000}
-          renderItem={({item}) => (
-            <View className="flex-1 w-[100%]">
-              <Image
-                source={{uri: item.image_url}}
-                className="w-[100%] h-[100%] rounded-md"
-              />
-            </View>
-          )}
-        />
+          isLoading={slidesLoading || slidesData?.status === 0}
+          layout={[
+            {
+              width: width - 24,
+              height: width / 2,
+              marginHorizontal: 10,
+              marginVertical: 10,
+            },
+          ]}>
+          <Carousel
+            loop
+            width={width}
+            height={width / 1.8}
+            autoPlay={true}
+            mode="parallax"
+            modeConfig={{
+              parallaxScrollingScale: 0.88,
+              parallaxScrollingOffset: 50,
+            }}
+            data={slidesData?.data}
+            scrollAnimationDuration={1000}
+            renderItem={({item}) => (
+              <View className="flex-1 w-[100%]">
+                <Image
+                  source={{uri: item.image_url}}
+                  className="w-[100%] h-[100%] rounded-md"
+                />
+              </View>
+            )}
+          />
+        </SkeletonContent>
       </View>
 
       <View className="px-2 mt-2 space-y-1">
@@ -126,85 +162,107 @@ export default function ({navigation}) {
           </Text>
         </View>
 
-        <View className="h-[168]" style={{flexDirection: 'row', width: width}}>
-          <FlashList
-            data={getIndex?.trending_products}
-            // numColumns={2}
-            horizontal
-            showsVerticalScrollIndicator={false}
-            estimatedItemSize={200}
-            keyExtractor={item => item.id}
-            renderItem={({item}) => {
-              const priceDifference = item.original_price - item.selling_price;
-              const percentageOff =
-                (priceDifference / item.original_price) * 100;
-              const roundedPercentageOff = Math.round(percentageOff);
+        <View className="h-[185]" style={{flexDirection: 'row', width: width}}>
+          <SkeletonContent
+            containerStyle={{
+              flex: 1,
+              width: width,
+              height: 183,
+              flexDirection: 'row',
+            }}
+            isLoading={trendingLoading || trendingData?.status === 0}
+            layout={[
+              {
+                width: 160,
+                height: 160,
+                marginHorizontal: 10,
+                marginVertical: 10,
+                borderRadius: 6,
+              },
+              {
+                width: 160,
+                height: 160,
+                marginHorizontal: 10,
+                marginVertical: 10,
+                borderRadius: 6,
+              },
+            ]}>
+            <FlashList
+              data={trendingData?.data}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              estimatedItemSize={200}
+              keyExtractor={item => item.id}
+              renderItem={({item}) => {
+                const priceDifference =
+                  item.original_price - item.selling_price;
+                const percentageOff =
+                  (priceDifference / item.original_price) * 100;
+                const roundedPercentageOff = Math.round(percentageOff);
 
-              return (
-                <TouchableOpacity
-                  className="flex-1 mt-2 items-center mx-2"
-                  onPress={() => {
-                    setProductSlug(item.slug);
-                    setCategorySlug(item.category_id);
-                  }}>
-                  <Shadow
-                    distance={5}
-                    startColor={COLORS.borderColor}
-                    style={{
-                      borderRadius: 6,
+                return (
+                  <TouchableOpacity
+                    className="flex-1 my-2 items-center mx-2"
+                    onPress={() => {
+                      setProductSlug(item.slug);
+                      setCategorySlug(item.category_id);
                     }}>
-                    <View className="w-full h-full items-center justify-center">
-                      <Image
-                        className="w-[160] h-[160] rounded-md"
-                        source={{
-                          uri: item.image_url,
-                        }}
-                      />
+                    <Shadow
+                      distance={5}
+                      startColor={COLORS.borderColor}
+                      style={{
+                        borderRadius: 6,
+                      }}>
+                      <View className="w-full h-full items-center justify-center">
+                        <Image
+                          className="w-[160] h-[160] rounded-md"
+                          source={{
+                            uri: item.image_url,
+                          }}
+                        />
 
-                      <View className="absolute top-0 right-0 items-center justify-center w-[56]">
+                        <View className="absolute top-0 right-0 items-center justify-center w-[56]">
+                          <View
+                            className="p-1 w-full rounded-bl-md rounded-tr-md"
+                            style={{backgroundColor: COLORS.accent}}>
+                            <Text
+                              className="text-xs font-bold"
+                              style={{color: COLORS.textColor}}>
+                              {roundedPercentageOff}% OFF
+                            </Text>
+                            <Text
+                              className="text-xs font-bold"
+                              style={{color: COLORS.textColor}}>
+                              {item.sold_quantity} Sold
+                            </Text>
+                          </View>
+                        </View>
+
                         <View
-                          className="p-1 w-full rounded-bl-md rounded-tr-md"
-                          style={{backgroundColor: COLORS.accent}}>
+                          style={{
+                            position: 'absolute',
+                            width: 160,
+                            height: 30,
+                            bottom: 0,
+                            padding: 5,
+                            backgroundColor: 'rgba(0,0,0, 0.3)',
+                            borderBottomLeftRadius: 6,
+                            borderBottomRightRadius: 6,
+                          }}>
                           <Text
-                            className="text-xs font-bold"
-                            style={{color: COLORS.textColor}}>
-                            {roundedPercentageOff}% OFF
-                          </Text>
-                          <Text
-                            className="text-xs font-bold"
-                            style={{color: COLORS.textColor}}>
-                            {item.sold_quantity} Sold
+                            style={{color: COLORS.textWhite}}
+                            numberOfLines={1}
+                            ellipsizeMode="tail">
+                            {item.name}
                           </Text>
                         </View>
                       </View>
-
-                      <View
-                        style={{
-                          position: 'absolute',
-                          width: 160,
-                          height: 30,
-                          bottom: 0,
-                          padding: 5,
-                          backgroundColor: 'rgba(0,0,0, 0.3)',
-                          borderBottomLeftRadius: 6,
-                          borderBottomRightRadius: 6,
-                        }}>
-                        <Text
-                          style={{color: COLORS.textWhite}}
-                          numberOfLines={1}
-                          ellipsizeMode="tail">
-                          {item.name}
-                        </Text>
-                      </View>
-                    </View>
-                  </Shadow>
-                </TouchableOpacity>
-              );
-            }}
-            ListFooterComponent={
-              <View className="flex-col justify-center items-center h-2" />
-            }
-          />
+                    </Shadow>
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          </SkeletonContent>
         </View>
       </View>
 
@@ -225,79 +283,102 @@ export default function ({navigation}) {
           </TouchableOpacity>
         </View>
 
-        <View className="h-[200]" style={{width: width}}>
-          <FlashList
-            data={getIndex?.new_arrival_products}
-            numColumns={2}
-            showsVerticalScrollIndicator={false}
-            estimatedItemSize={200}
-            keyExtractor={item => item.id}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-            renderItem={({item}) => {
-              const priceDifference = item.original_price - item.selling_price;
-              const percentageOff =
-                (priceDifference / item.original_price) * 100;
-              const roundedPercentageOff = Math.round(percentageOff);
+        <View className="h-[200]" style={{flexDirection: 'row', width: width}}>
+          <SkeletonContent
+            containerStyle={{
+              flex: 1,
+              width: width,
+              height: 183,
+              flexDirection: 'row',
+            }}
+            isLoading={newArrivalLoading || newArrivalData?.status === 0}
+            layout={[
+              {
+                width: 160,
+                height: 160,
+                marginHorizontal: 10,
+                marginVertical: 10,
+                borderRadius: 6,
+              },
+              {
+                width: 160,
+                height: 160,
+                marginHorizontal: 10,
+                marginVertical: 10,
+                borderRadius: 6,
+              },
+            ]}>
+            <FlashList
+              data={newArrivalData?.data}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              estimatedItemSize={200}
+              keyExtractor={item => item.id}
+              renderItem={({item}) => {
+                const priceDifference =
+                  item.original_price - item.selling_price;
+                const percentageOff =
+                  (priceDifference / item.original_price) * 100;
+                const roundedPercentageOff = Math.round(percentageOff);
 
-              return (
-                <TouchableOpacity
-                  className="flex-1 mt-2 items-center"
-                  onPress={() => {
-                    setProductSlug(item.slug);
-                    setCategorySlug(item.category_id);
-                  }}>
-                  <Shadow
-                    distance={5}
-                    startColor={COLORS.borderColor}
-                    style={{
-                      borderRadius: 6,
+                return (
+                  <TouchableOpacity
+                    className="flex-1 my-2 items-center mx-2"
+                    onPress={() => {
+                      setProductSlug(item.slug);
+                      setCategorySlug(item.category_id);
                     }}>
-                    <View className="w-full h-full items-center justify-center">
-                      <Image
-                        className="w-[160] h-[160] rounded-md"
-                        source={{
-                          uri: item.image_url,
-                        }}
-                      />
+                    <Shadow
+                      distance={5}
+                      startColor={COLORS.borderColor}
+                      style={{
+                        borderRadius: 6,
+                      }}>
+                      <View className="w-full h-full items-center justify-center">
+                        <Image
+                          className="w-[160] h-[160] rounded-md"
+                          source={{
+                            uri: item.image_url,
+                          }}
+                        />
 
-                      <View className="absolute top-0 right-0 items-center justify-center w-fit">
+                        <View className="absolute top-0 right-0 items-center justify-center w-fit">
+                          <View
+                            className="p-1 w-fit rounded-bl-md rounded-tr-md"
+                            style={{backgroundColor: COLORS.accent}}>
+                            <Text
+                              className="text-xs font-bold"
+                              style={{color: COLORS.textColor}}>
+                              {roundedPercentageOff}% OFF
+                            </Text>
+                          </View>
+                        </View>
+
                         <View
-                          className="p-1 w-fit rounded-bl-md rounded-tr-md"
-                          style={{backgroundColor: COLORS.accent}}>
+                          style={{
+                            position: 'absolute',
+                            width: 160,
+                            height: 30,
+                            bottom: 0,
+                            padding: 5,
+                            backgroundColor: 'rgba(0,0,0, 0.3)',
+                            borderBottomLeftRadius: 6,
+                            borderBottomRightRadius: 6,
+                          }}>
                           <Text
-                            className="text-xs font-bold"
-                            style={{color: COLORS.textColor}}>
-                            {roundedPercentageOff}% OFF
+                            style={{color: COLORS.textWhite}}
+                            numberOfLines={1}
+                            ellipsizeMode="tail">
+                            {item.name}
                           </Text>
                         </View>
                       </View>
-
-                      <View
-                        style={{
-                          position: 'absolute',
-                          width: 160,
-                          height: 30,
-                          bottom: 0,
-                          padding: 5,
-                          backgroundColor: 'rgba(0,0,0, 0.3)',
-                          borderBottomLeftRadius: 6,
-                          borderBottomRightRadius: 6,
-                        }}>
-                        <Text
-                          style={{color: COLORS.textWhite}}
-                          numberOfLines={1}
-                          ellipsizeMode="tail">
-                          {item.name}
-                        </Text>
-                      </View>
-                    </View>
-                  </Shadow>
-                </TouchableOpacity>
-              );
-            }}
-          />
+                    </Shadow>
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          </SkeletonContent>
         </View>
       </View>
     </ScrollView>

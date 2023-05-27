@@ -66,3 +66,66 @@ export function* getMyProduct() {
     return data;
   }
 }
+
+export function* getProductSlides() {
+  const auth = yield select(state => state.authLogin.userData.access_token);
+  const options = {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${auth}`,
+    },
+  };
+
+  const response = yield fetch(BASE_URI + '/products/sliders', options);
+  const data = yield response.json();
+
+  if (response.ok) {
+    return data;
+  } else {
+    return data;
+  }
+}
+
+export function* getProductNewArrival() {
+  const auth = yield select(state => state.authLogin.userData.access_token);
+  const options = {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${auth}`,
+    },
+  };
+
+  const response = yield fetch(BASE_URI + '/products/newArrival', options);
+  const data = yield response.json();
+
+  if (response.ok) {
+    return data;
+  } else {
+    return data;
+  }
+}
+
+export function* getProductTrending() {
+  const auth = yield select(state => state.authLogin.userData.access_token);
+  const options = {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${auth}`,
+    },
+  };
+
+  const response = yield fetch(BASE_URI + '/products/trending', options);
+  const data = yield response.json();
+
+  if (response.ok) {
+    return data;
+  } else {
+    return data;
+  }
+}
