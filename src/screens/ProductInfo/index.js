@@ -19,7 +19,7 @@ import {resetWishlistAdd, wishlistAdd} from '../../apps/reducers/wishlistAdd';
 import {ActivityIndicator} from 'react-native-paper';
 import SkeletonContent from 'react-native-skeleton-content-nonexpo';
 
-export default function ({navigation}) {
+export default function ({navigation, routes}) {
   const {width} = Dimensions.get('window');
   const getDetails = useSelector(state => state.productDetails.productDetails);
   const isLoadingAddToCart = useSelector(
@@ -35,6 +35,7 @@ export default function ({navigation}) {
   const [isSuccess, setIsSuccess] = useState(false);
 
   const dispatch = useDispatch();
+
   const APImessage = getCartData?.message;
 
   const addItem = () => {
@@ -56,6 +57,7 @@ export default function ({navigation}) {
 
   useEffect(() => {
     dispatch(getCartCount());
+
     if (isSuccess) {
       dispatch(resetAddToCart());
     }
@@ -253,34 +255,34 @@ export default function ({navigation}) {
                 </View>
 
                 <View className="flex-row space-x-3">
-                  {getDetails &&
-                    getDetails.product_colors &&
-                    getDetails.product_colors.map(item => {
-                      const borderStyle =
-                        item.product_color_id === selectedColorId
-                          ? greenBorderStyle
-                          : defaultBorderStyle;
+                  {getDetails && getDetails.product_colors
+                    ? getDetails.product_colors.map(item => {
+                        const borderStyle =
+                          item.product_color_id === selectedColorId
+                            ? greenBorderStyle
+                            : defaultBorderStyle;
 
-                      return (
-                        <TouchableOpacity
-                          key={item.product_color_id}
-                          onPress={() => {
-                            setSelectedColorId(item.product_color_id);
-                            setSelectedColorName(item.color_name);
-                          }}>
-                          <View
-                            className="w-8 h-8 rounded-full"
-                            style={[
-                              borderStyle,
-                              {
-                                backgroundColor: item.color_code,
-                              },
-                            ]}>
-                            <Text className="hidden">1</Text>
-                          </View>
-                        </TouchableOpacity>
-                      );
-                    })}
+                        return (
+                          <TouchableOpacity
+                            key={item.product_color_id}
+                            onPress={() => {
+                              setSelectedColorId(item.product_color_id);
+                              setSelectedColorName(item.color_name);
+                            }}>
+                            <View
+                              className="w-8 h-8 rounded-full"
+                              style={[
+                                borderStyle,
+                                {
+                                  backgroundColor: item.color_code,
+                                },
+                              ]}>
+                              <Text className="hidden">1</Text>
+                            </View>
+                          </TouchableOpacity>
+                        );
+                      })
+                    : null}
                 </View>
               </View>
 

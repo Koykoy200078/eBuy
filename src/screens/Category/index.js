@@ -187,7 +187,7 @@ export default function ({navigation}) {
                   className="w-40 h-10 rounded-md items-center justify-center"
                   style={{backgroundColor: COLORS.primary}}>
                   <Text
-                    className="text-center text-base font-bold"
+                    className="text-center text-xs font-bold"
                     style={{color: COLORS.textWhite}}>
                     Clear Search
                   </Text>
@@ -242,13 +242,13 @@ export default function ({navigation}) {
                               </View>
                             </View>
 
-                            <View className="w-full h-[70%] p-2 flex-col">
+                            <View className="w-full h-[70%] p-2 flex-col space-y-2">
                               <View className="h-[20]" />
                               <View className="flex-row">
                                 <Text
-                                  className="flex-shrink font-bold text-base"
+                                  className="flex-shrink font-bold text-xs"
                                   style={{color: COLORS.textColor}}
-                                  numberOfLines={1}
+                                  numberOfLines={4}
                                   ellipsizeMode="tail">
                                   {item.name}
                                 </Text>
@@ -256,13 +256,13 @@ export default function ({navigation}) {
 
                               <View className="flex-row items-center justify-start">
                                 <Text
-                                  className="flex-shrink font-bold text-base"
+                                  className="flex-shrink font-bold text-xs"
                                   style={{color: COLORS.textColor}}>
-                                  Brand:{' '}
+                                  Material Category:{' '}
                                 </Text>
 
                                 <Text
-                                  className="flex-shrink text-base"
+                                  className="flex-shrink text-xs"
                                   style={{color: COLORS.textColor}}>
                                   {item.brand}
                                 </Text>
@@ -270,17 +270,15 @@ export default function ({navigation}) {
 
                               <View className="flex-row items-center justify-start">
                                 <Text
-                                  className="flex-shrink font-bold text-base"
+                                  className="flex-shrink font-bold text-xs"
                                   style={{color: COLORS.textColor}}>
-                                  Stocks:{' '}
+                                  Status:{' '}
                                 </Text>
 
                                 <Text
-                                  className="flex-shrink text-base"
+                                  className="flex-shrink text-xs"
                                   style={{color: COLORS.textColor}}>
-                                  {item.quantity
-                                    ? item.quantity
-                                    : 'No stocks available'}
+                                  {item.quantity_status}
                                 </Text>
                               </View>
                             </View>
@@ -325,8 +323,8 @@ export default function ({navigation}) {
               {getCategory?.categories?.map((item, index) => {
                 let isActive = activeCategory === item.id;
                 let textClass = isActive
-                  ? 'text-base tracking-widest text-base font-bold'
-                  : 'text-base tracking-widest';
+                  ? 'text-xs tracking-widest text-xs font-bold'
+                  : 'text-xs tracking-widest';
 
                 return (
                   <Animatable.View

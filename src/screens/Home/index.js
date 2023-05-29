@@ -32,7 +32,6 @@ import {productNewArrivalData} from '../../apps/reducers/product/productNewArriv
 
 export default function ({navigation}) {
   const {width} = Dimensions.get('window');
-  const getIndex = useSelector(state => state.productIndex.productData);
 
   const {slidesLoading, slidesData} = useSelector(state => state.productSlides);
   const {newArrivalLoading, newArrivalData} = useSelector(
@@ -41,36 +40,21 @@ export default function ({navigation}) {
   const {trendingLoading, trendingData} = useSelector(
     state => state.productTrending,
   );
-
-  const getCategory = useSelector(state => state.category.categoriesData);
-
   const [product_slug, setProductSlug] = useState(null);
   const [category_slug, setCategorySlug] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
 
-  const getProductCategoryName = () => {
-    if (!getCategory || !Array.isArray(getCategory.categories)) {
-      return null;
-    }
-    const category = getCategory.categories.find(c => c.id === category_slug);
-    return category ? category.slug : null;
-  };
-
-  const productCategoryName = getProductCategoryName();
-
   const getInfo = () => {
-    if (productCategoryName && product_slug) {
-      dispatch(
-        productDetailsData({
-          category_slug: productCategoryName,
-          product_slug: product_slug,
-        }),
-      );
-      setProductSlug(null);
-      setCategorySlug(null);
-      navigation.navigate(ROUTES.PRODUCT_DETAILS);
-    }
+    dispatch(
+      productDetailsData({
+        category_slug: category_slug,
+        product_slug: product_slug,
+      }),
+    );
+    setProductSlug(null);
+    setCategorySlug(null);
+    navigation.navigate(ROUTES.PRODUCT_DETAILS);
   };
 
   const loadAll = () => {
@@ -100,7 +84,7 @@ export default function ({navigation}) {
   useEffect(() => {
     loadAll();
 
-    if (productCategoryName) {
+    if (category_slug && product_slug) {
       getInfo();
     }
   }, [product_slug, category_slug]);
@@ -162,7 +146,7 @@ export default function ({navigation}) {
           </Text>
         </View>
 
-        <View className="h-[185]" style={{flexDirection: 'row', width: width}}>
+        <View style={{flexDirection: 'row', width: width, height: 185}}>
           <SkeletonContent
             containerStyle={{
               flex: 1,
@@ -205,7 +189,7 @@ export default function ({navigation}) {
                     className="flex-1 my-2 items-center mx-2"
                     onPress={() => {
                       setProductSlug(item.slug);
-                      setCategorySlug(item.category_id);
+                      setCategorySlug(item.category_slug);
                     }}>
                     <Shadow
                       distance={5}
@@ -230,19 +214,30 @@ export default function ({navigation}) {
                               style={{color: COLORS.textColor}}>
                               {roundedPercentageOff}% OFF
                             </Text>
-                            <Text
-                              className="text-xs font-bold"
-                              style={{color: COLORS.textColor}}>
-                              {item.sold_quantity} Sold
-                            </Text>
                           </View>
+
+                          {item.quantity_status === 'Out of stock' ? (
+                            <View
+                              className="p-1 w-full rounded-bl-md rounded-tl-md mt-1 items-center"
+                              style={{
+                                backgroundColor: COLORS.error,
+                              }}>
+                              <Text
+                                className="text-xs font-bold text-center"
+                                style={{
+                                  color: COLORS.textWhite,
+                                }}>
+                                {item.quantity_status}
+                              </Text>
+                            </View>
+                          ) : null}
                         </View>
 
                         <View
+                          className="h-fit"
                           style={{
                             position: 'absolute',
                             width: 160,
-                            height: 30,
                             bottom: 0,
                             padding: 5,
                             backgroundColor: 'rgba(0,0,0, 0.3)',
@@ -254,6 +249,12 @@ export default function ({navigation}) {
                             numberOfLines={1}
                             ellipsizeMode="tail">
                             {item.name}
+                          </Text>
+                          <Text
+                            style={{color: COLORS.textWhite}}
+                            numberOfLines={1}
+                            ellipsizeMode="tail">
+                            {item.sold_quantity} Item/s Sold
                           </Text>
                         </View>
                       </View>
@@ -283,7 +284,7 @@ export default function ({navigation}) {
           </TouchableOpacity>
         </View>
 
-        <View className="h-[200]" style={{flexDirection: 'row', width: width}}>
+        <View style={{flexDirection: 'row', width: width, height: 200}}>
           <SkeletonContent
             containerStyle={{
               flex: 1,
@@ -326,7 +327,7 @@ export default function ({navigation}) {
                     className="flex-1 my-2 items-center mx-2"
                     onPress={() => {
                       setProductSlug(item.slug);
-                      setCategorySlug(item.category_id);
+                      setCategorySlug(item.category_slug);
                     }}>
                     <Shadow
                       distance={5}
@@ -342,9 +343,9 @@ export default function ({navigation}) {
                           }}
                         />
 
-                        <View className="absolute top-0 right-0 items-center justify-center w-fit">
+                        <View className="absolute top-0 right-0 items-center justify-center w-[56]">
                           <View
-                            className="p-1 w-fit rounded-bl-md rounded-tr-md"
+                            className="p-1 w-full rounded-bl-md rounded-tr-md"
                             style={{backgroundColor: COLORS.accent}}>
                             <Text
                               className="text-xs font-bold"
@@ -352,6 +353,22 @@ export default function ({navigation}) {
                               {roundedPercentageOff}% OFF
                             </Text>
                           </View>
+
+                          {item.quantity_status === 'Out of stock' ? (
+                            <View
+                              className="p-1 w-full rounded-bl-md rounded-tl-md mt-1 items-center"
+                              style={{
+                                backgroundColor: COLORS.error,
+                              }}>
+                              <Text
+                                className="text-xs font-bold text-center"
+                                style={{
+                                  color: COLORS.textWhite,
+                                }}>
+                                {item.quantity_status}
+                              </Text>
+                            </View>
+                          ) : null}
                         </View>
 
                         <View

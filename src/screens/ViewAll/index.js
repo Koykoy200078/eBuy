@@ -24,7 +24,9 @@ import {
 
 export default function ({navigation}) {
   const {width} = Dimensions.get('window');
-  const getIndex = useSelector(state => state.productIndex.productData);
+  const {newArrivalLoading, newArrivalData} = useSelector(
+    state => state.productNewArrivals,
+  );
 
   const getCategory = useSelector(state => state.category.categoriesData);
 
@@ -33,34 +35,22 @@ export default function ({navigation}) {
 
   const dispatch = useDispatch();
 
-  const getProductCategoryName = () => {
-    if (!getCategory || !Array.isArray(getCategory.categories)) {
-      return null;
-    }
-    const category = getCategory.categories.find(c => c.id === category_slug);
-    return category ? category.slug : null;
-  };
-
-  const productCategoryName = getProductCategoryName();
-
   const getInfo = () => {
-    if (productCategoryName && product_slug) {
-      dispatch(
-        productDetailsData({
-          category_slug: productCategoryName,
-          product_slug: product_slug,
-        }),
-      );
-      setProductSlug(null);
-      setCategorySlug(null);
-      navigation.navigate(ROUTES.PRODUCT_DETAILS);
-    }
+    dispatch(
+      productDetailsData({
+        category_slug: category_slug,
+        product_slug: product_slug,
+      }),
+    );
+    setProductSlug(null);
+    setCategorySlug(null);
+    navigation.navigate(ROUTES.PRODUCT_DETAILS);
   };
 
   useEffect(() => {
     dispatch(getWishlistItemsShow());
 
-    if (productCategoryName) {
+    if (category_slug && product_slug) {
       getInfo();
     }
   }, [product_slug, category_slug]);
@@ -92,14 +82,14 @@ export default function ({navigation}) {
         </View>
 
         <ScrollView className="py-2" showsVerticalScrollIndicator={false}>
-          {getIndex &&
-            getIndex.new_arrival_products.map(item => {
+          {newArrivalData &&
+            newArrivalData.data.map(item => {
               return (
                 <TouchableOpacity
                   key={item.id}
                   onPress={() => {
                     setProductSlug(item.slug);
-                    setCategorySlug(item.id);
+                    setCategorySlug(item.category_slug);
                   }}>
                   <View className="p-2">
                     <Shadow
@@ -136,14 +126,24 @@ export default function ({navigation}) {
 
                           <View className="w-full h-[100%] p-2 flex-col">
                             <View className="h-[35]" />
-                            <View className="flex-row items-center justify-center">
-                              <Text
-                                className="flex-shrink font-bold text-base"
-                                style={{color: COLORS.textColor}}
-                                numberOfLines={3}
-                                ellipsizeMode="tail">
-                                {item.name}
-                              </Text>
+                            <View className="flex-col">
+                              <View className="flex-row">
+                                <Text
+                                  className="flex-shrink font-bold text-xs"
+                                  style={{color: COLORS.textColor}}
+                                  numberOfLines={4}
+                                  ellipsizeMode="tail">
+                                  {item.name}
+                                </Text>
+                              </View>
+
+                              <View className="flex-row my-3">
+                                <Text
+                                  className="flex-shrink font-bold text-xs"
+                                  style={{color: COLORS.textColor}}>
+                                  Status: {item.quantity_status}
+                                </Text>
+                              </View>
                             </View>
                           </View>
                         </View>

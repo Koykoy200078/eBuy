@@ -72,33 +72,7 @@ export default function ({navigation}) {
         {
           text: 'Logout',
           onPress: () => {
-            // dispatch(userLogout());
-            // dispatch(resetLogin());
-            // dispatch(resetRegister());
-            // dispatch(resetProductData());
-            // dispatch(resetCategoryData());
-            // dispatch(resetProductDetailsData());
-            // dispatch(resetSelectedCategoryData());
-            // dispatch(resetCartCount());
-            // dispatch(resetWishlistCount());
-            // dispatch(resetUserItemCount());
-            // dispatch(resetWishlistItemsShow());
-            // dispatch(resetUserData());
-            // dispatch(resetCartData());
-            // dispatch(resetCartItemIncrement());
-            // dispatch(resetCartItemDecrement());
-            // dispatch(resetMyProductsData());
-            // dispatch(resetChangePassword());
-            // dispatch(resetWishlistAdd());
-            // dispatch(resetWishlistRemove());
-            // dispatch(removeCartReset());
-            // dispatch(resetCheckOut());
-            // dispatch(resetOrders());
-            // dispatch(resetForgot());
-            // dispatch(resetProductSlidesData());
-            // dispatch(resetProductNewArrivalData());
-            // dispatch(resetProductTrendingData());
-
+            Symbol;
             dispatch(globalResetActions());
           },
         },
@@ -315,22 +289,20 @@ export default function ({navigation}) {
             <View className="flex-row w-[100%] h-fit items-center justify-between p-2">
               <View className="flex-row items-center">
                 <View className="w-[30] h-[30] items-center justify-center">
-                  <Icons.FontAwesome
-                    name="user"
-                    size={20}
-                    color={COLORS.primary}
+                  <Image
+                    source={IMAGES.user_details}
+                    style={{
+                      width: 35,
+                      height: 28,
+                    }}
                   />
                 </View>
 
                 <Text
-                  className="text-base font-bold"
+                  className="mx-3 text-base font-bold"
                   style={{color: COLORS.textColor}}>
                   User Details
                 </Text>
-              </View>
-
-              <View>
-                <Icons.FontAwesome name="angle-right" size={20} />
               </View>
             </View>
           </TouchableOpacity>
@@ -339,22 +311,21 @@ export default function ({navigation}) {
             <View className="flex-row w-[100%] h-fit items-center justify-between p-2">
               <View className="flex-row items-center">
                 <View className="w-[30] h-[30] items-center justify-center">
-                  <Icons.Ionicons
-                    name="key-outline"
-                    size={20}
-                    color={COLORS.primary}
+                  <Image
+                    source={IMAGES.change_password}
+                    resizeMode="contain"
+                    style={{
+                      width: 35,
+                      height: 30,
+                    }}
                   />
                 </View>
 
                 <Text
-                  className="text-base font-bold"
+                  className="mx-3 text-base font-bold"
                   style={{color: COLORS.textColor}}>
                   Change Password
                 </Text>
-              </View>
-
-              <View>
-                <Icons.FontAwesome name="angle-right" size={20} />
               </View>
             </View>
           </TouchableOpacity>
@@ -362,22 +333,21 @@ export default function ({navigation}) {
             <View className="flex-row w-[100%] h-fit items-center justify-between p-2">
               <View className="flex-row items-center">
                 <View className="w-[30] h-[30] items-center justify-center">
-                  <Icons.MaterialIcons
-                    name="logout"
-                    size={20}
-                    color={COLORS.primary}
+                  <Image
+                    source={IMAGES.logout}
+                    resizeMode="contain"
+                    style={{
+                      width: 35,
+                      height: 30,
+                    }}
                   />
                 </View>
 
                 <Text
-                  className="text-base font-bold"
+                  className="mx-3 text-base font-bold"
                   style={{color: COLORS.textColor}}>
                   Logout
                 </Text>
-              </View>
-
-              <View>
-                <Icons.FontAwesome name="angle-right" size={20} />
               </View>
             </View>
           </TouchableOpacity>

@@ -21,4 +21,7 @@ export default {
   mail: require('../../../assets/images/mail.gif'),
   verified: require('../../../assets/images/verified.png'),
   user: require('../../../assets/images/default.png'),
+  user_details: require('../../../assets/images/user_details.png'),
+  change_password: require('../../../assets/images/change_password.png'),
+  logout: require('../../../assets/images/logout.png'),
 };

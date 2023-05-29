@@ -25,24 +25,28 @@ export function* getProduct() {
 export function* getProductDetails(payload) {
   const {category_slug, product_slug} = payload;
   const url = BASE_URI + '/products/' + category_slug + '/' + product_slug;
-
   const auth = yield select(state => state.authLogin.userData.access_token);
-  const options = {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${auth}`,
-    },
-  };
 
-  const response = yield fetch(url, options);
-  const data = yield response.json();
+  try {
+    const options = {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${auth}`,
+      },
+    };
 
-  if (response.ok) {
-    return data;
-  } else {
-    return data;
+    const response = yield fetch(url, options);
+    const data = yield response.json();
+
+    if (response.ok) {
+      return data;
+    } else {
+      throw new Error(data.errors);
+    }
+  } catch (error) {
+    throw new Error('An error occurred.');
   }
 }
 

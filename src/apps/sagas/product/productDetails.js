@@ -12,15 +12,22 @@ import {getProductDetails} from '../../api/product';
 export function* productDetailsAsync(action) {
   yield put({type: PRODUCT_DETAILS_DATA_REQUEST});
 
-  const response = yield call(getProductDetails, action.payload);
+  try {
+    const response = yield call(getProductDetails, action.payload);
 
-  if (response !== undefined && response.errors) {
-    yield put({type: PRODUCT_DETAILS_DATA_ERROR, response});
+    if (response !== undefined && response.errors) {
+      yield put({type: PRODUCT_DETAILS_DATA_ERROR, response});
+      showError({
+        message: 'Something went wrong!',
+      });
+    } else {
+      yield put({type: PRODUCT_DETAILS_DATA_COMPLETED, response});
+    }
+  } catch (error) {
     showError({
       message: 'Something went wrong!',
     });
-  } else {
-    yield put({type: PRODUCT_DETAILS_DATA_COMPLETED, response});
+    yield put({type: PRODUCT_DETAILS_DATA_ERROR, response});
   }
 }
 
