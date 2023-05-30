@@ -13,7 +13,13 @@ const AuthContext = createContext();
 const AuthProvider = props => {
   const authLogin = useSelector(state => state.authLogin.userData);
 
-  const getIndex = useSelector(state => state.productIndex.productData);
+  const {slidesLoading, slidesData} = useSelector(state => state.productSlides);
+  const {newArrivalLoading, newArrivalData} = useSelector(
+    state => state.productNewArrivals,
+  );
+  const {trendingLoading, trendingData} = useSelector(
+    state => state.productTrending,
+  );
   const [user, setUser] = useState(null);
 
   const dispatch = useDispatch();
@@ -26,7 +32,7 @@ const AuthProvider = props => {
 
   useEffect(() => {
     checkLogin();
-  }, [getIndex]);
+  }, [slidesData, newArrivalData, trendingData]);
 
   // useEffect(() => {
   //   const intervalId = setInterval(() => {
@@ -46,8 +52,12 @@ const AuthProvider = props => {
     setUser(authLogin);
 
     if (
-      getIndex?.message === 'Unauthenticated' ||
-      getIndex?.message === 'Unauthenticated.'
+      (slidesData?.message === 'Unauthenticated' &&
+        newArrivalData?.message === 'Unauthenticated' &&
+        trendingData?.message === 'Unauthenticated') ||
+      (slidesData?.message === 'Unauthenticated.' &&
+        newArrivalData?.message === 'Unauthenticated.' &&
+        trendingData?.message === 'Unauthenticated.')
     ) {
       Alert.alert('Session Expired', 'Please login again', [
         {

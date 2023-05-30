@@ -173,7 +173,7 @@ export default function ({navigation}) {
       <SafeAreaView className="flex-1">
         <View className="my-1 space-y-2">
           <Text
-            className="mx-4 text-2xl font-medium italic"
+            className="mx-4 text-2xl font-bold italic"
             style={{color: COLORS.textColor}}>
             My Cart
           </Text>

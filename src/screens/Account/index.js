@@ -231,7 +231,7 @@ export default function ({navigation}) {
                 <Text
                   className="mx-2 text-base font-bold"
                   style={{color: COLORS.textColor}}>
-                  Sell
+                  My Products
                 </Text>
                 {getUserSellCount && getUserSellCount.productCount > 0 ? (
                   <View className="rounded-full bg-red-500 w-5 items-center">

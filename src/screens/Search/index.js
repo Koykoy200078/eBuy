@@ -2,13 +2,15 @@ import {View, Text, TextInput, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {COLORS} from '../..';
 import {Icons} from '../../apps/configs/icons';
+import {ActivityIndicator} from 'react-native-paper';
 
 export default function ({
   placeholder,
   value,
   onChangeText,
   onPressButton,
-  icons,
+  // icons,
+  searchLoading,
 }) {
   return (
     <View className="mx-4 flex-row justify-between items-center space-x-3">
@@ -26,12 +28,20 @@ export default function ({
         />
       </View>
 
-      <TouchableOpacity
-        onPress={onPressButton}
-        className="rounded-2xl p-4"
-        style={{backgroundColor: COLORS.borderColor}}>
-        <Icons.FontAwesome name={icons} size={20} color={COLORS.textColor} />
-      </TouchableOpacity>
+      {searchLoading ? (
+        <View
+          className="rounded-2xl p-3"
+          style={{backgroundColor: COLORS.borderColor}}>
+          <ActivityIndicator size="small" color={COLORS.primary} />
+        </View>
+      ) : (
+        <TouchableOpacity
+          onPress={onPressButton}
+          className="rounded-2xl p-4"
+          style={{backgroundColor: COLORS.borderColor}}>
+          <Icons.FontAwesome name={'send'} size={20} color={COLORS.textColor} />
+        </TouchableOpacity>
+      )}
     </View>
   );
 }

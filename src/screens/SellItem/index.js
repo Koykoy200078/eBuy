@@ -98,7 +98,7 @@ export default function ({navigation}) {
           </TouchableOpacity>
 
           <Text
-            className="mx-4 text-2xl font-medium italic"
+            className="mx-4 text-2xl font-bold italic"
             style={{color: COLORS.textColor}}>
             My Products
           </Text>

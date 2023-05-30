@@ -104,7 +104,7 @@ export default function ({navigation}) {
             width: width,
             height: width / 1.8,
           }}
-          isLoading={slidesLoading || slidesData?.status === 0}
+          isLoading={slidesLoading || (slidesData && slidesData?.status === 0)}
           layout={[
             {
               width: width - 24,
@@ -154,18 +154,20 @@ export default function ({navigation}) {
               height: 183,
               flexDirection: 'row',
             }}
-            isLoading={trendingLoading || trendingData?.status === 0}
+            isLoading={
+              trendingLoading || (trendingData && trendingData?.status === 0)
+            }
             layout={[
               {
                 width: 160,
-                height: 160,
+                height: 167,
                 marginHorizontal: 10,
                 marginVertical: 10,
                 borderRadius: 6,
               },
               {
                 width: 160,
-                height: 160,
+                height: 167,
                 marginHorizontal: 10,
                 marginVertical: 10,
                 borderRadius: 6,
@@ -199,7 +201,7 @@ export default function ({navigation}) {
                       }}>
                       <View className="w-full h-full items-center justify-center">
                         <Image
-                          className="w-[160] h-[160] rounded-md"
+                          className="w-[160] h-[167] rounded-md"
                           source={{
                             uri: item.image_url,
                           }}
@@ -284,7 +286,7 @@ export default function ({navigation}) {
           </TouchableOpacity>
         </View>
 
-        <View style={{flexDirection: 'row', width: width, height: 200}}>
+        <View style={{flexDirection: 'row', width: width, height: 185}}>
           <SkeletonContent
             containerStyle={{
               flex: 1,
@@ -292,18 +294,21 @@ export default function ({navigation}) {
               height: 183,
               flexDirection: 'row',
             }}
-            isLoading={newArrivalLoading || newArrivalData?.status === 0}
+            isLoading={
+              newArrivalLoading ||
+              (newArrivalData && newArrivalData.status === 0)
+            }
             layout={[
               {
                 width: 160,
-                height: 160,
+                height: 167,
                 marginHorizontal: 10,
                 marginVertical: 10,
                 borderRadius: 6,
               },
               {
                 width: 160,
-                height: 160,
+                height: 167,
                 marginHorizontal: 10,
                 marginVertical: 10,
                 borderRadius: 6,
@@ -337,7 +342,7 @@ export default function ({navigation}) {
                       }}>
                       <View className="w-full h-full items-center justify-center">
                         <Image
-                          className="w-[160] h-[160] rounded-md"
+                          className="w-[160] h-[167] rounded-md"
                           source={{
                             uri: item.image_url,
                           }}

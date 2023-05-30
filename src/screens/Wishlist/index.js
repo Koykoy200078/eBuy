@@ -105,7 +105,7 @@ export default function ({navigation}) {
           </TouchableOpacity>
 
           <Text
-            className="mx-4 text-2xl font-medium italic"
+            className="mx-4 text-2xl font-bold italic"
             style={{color: COLORS.textColor}}>
             My Wishlist
           </Text>
@@ -154,13 +154,13 @@ export default function ({navigation}) {
                             </View>
                           </View>
 
-                          <View className="w-full h-[78%] p-2 flex-col">
+                          <View className="w-full h-[68%] p-2 flex-col items-center mt-2">
                             <View className="h-[20]" />
                             <View className="flex-row">
                               <Text
-                                className="flex-shrink font-bold text-base"
+                                className="flex-shrink font-bold text-base text-center"
                                 style={{color: COLORS.textColor}}
-                                numberOfLines={1}
+                                numberOfLines={3}
                                 ellipsizeMode="tail">
                                 {item.product.name}
                               </Text>

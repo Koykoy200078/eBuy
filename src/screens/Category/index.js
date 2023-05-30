@@ -35,6 +35,7 @@ export default function ({navigation}) {
   const getCategory = useSelector(state => state.category.categoriesData);
   const getData = useSelector(state => state.category_data.selectedData);
   const getSearchData = useSelector(state => state.search);
+  const loading = useSelector(state => state.search.isLoading);
   const getWishlistData = useSelector(state => state.wishlistAdd.data);
 
   const getCategData =
@@ -170,7 +171,8 @@ export default function ({navigation}) {
         <Search
           placeholder="Type anything to search"
           value={query}
-          icons={'send'}
+          // icons={'send'}
+          searchLoading={loading}
           onChangeText={queryText => setQuery(queryText)}
           onPressButton={() => handleSearch(query)}
         />
@@ -187,7 +189,7 @@ export default function ({navigation}) {
                   className="w-40 h-10 rounded-md items-center justify-center"
                   style={{backgroundColor: COLORS.primary}}>
                   <Text
-                    className="text-center text-xs font-bold"
+                    className="text-center text-base font-bold"
                     style={{color: COLORS.textWhite}}>
                     Clear Search
                   </Text>
@@ -282,28 +284,6 @@ export default function ({navigation}) {
                                 </Text>
                               </View>
                             </View>
-
-                            <View className="w-fit h-fit items-end justify-center flex-col">
-                              <View className="flex-row p-1 items-center justify-center">
-                                <TouchableOpacity>
-                                  <View className="mx-1">
-                                    {/* <Image
-                                    source={IMAGES.addCart_dark}
-                                    className="w-[30] h-[30]"
-                                  /> */}
-                                  </View>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity>
-                                  <View className="mx-1">
-                                    {/* <Image
-                                    source={IMAGES.wishList_dark}
-                                    className="w-[40] h-[40]"
-                                  /> */}
-                                  </View>
-                                </TouchableOpacity>
-                              </View>
-                            </View>
                           </View>
                         </View>
                       </Shadow>
@@ -323,8 +303,8 @@ export default function ({navigation}) {
               {getCategory?.categories?.map((item, index) => {
                 let isActive = activeCategory === item.id;
                 let textClass = isActive
-                  ? 'text-xs tracking-widest text-xs font-bold'
-                  : 'text-xs tracking-widest';
+                  ? 'text-xl tracking-widest font-bold'
+                  : 'text-xl tracking-widest';
 
                 return (
                   <Animatable.View

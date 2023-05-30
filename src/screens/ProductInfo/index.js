@@ -212,7 +212,7 @@ export default function ({navigation, routes}) {
             <View className="flex-col justify-between items-start px-2 mt-2 space-y-3">
               <View className="flex">
                 <Text
-                  className="text-2xl font-bold text-center"
+                  className="text-xl font-bold text-center"
                   style={{color: COLORS.textColor}}>
                   {getDetails && getDetails.product
                     ? getDetails.product.name
