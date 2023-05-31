@@ -269,7 +269,7 @@ export default function ({navigation}) {
                 className="flex items-end mb-4"
                 onPress={() => setOpenForgot(true)}>
                 <Text
-                  className="font-bold italic"
+                  className="font-bold text-base italic"
                   style={{color: COLORS.textColor}}>
                   Forgot Password?
                 </Text>
@@ -290,13 +290,15 @@ export default function ({navigation}) {
             </View>
 
             <View className="flex-row justify-center mt-8">
-              <Text className="italic" style={{color: COLORS.textColor}}>
+              <Text
+                className="text-base italic"
+                style={{color: COLORS.textColor}}>
                 Don't have an account?
               </Text>
               <TouchableOpacity
                 onPress={() => navigation.navigate(ROUTES.REGISTER)}>
                 <Text
-                  className="font-semibold italic"
+                  className="font-bold text-base italic"
                   style={{color: COLORS.textColor}}>
                   {'   '}
                   Register

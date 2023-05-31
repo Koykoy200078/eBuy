@@ -55,14 +55,18 @@ export default function ({navigation}) {
           </TouchableOpacity>
 
           <View className="flex-row justify-center">
-            <Text className="font-semibold" style={{color: COLORS.textColor}}>
+            <Text
+              className="text-base italic"
+              style={{color: COLORS.textColor}}>
               Already have an account?
             </Text>
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate(ROUTES.LOGIN), storeData('success');
               }}>
-              <Text className="font-semibold" style={{color: COLORS.textColor}}>
+              <Text
+                className="font-bold text-base italic"
+                style={{color: COLORS.textColor}}>
                 {'   '}
                 Login
               </Text>

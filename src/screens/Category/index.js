@@ -9,6 +9,7 @@ import {
   Alert,
   Button,
   RefreshControl,
+  Dimensions,
 } from 'react-native';
 import React, {useState, useEffect, useCallback} from 'react';
 import {COLORS, IMAGES, ROUTES, Search} from '../..';
@@ -30,10 +31,14 @@ import {getCartCount} from '../../apps/reducers/cartCount';
 import {getWishlistCount} from '../../apps/reducers/wishlistCount';
 import {resetWishlistAdd, wishlistAdd} from '../../apps/reducers/wishlistAdd';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {ActivityIndicator} from 'react-native-paper';
+import SkeletonContent from 'react-native-skeleton-content-nonexpo';
 
 export default function ({navigation}) {
+  const {width} = Dimensions.get('window');
   const getCategory = useSelector(state => state.category.categoriesData);
   const getData = useSelector(state => state.category_data.selectedData);
+  const getDataLoading = useSelector(state => state.category_data.isLoading);
   const getSearchData = useSelector(state => state.search);
   const loading = useSelector(state => state.search.isLoading);
   const getWishlistData = useSelector(state => state.wishlistAdd.data);
@@ -203,100 +208,109 @@ export default function ({navigation}) {
               refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
               }>
-              {getSearchData.data.searchResults.data.map((item, index) => {
-                return (
-                  <TouchableOpacity
-                    key={item.id}
-                    onPress={() => {
-                      setProductSlug(item.slug);
-                      setCategorySlug(item.category_id);
-                    }}>
-                    <View className="p-2">
-                      <Shadow
-                        className="w-[346] h-[160] rounded-lg"
-                        distance={5}
-                        startColor={COLORS.borderColor}>
-                        <View className="w-full h-fit items-center justify-start flex-row">
-                          <View className="">
-                            <Image
-                              source={{
-                                uri: item.image_url,
-                              }}
-                              className="w-[120] h-[160] rounded-l-lg"
-                            />
-                          </View>
-
-                          <View className="w-[227] h-[160]">
-                            <View className="absolute top-0 right-0 items-center justify-center w-fit">
-                              <View
-                                className="p-1 w-fit rounded-bl-md rounded-tr-md flex-row"
-                                style={{backgroundColor: COLORS.accent}}>
-                                <Text
-                                  className="text-base font-bold"
-                                  style={{color: COLORS.textColor}}>
-                                  ₱{' '}
-                                </Text>
-                                <Text
-                                  className="text-base font-bold"
-                                  style={{color: COLORS.textColor}}>
-                                  {item.selling_price}
-                                </Text>
-                              </View>
+              {loading ? (
+                <View className="p-2 items-center justify-center h-[250]">
+                  <Image
+                    source={IMAGES.loading_label}
+                    className="w-full h-full"
+                  />
+                </View>
+              ) : (
+                getSearchData.data.searchResults.data.map((item, index) => {
+                  return (
+                    <TouchableOpacity
+                      key={item.id}
+                      onPress={() => {
+                        setProductSlug(item.slug);
+                        setCategorySlug(item.category_id);
+                      }}>
+                      <View className="p-2">
+                        <Shadow
+                          className="w-[346] h-[160] rounded-lg"
+                          distance={5}
+                          startColor={COLORS.borderColor}>
+                          <View className="w-full h-fit items-center justify-start flex-row">
+                            <View className="">
+                              <Image
+                                source={{
+                                  uri: item.image_url,
+                                }}
+                                className="w-[120] h-[160] rounded-l-lg"
+                              />
                             </View>
 
-                            <View className="w-full h-[70%] p-2 flex-col space-y-2">
-                              <View className="h-[20]" />
-                              <View className="flex-row">
-                                <Text
-                                  className="flex-shrink font-bold text-xs"
-                                  style={{color: COLORS.textColor}}
-                                  numberOfLines={4}
-                                  ellipsizeMode="tail">
-                                  {item.name}
-                                </Text>
+                            <View className="w-[227] h-[160]">
+                              <View className="absolute top-0 right-0 items-center justify-center w-fit">
+                                <View
+                                  className="p-1 w-fit rounded-bl-md rounded-tr-md flex-row"
+                                  style={{backgroundColor: COLORS.accent}}>
+                                  <Text
+                                    className="text-base font-bold"
+                                    style={{color: COLORS.textColor}}>
+                                    ₱{' '}
+                                  </Text>
+                                  <Text
+                                    className="text-base font-bold"
+                                    style={{color: COLORS.textColor}}>
+                                    {item.selling_price}
+                                  </Text>
+                                </View>
                               </View>
 
-                              <View className="flex-row items-center justify-start">
-                                <Text
-                                  className="flex-shrink font-bold text-xs"
-                                  style={{color: COLORS.textColor}}>
-                                  Material Category:{' '}
-                                </Text>
+                              <View className="w-full h-[70%] p-2 flex-col space-y-2">
+                                <View className="h-[20]" />
+                                <View className="flex-row">
+                                  <Text
+                                    className="flex-shrink font-bold text-xs"
+                                    style={{color: COLORS.textColor}}
+                                    numberOfLines={4}
+                                    ellipsizeMode="tail">
+                                    {item.name}
+                                  </Text>
+                                </View>
 
-                                <Text
-                                  className="flex-shrink text-xs"
-                                  style={{color: COLORS.textColor}}>
-                                  {item.brand}
-                                </Text>
-                              </View>
+                                <View className="flex-row items-center justify-start">
+                                  <Text
+                                    className="flex-shrink font-bold text-xs"
+                                    style={{color: COLORS.textColor}}>
+                                    Material Category:{' '}
+                                  </Text>
 
-                              <View className="flex-row items-center justify-start">
-                                <Text
-                                  className="flex-shrink font-bold text-xs"
-                                  style={{color: COLORS.textColor}}>
-                                  Status:{' '}
-                                </Text>
+                                  <Text
+                                    className="flex-shrink text-xs"
+                                    style={{color: COLORS.textColor}}>
+                                    {item.brand}
+                                  </Text>
+                                </View>
 
-                                <Text
-                                  className="flex-shrink text-xs"
-                                  style={{color: COLORS.textColor}}>
-                                  {item.quantity_status}
-                                </Text>
+                                <View className="flex-row items-center justify-start">
+                                  <Text
+                                    className="flex-shrink font-bold text-xs"
+                                    style={{color: COLORS.textColor}}>
+                                    Status:{' '}
+                                  </Text>
+
+                                  <Text
+                                    className="flex-shrink text-xs"
+                                    style={{color: COLORS.textColor}}>
+                                    {item.quantity_status}
+                                  </Text>
+                                </View>
                               </View>
                             </View>
                           </View>
-                        </View>
-                      </Shadow>
-                    </View>
-                  </TouchableOpacity>
-                );
-              })}
+                        </Shadow>
+                      </View>
+                    </TouchableOpacity>
+                  );
+                })
+              )}
             </ScrollView>
           </>
         ) : (
           <>
             <ScrollView
-              className="mt-6 py-2 max-h-20"
+              className="mt-6 py-2 max-h-14"
               horizontal
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={{paddingHorizontal: 20}}>
@@ -349,26 +363,51 @@ export default function ({navigation}) {
               refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
               }>
-              {getData && getData.data.length > 0
-                ? getData.data.map((item, index) => (
-                    <Card
-                      item={item}
-                      index={index}
-                      key={index}
-                      onPressWishlist={() => {
-                        dispatch(
-                          wishlistAdd({
-                            product_id: item.id,
-                          }),
-                        );
-                      }}
-                      onPressCart={() => {
-                        setProductSlug(item.slug);
-                        setCategorySlug(item.category_id);
-                      }}
-                    />
-                  ))
-                : null}
+              <SkeletonContent
+                containerStyle={{
+                  flex: 1,
+                  width: width,
+                  height: 290,
+                  flexDirection: 'row',
+                }}
+                isLoading={getDataLoading}
+                layout={[
+                  {
+                    width: 208,
+                    height: 290,
+                    marginHorizontal: 10,
+                    marginTop: 20,
+                    borderRadius: 6,
+                  },
+                  {
+                    width: 208,
+                    height: 290,
+                    marginHorizontal: 10,
+                    marginTop: 20,
+                    borderRadius: 6,
+                  },
+                ]}>
+                {getData && getData.data.length > 0
+                  ? getData.data.map((item, index) => (
+                      <Card
+                        item={item}
+                        index={index}
+                        key={index}
+                        onPressWishlist={() => {
+                          dispatch(
+                            wishlistAdd({
+                              product_id: item.id,
+                            }),
+                          );
+                        }}
+                        onPressCart={() => {
+                          setProductSlug(item.slug);
+                          setCategorySlug(item.category_id);
+                        }}
+                      />
+                    ))
+                  : null}
+              </SkeletonContent>
             </ScrollView>
           </>
         )}

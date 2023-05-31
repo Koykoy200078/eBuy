@@ -4,6 +4,7 @@ export default {
   register: require('../../../assets/images/register.png'),
 
   loading: require('../../../assets/images/loading.gif'),
+  loading_label: require('../../../assets/images/loading_label.gif'),
 
   google: require('../../../assets/images/google.png'),
   facebook: require('../../../assets/images/facebook.png'),
@@ -14,6 +15,7 @@ export default {
 
   add_to_cart_dark: require('../../../assets/images/add-to-cart-dark.png'),
   cart: require('../../../assets/images/cart.png'),
+  orders: require('../../../assets/images/orders.png'),
 
   success: require('../../../assets/images/success.gif'),
 
