@@ -1,5 +1,13 @@
-import React, {useEffect} from 'react';
-import {SafeAreaView, View, Text, Image, TouchableOpacity} from 'react-native';
+import React, {useCallback, useEffect} from 'react';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Linking,
+  Alert,
+} from 'react-native';
 import {COLORS, IMAGES, ROUTES} from '../..';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -17,7 +25,7 @@ export default function ({navigation}) {
     const getData = async () => {
       try {
         const value = await AsyncStorage.getItem('@key_welcome');
-        console.log('value ==> ', value);
+
         if (value !== null) {
           navigation.navigate(ROUTES.LOGIN);
         }
@@ -29,6 +37,7 @@ export default function ({navigation}) {
 
     getData();
   }, []);
+
   return (
     <SafeAreaView className="flex-1" style={{backgroundColor: COLORS.BGColor}}>
       <View className="flex-1 flex justify-around my-4">
@@ -69,6 +78,19 @@ export default function ({navigation}) {
                 style={{color: COLORS.textColor}}>
                 {'   '}
                 Login
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <View className="flex-row justify-center">
+            <TouchableOpacity
+              onPress={() => {
+                Linking.openURL('https://ebuy.soon.it/about-us');
+              }}>
+              <Text
+                className="font-bold text-xs"
+                style={{color: COLORS.textColor}}>
+                About Us
               </Text>
             </TouchableOpacity>
           </View>

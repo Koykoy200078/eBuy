@@ -25,11 +25,11 @@ import {
   Success,
   Verify,
   ViewAll,
-  Welcome,
   Wishlist,
 } from '..';
 import {Icons} from '../apps/configs/icons';
 import Orders from '../screens/Orders';
+import Welcome from '../screens/Welcome';
 
 const width = Dimensions.get('window').width;
 

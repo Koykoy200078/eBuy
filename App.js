@@ -1,45 +1,37 @@
 import React, {useEffect} from 'react';
-import {View, Text, StatusBar, Alert, BackHandler} from 'react-native';
+import {StatusBar, Alert, BackHandler, Platform} from 'react-native';
+import codePush from 'react-native-code-push';
 
-import {COLORS, ROUTES} from './src';
-import App from './src/navigations/AppNavigation';
+import {COLORS} from './src';
+import AppNav from './src/navigations/AppNavigation';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
-import {Provider as StoreProvider, useDispatch} from 'react-redux';
+import {Provider as StoreProvider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {AuthProvider} from './src/providers/AuthProvider';
 
 import configureStore from './src/apps/reducers';
 import rootSaga from './src/apps/sagas';
-import {userLogout} from './src/apps/reducers/auth/authLogout';
-import {resetLogin} from './src/apps/reducers/auth/authLogin';
-import {resetRegister} from './src/apps/reducers/auth/authRegister';
-import {resetProductData} from './src/apps/reducers/product/productIndex';
-import {resetCategoryData} from './src/apps/reducers/category/categories';
-import {resetProductDetailsData} from './src/apps/reducers/product/productDetails';
-import {resetSelectedCategoryData} from './src/apps/reducers/categoriesData';
-import {resetCartCount} from './src/apps/reducers/cartCount';
-import {resetWishlistCount} from './src/apps/reducers/wishlistCount';
-import {resetUserItemCount} from './src/apps/reducers/userItemCount';
-import {resetWishlistItemsShow} from './src/apps/reducers/wishlistItemShow';
-import {resetUserData} from './src/apps/reducers/userData';
-import {resetCartData} from './src/apps/reducers/cartData';
-import {resetCartItemIncrement} from './src/apps/reducers/cartIncrement';
-import {resetCartItemDecrement} from './src/apps/reducers/cartDecrement';
-import {resetMyProductsData} from './src/apps/reducers/product/myProduct';
-import {resetChangePassword} from './src/apps/reducers/changepass';
-import {resetWishlistAdd} from './src/apps/reducers/wishlistAdd';
-import {resetWishlistRemove} from './src/apps/reducers/wishlistRemove';
-import {removeCartReset} from './src/apps/reducers/cartRemove';
-import {resetCheckOut} from './src/apps/reducers/checkout';
-import {resetOrders} from './src/apps/reducers/orders';
-import {resetForgot} from './src/apps/reducers/auth/authForgot';
 import {globalResetActions} from './src/globalResetActions';
+import {showError, showSuccess} from './src/apps/others/helperFunctions';
 
 const {store, persistor, runSaga} = configureStore();
 
 runSaga(rootSaga);
 
-export default function ({navigation}) {
+let codePushOptions = {
+  checkFrequency: codePush.CheckFrequency.ON_APP_START,
+  updateDialog: {
+    title: 'New Version Available',
+    appendReleaseDescription: true,
+    descriptionPrefix: '\n\nChangelog: ',
+    mandatoryUpdateMessage:
+      'An update is available. Would you like to install it now?',
+    mandatoryContinueButtonLabel: 'Install',
+  },
+  installMode: codePush.InstallMode.IMMEDIATE,
+};
+
+const App = () => {
   const backAction = () => {
     Alert.alert('Exit', 'Are you sure you want to exit?', [
       {
@@ -57,6 +49,18 @@ export default function ({navigation}) {
       'hardwareBackPress',
       backAction,
     );
+
+    codePush.checkForUpdate().then(update => {
+      if (!update) {
+        showSuccess({
+          message: 'You are using the latest version of the app.',
+        });
+      } else {
+        showSuccess({
+          message: 'New version available.',
+        });
+      }
+    });
 
     return () =>
       BackHandler.removeEventListener('hardwareBackPress', backAction);
@@ -80,7 +84,7 @@ export default function ({navigation}) {
       <StoreProvider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <AuthProvider>
-            <App />
+            <AppNav />
           </AuthProvider>
         </PersistGate>
       </StoreProvider>
@@ -88,4 +92,6 @@ export default function ({navigation}) {
       <Toast topOffset={10} />
     </>
   );
-}
+};
+
+export default codePush(codePushOptions)(App);
