@@ -54,7 +54,9 @@ export default function ({navigation}) {
   };
 
   return (
-    <View className="flex-1" style={{backgroundColor: COLORS.BGColor}}>
+    <View
+      className="flex-1 space-y-2"
+      style={{backgroundColor: COLORS.BGColor}}>
       <SafeAreaView className="flex mt-2">
         <View className="flex-row justify-start">
           <TouchableOpacity
@@ -68,15 +70,17 @@ export default function ({navigation}) {
             />
           </TouchableOpacity>
         </View>
+      </SafeAreaView>
 
-        <View className="flex-row justify-center">
+      <View>
+        <View className="items-center justify-center">
           <Image
             source={IMAGES.register}
             resizeMode="contain"
-            style={{width: '100%', height: 200}}
+            style={{width: width, height: 250}}
           />
         </View>
-      </SafeAreaView>
+      </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <DropShadow
@@ -110,7 +114,7 @@ export default function ({navigation}) {
                   />
                 </View>
                 <TextInput
-                  className="ml-2 p-2 border-b h-[50]"
+                  className="ml-2 p-2 border-b h-[50] text-base"
                   style={{
                     color: COLORS.textColor,
                     width: width - 100,
@@ -128,7 +132,7 @@ export default function ({navigation}) {
                   <Icons.Ionicons name="at" size={30} color={COLORS.textGray} />
                 </View>
                 <TextInput
-                  className="ml-2 p-2 border-b h-[50]"
+                  className="ml-2 p-2 border-b h-[50] text-base"
                   style={{
                     color: COLORS.textColor,
                     width: width - 100,
@@ -151,7 +155,7 @@ export default function ({navigation}) {
                 </View>
 
                 <TextInput
-                  className="ml-2 p-2 border-b h-[50]"
+                  className="ml-2 p-2 border-b h-[50] text-base"
                   style={{
                     color: COLORS.textColor,
                     width: width - 130,
@@ -185,7 +189,7 @@ export default function ({navigation}) {
                 </View>
 
                 <TextInput
-                  className="ml-2 p-2 border-b h-[50]"
+                  className="ml-2 p-2 border-b h-[50] text-base"
                   style={{
                     color: COLORS.textColor,
                     width: width - 130,

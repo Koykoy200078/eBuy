@@ -27,10 +27,10 @@ export function* logoutUserAsync(action) {
       });
     }
   } catch (error) {
+    yield put({type: USER_LOGOUT_ERROR, error});
     showError({
       message: 'Something went wrong!',
     });
-    yield put({type: USER_LOGOUT_ERROR, error});
   }
 }
 

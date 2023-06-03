@@ -23,11 +23,14 @@ import {
   forgotPassword,
   resetForgot,
 } from '../../../apps/reducers/auth/authForgot';
-import {ActivityIndicator} from 'react-native-paper';
+import {ActivityIndicator, Button} from 'react-native-paper';
+import Modal from 'react-native-modal';
+import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
 export default function ({navigation}) {
   const loading = useSelector(state => state.authLogin.isLoading);
   const forgotPass001 = useSelector(state => state.authForgot.data);
+  const forgotPassLoading = useSelector(state => state.authForgot.isLoading);
   const {errorMsg} = useSelector(state => state.authLogin);
   const {width, height} = Dimensions.get('window');
   const [showPassword, setShowPassword] = useState(false);
@@ -113,35 +116,26 @@ export default function ({navigation}) {
 
   function forgotPass(openForgot) {
     return (
-      <ModalPopup visible={openForgot} modalStyle="w-[70%] h-[170] rounded">
-        <View className="h-full w-full">
-          <View className="flex-row w-fit h-[30] mx-[5] items-center justify-between border-b">
-            <Text
-              className="text-xs font-bold w-fit text-black"
-              numberOfLines={1}
-              ellipsizeMode="tail">
-              Forgot Password
-            </Text>
-            <View className="justify-between items-end">
-              <TouchableOpacity
-                onPress={() => {
-                  setOpenForgot(false);
-                }}>
-                <Icons.FontAwesome5 name="times" size={23} color="#000" />
-              </TouchableOpacity>
-            </View>
-          </View>
-
+      <Modal
+        isVisible={openForgot}
+        deviceWidth={width}
+        onSwipeComplete={() => setOpenForgot(false)}
+        swipeDirection="left">
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: '#FFFFFF',
+            maxHeight: 128,
+            borderRadius: 5,
+            padding: 10,
+          }}>
           <View className="space-y-2 items-center">
-            <View className="flex-row items-center justify-center h-fit w-[100%]">
-              <View className="ml-[-15] items-center">
-                <Icons.Ionicons name="at" size={25} color={COLORS.textGray} />
-              </View>
+            <View className="flex-row items-center justify-center">
               <TextInput
-                className="ml-2 p-2 border-b h-[50]"
+                className="border-b h-[50] text-base"
                 style={{
                   color: COLORS.textColor,
-                  width: width - 170,
+                  width: width - 100,
                 }}
                 placeholder="Enter your email address"
                 placeholderTextColor={COLORS.textColor}
@@ -150,27 +144,33 @@ export default function ({navigation}) {
               />
             </View>
 
-            <View className="flex-row justify-center mt-[10] p-3 h-fit w-full">
+            <View className="mt-4">
               <TouchableOpacity
                 onPress={() => onReset()}
-                className="p-3 rounded-md"
+                className="p-3 rounded-md items-center"
                 style={{backgroundColor: COLORS.primary}}>
                 <Text
-                  className="text-md font-bold text-center"
+                  className="text-base font-bold text-center"
                   style={{color: COLORS.textWhite}}>
-                  Reset Password
+                  {forgotPassLoading ? (
+                    <ActivityIndicator color="#FFFFFF" />
+                  ) : (
+                    'RESET PASSWORD'
+                  )}
                 </Text>
               </TouchableOpacity>
             </View>
           </View>
         </View>
-      </ModalPopup>
+      </Modal>
     );
   }
 
   return (
-    <View className="flex-1" style={{backgroundColor: COLORS.BGColor}}>
-      <SafeAreaView className="flex mt-4">
+    <View
+      className="flex-1 space-y-6"
+      style={{backgroundColor: COLORS.BGColor}}>
+      <SafeAreaView className="flex mt-2">
         {!success ? (
           <View View className="flex-row justify-start">
             <TouchableOpacity
@@ -185,11 +185,17 @@ export default function ({navigation}) {
             </TouchableOpacity>
           </View>
         ) : null}
-
-        <View className="flex-row justify-center">
-          <Image source={IMAGES.login} style={{width: 200, height: 200}} />
-        </View>
       </SafeAreaView>
+
+      <View>
+        <View className="items-center justify-center">
+          <Image
+            source={IMAGES.login}
+            resizeMode="contain"
+            style={{width: width, height: 250}}
+          />
+        </View>
+      </View>
 
       {forgotPass(openForgot, setOpenForgot)}
 
@@ -220,7 +226,7 @@ export default function ({navigation}) {
                   <Icons.Ionicons name="at" size={30} color={COLORS.textGray} />
                 </View>
                 <TextInput
-                  className="ml-2 p-2 border-b h-[50]"
+                  className="ml-2 p-2 border-b h-[50] text-base"
                   style={{
                     color: COLORS.textColor,
                     width: width - 100,
@@ -242,7 +248,7 @@ export default function ({navigation}) {
                 </View>
 
                 <TextInput
-                  className="ml-2 p-2 border-b h-[50]"
+                  className="ml-2 p-2 border-b h-[50] text-base"
                   style={{
                     color: COLORS.textColor,
                     width: width - 130,
@@ -269,7 +275,7 @@ export default function ({navigation}) {
                 className="flex items-end mb-4"
                 onPress={() => setOpenForgot(true)}>
                 <Text
-                  className="font-bold text-base italic"
+                  className="font-bold text-base"
                   style={{color: COLORS.textColor}}>
                   Forgot Password?
                 </Text>
@@ -284,21 +290,19 @@ export default function ({navigation}) {
                 <Text
                   className="text-xl font-bold text-center"
                   style={{color: COLORS.textWhite}}>
-                  {loading ? <ActivityIndicator color="#FFFFFF" /> : 'Login'}
+                  {loading ? <ActivityIndicator color="#FFFFFF" /> : 'LOGIN'}
                 </Text>
               </TouchableOpacity>
             </View>
 
             <View className="flex-row justify-center mt-8">
-              <Text
-                className="text-base italic"
-                style={{color: COLORS.textColor}}>
+              <Text className="text-base" style={{color: COLORS.textColor}}>
                 Don't have an account?
               </Text>
               <TouchableOpacity
                 onPress={() => navigation.navigate(ROUTES.REGISTER)}>
                 <Text
-                  className="font-bold text-base italic"
+                  className="font-bold text-base"
                   style={{color: COLORS.textColor}}>
                   {'   '}
                   Register

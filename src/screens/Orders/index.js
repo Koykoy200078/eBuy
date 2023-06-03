@@ -58,9 +58,7 @@ const Orders = ({navigation}) => {
 
           <Text style={styles.headerCell}>Status</Text>
         </View>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          className="max-h-[500]">
+        <ScrollView showsVerticalScrollIndicator={false} className="h-[570]">
           {getData && getData.orders ? (
             getData.orders.data.map(item => {
               let status;
@@ -84,27 +82,26 @@ const Orders = ({navigation}) => {
               }
 
               return (
-                <>
-                  <View
-                    key={item.id}
-                    className="flex-row items-center justify-center rounded-b space-x-2 p-2"
-                    style={{borderColor: '#ccc'}}>
-                    <Text
-                      className="flex-1 text-center text-xs"
-                      style={{color: COLORS.textColor}}>
-                      {item.tracking_no}
-                    </Text>
-                    <Text
-                      className="flex-1 text-center text-xs"
-                      style={{color: COLORS.textColor}}>
-                      {moment(item.created_at).format('DD-MM-YYYY')}
-                    </Text>
-                    <Text
-                      className="flex-1 text-center text-xs"
-                      style={{color: color}}>
-                      {status}
-                    </Text>
-                    {/* <View className="flex-1 text-center text-xs">
+                <View
+                  key={item.id}
+                  className="flex-row items-center justify-center rounded-b space-x-2 p-2"
+                  style={{borderColor: '#ccc', borderBottomWidth: 1}}>
+                  <Text
+                    className="flex-1 text-center text-xs"
+                    style={{color: COLORS.textColor}}>
+                    {item.tracking_no}
+                  </Text>
+                  <Text
+                    className="flex-1 text-center text-xs"
+                    style={{color: COLORS.textColor}}>
+                    {moment(item.created_at).format('DD-MM-YYYY')}
+                  </Text>
+                  <Text
+                    className="flex-1 text-center text-xs"
+                    style={{color: color}}>
+                    {status}
+                  </Text>
+                  {/* <View className="flex-1 text-center text-xs">
                       <TouchableOpacity
                         onPress={() => {
                           navigation.navigate('OrderDetails', {order: item});
@@ -112,10 +109,7 @@ const Orders = ({navigation}) => {
                         <Text style={styles.viewButton}>View</Text>
                       </TouchableOpacity>
                     </View> */}
-                  </View>
-
-                  <View style={styles.separator} />
-                </>
+                </View>
               );
             })
           ) : (
@@ -124,6 +118,14 @@ const Orders = ({navigation}) => {
             </View>
           )}
         </ScrollView>
+        {/* end of scroll view */}
+        <View style={styles.separator} />
+        <View style={styles.row}>
+          <Text style={styles.cell}>Total Orders</Text>
+          <Text style={styles.cell}>
+            {getData && getData.orders ? getData.orders.total : 0}
+          </Text>
+        </View>
       </View>
     </View>
   );

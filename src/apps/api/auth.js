@@ -1,4 +1,5 @@
 import {BASE_URI} from '../configs/url';
+import {select} from 'redux-saga/effects';
 
 export function* userLogin(payload) {
   try {
@@ -62,17 +63,19 @@ export function* createAccount(payload) {
 }
 
 export function* userLogout(payload) {
+  const auth = yield select(state => state.authLogin.userData.access_token);
   try {
     const options = {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${auth}`,
       },
       body: JSON.stringify({...payload}),
     };
 
-    const response = yield fetch(`${BASE_URI}/logout`, options);
+    const response = yield fetch(BASE_URI + '/logout', options);
     const data = yield response.json();
 
     if (response.ok) {

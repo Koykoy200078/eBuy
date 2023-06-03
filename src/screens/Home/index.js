@@ -140,7 +140,7 @@ export default function ({navigation}) {
       <View className="px-2 mt-2 space-y-1">
         <View className="flex-row justify-between items-center">
           <Text
-            className="text-2xl font-bold italic"
+            className="text-2xl font-bold"
             style={{color: COLORS.textColor}}>
             Popular Items
           </Text>
@@ -272,7 +272,7 @@ export default function ({navigation}) {
       <View className="px-2 mt-2 space-y-1">
         <View className="flex-row justify-between items-center">
           <Text
-            className="text-2xl font-bold italic"
+            className="text-2xl font-bold"
             style={{color: COLORS.textColor}}>
             New Arrival
           </Text>
@@ -280,7 +280,9 @@ export default function ({navigation}) {
             onPress={() => navigation.navigate(ROUTES.VIEWALL)}
             className="p-2 px-3 border-gray-200 rounded-full"
             style={{backgroundColor: COLORS.primary}}>
-            <Text className="font-bold" style={{color: COLORS.textWhite}}>
+            <Text
+              className="font-bold text-base"
+              style={{color: COLORS.textWhite}}>
               View All
             </Text>
           </TouchableOpacity>

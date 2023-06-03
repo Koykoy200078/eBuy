@@ -97,7 +97,9 @@ export default function ({navigation, route}) {
   };
 
   return (
-    <View className="flex-1" style={{backgroundColor: COLORS.BGColor}}>
+    <View
+      className="flex-1 space-y-3"
+      style={{backgroundColor: COLORS.BGColor}}>
       <SafeAreaView className="flex mt-2">
         <View className="flex-row justify-start">
           <TouchableOpacity
@@ -111,15 +113,17 @@ export default function ({navigation, route}) {
             />
           </TouchableOpacity>
         </View>
+      </SafeAreaView>
 
-        <View className="flex-row justify-center">
+      <View>
+        <View className="items-center justify-center">
           <Image
             source={IMAGES.register}
             resizeMode="contain"
-            style={{width: '100%', height: 200}}
+            style={{width: width, height: 250}}
           />
         </View>
-      </SafeAreaView>
+      </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <DropShadow
@@ -136,7 +140,7 @@ export default function ({navigation, route}) {
             shadowRadius: 5,
           }}>
           <View
-            className="flex-1 px-8 pt-6"
+            className="flex-1 px-8 pt-3"
             style={{
               backgroundColor: COLORS.BGColor,
               borderTopLeftRadius: 20,
@@ -153,7 +157,7 @@ export default function ({navigation, route}) {
                   />
                 </View>
                 <TextInput
-                  className="ml-2 p-2 border-b h-[50]"
+                  className="ml-2 p-2 border-b h-[50] text-base"
                   style={{
                     color: COLORS.textColor,
                     width: width - 100,
@@ -168,14 +172,16 @@ export default function ({navigation, route}) {
               <View className="flex-row justify-between mb-2">
                 <View className="h-fit w-[60%] mr-1">
                   <Text
-                    className="text-sm font-bold"
-                    style={{color: COLORS.textColor}}></Text>
+                    className="text-base font-bold"
+                    style={{color: COLORS.textColor}}>
+                    Phone Number
+                  </Text>
                   <TextInput
-                    className="p-2 rounded-md border h-[50]"
+                    className="p-2 rounded-md border h-[50] text-base"
                     style={{
                       color: COLORS.textColor,
                     }}
-                    placeholder="Phone Number"
+                    placeholder="Ex. +639 or 09"
                     placeholderTextColor={COLORS.textColor}
                     value={phoneNumber}
                     onChangeText={val => setPhoneNumber(val)}
@@ -185,7 +191,7 @@ export default function ({navigation, route}) {
 
                 <View className="h-fit w-[40%] ml-1">
                   <Text
-                    className="text-sm font-bold"
+                    className="text-base font-bold"
                     style={{color: COLORS.textColor}}>
                     Birthday
                   </Text>
@@ -198,7 +204,7 @@ export default function ({navigation, route}) {
                         color: COLORS.textColor,
                       }}>
                       <Text
-                        className="text-sm font-bold"
+                        className="text-base font-bold"
                         style={{color: COLORS.textColor}}>
                         {formatDate(date)}
                       </Text>
@@ -224,7 +230,9 @@ export default function ({navigation, route}) {
               </View>
 
               <View className="h-[120] w-[100%] mb-2">
-                <Text className="font-bold" style={{color: COLORS.textColor}}>
+                <Text
+                  className="font-bold text-base"
+                  style={{color: COLORS.textColor}}>
                   Gender
                 </Text>
 
@@ -245,7 +253,7 @@ export default function ({navigation, route}) {
                 <Text
                   className="text-xl font-bold text-center"
                   style={{color: COLORS.textWhite}}>
-                  {loading ? <ActivityIndicator color="#FFFFFF" /> : 'Register'}
+                  {loading ? <ActivityIndicator color="#FFFFFF" /> : 'REGISTER'}
                 </Text>
               </TouchableOpacity>
             </View>

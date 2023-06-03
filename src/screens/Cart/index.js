@@ -209,7 +209,7 @@ export default function ({navigation}) {
                             color={COLORS.primary}
                           />
                           <Text
-                            className="ml-2 text-sm font-bold"
+                            className="ml-2 text-base font-bold"
                             style={{color: COLORS.textColor}}>
                             {storeName}
                           </Text>
@@ -265,7 +265,7 @@ export default function ({navigation}) {
                               <View className="ml-3">
                                 <Icons.Octicons
                                   name="trash"
-                                  size={20}
+                                  size={25}
                                   color={COLORS.primary}
                                 />
                               </View>
@@ -277,8 +277,8 @@ export default function ({navigation}) {
                                 uri: item.image_url,
                               }}
                               style={{
-                                width: 100,
-                                height: 100,
+                                width: 120,
+                                height: 120,
                                 borderRadius: 6,
                               }}
                             />
@@ -286,10 +286,10 @@ export default function ({navigation}) {
 
                           <View
                             className="flex items-start ml-2 h-[70]"
-                            style={{width: width / 2.1}}>
+                            style={{width: width / 2.4}}>
                             <View className="flex flex-col justify-center items-start w-full h-[70]">
                               <Text
-                                className="text-sm text-center font-bold"
+                                className="text-base text-center font-bold"
                                 numberOfLines={3}
                                 ellipsizeMode="tail"
                                 style={{color: COLORS.textColor}}>
@@ -306,7 +306,7 @@ export default function ({navigation}) {
                             <View className="w-full h-[1] border" />
 
                             <View className="flex flex-row items-center justify-between">
-                              <View className="flex-row w-[80]">
+                              <View className="flex-row w-[60]">
                                 <Text className="text-sm font-bold text-red-600">
                                   ₱ {item.selling_price}
                                 </Text>
@@ -332,7 +332,7 @@ export default function ({navigation}) {
                                   }}>
                                   <View className="flex justify-center items-center h-8 w-8">
                                     <Text
-                                      className="font-bold"
+                                      className="font-bold text-base"
                                       style={{color: COLORS.textColor}}>
                                       -
                                     </Text>
@@ -341,7 +341,7 @@ export default function ({navigation}) {
 
                                 <View className="flex justify-center items-center h-8 w-8">
                                   <Text
-                                    className="font-bold"
+                                    className="font-bold text-base"
                                     style={{color: COLORS.textColor}}>
                                     {item.quantity}
                                   </Text>
@@ -369,7 +369,7 @@ export default function ({navigation}) {
                                   }}>
                                   <View className="flex justify-center items-center h-8 w-8">
                                     <Text
-                                      className="font-bold"
+                                      className="font-bold text-base"
                                       style={{color: COLORS.textColor}}>
                                       +
                                     </Text>
@@ -393,19 +393,21 @@ export default function ({navigation}) {
             className="flex-row items-center justify-between px-2 mb-1"
             style={{width: width}}>
             <Text
-              className="text-sm font-bold"
+              className="text-base font-bold"
               style={{color: COLORS.textColor}}>
               Total Price: ₱{' '}
-              <Text className="text-sm font-bold text-red-600">
+              <Text className="text-base font-bold text-red-600">
                 {totalPrice}
               </Text>
             </Text>
 
             <TouchableOpacity onPress={() => onNavigate()}>
               <View
-                className="flex justify-center items-center h-10 w-24 rounded-md"
+                className="flex justify-center items-center h-12 w-32 rounded-md"
                 style={{backgroundColor: COLORS.primary}}>
-                <Text className="font-bold" style={{color: COLORS.textWhite}}>
+                <Text
+                  className="font-bold text-xl text-center"
+                  style={{color: COLORS.textWhite}}>
                   Checkout
                 </Text>
               </View>

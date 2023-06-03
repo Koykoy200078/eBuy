@@ -112,16 +112,12 @@ export default function ({navigation}) {
               style={{color: COLORS.textColor}}>
               {user && user.name}
             </Text>
-            <Text
-              className="text-base italic"
-              style={{color: COLORS.textColor}}>
+            <Text className="text-base" style={{color: COLORS.textColor}}>
               {user && user.email}
             </Text>
             <View className="flex-row items-center justify-center mt-2">
-              <Image source={IMAGES.verified} style={{width: 19, height: 22}} />
-              <Text
-                className="ml-1 text-sm italic"
-                style={{color: COLORS.textColor}}>
+              <Image source={IMAGES.verified} style={{width: 22, height: 26}} />
+              <Text className="ml-1 text-sm" style={{color: COLORS.textColor}}>
                 {user && user.email_verified_at !== null
                   ? 'Account Verified'
                   : 'Account Not Verified'}

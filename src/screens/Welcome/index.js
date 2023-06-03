@@ -25,7 +25,6 @@ export default function ({navigation}) {
     const getData = async () => {
       try {
         const value = await AsyncStorage.getItem('@key_welcome');
-
         if (value !== null) {
           navigation.navigate(ROUTES.LOGIN);
         }
@@ -64,9 +63,7 @@ export default function ({navigation}) {
           </TouchableOpacity>
 
           <View className="flex-row justify-center">
-            <Text
-              className="text-base italic"
-              style={{color: COLORS.textColor}}>
+            <Text className="text-base" style={{color: COLORS.textColor}}>
               Already have an account?
             </Text>
             <TouchableOpacity
@@ -74,7 +71,7 @@ export default function ({navigation}) {
                 navigation.navigate(ROUTES.LOGIN), storeData('success');
               }}>
               <Text
-                className="font-bold text-base italic"
+                className="font-bold text-base"
                 style={{color: COLORS.textColor}}>
                 {'   '}
                 Login
@@ -88,7 +85,7 @@ export default function ({navigation}) {
                 Linking.openURL('https://ebuy.soon.it/about-us');
               }}>
               <Text
-                className="font-bold text-xs"
+                className="font-bold text-base"
                 style={{color: COLORS.textColor}}>
                 About Us
               </Text>
