@@ -12,10 +12,10 @@ export function* userLogin(payload) {
       body: JSON.stringify({...payload}),
     };
 
-    const response = yield fetch(`${BASE_URI}/auth/login`, options);
+    const response = yield fetch(BASE_URI + '/auth/login', options);
     const data = yield response.json();
 
-    if (response.ok) {
+    if (response.ok || response.status === 403) {
       return data;
     } else {
       throw new Error(data.errors);
