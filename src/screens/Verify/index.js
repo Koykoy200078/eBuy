@@ -13,7 +13,7 @@ export default function ({navigation, route}) {
   useEffect(() => {
     const intervalId = setInterval(() => {
       dispatch(userLogin({email: email, password: password}));
-    }, 10000);
+    }, 30000);
 
     return () => clearInterval(intervalId);
   }, []);
